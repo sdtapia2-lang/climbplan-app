@@ -116,6 +116,52 @@ export type Week = {
   distribution: string | null;
 };
 
+export type TemplateMesocycle = {
+  id: string;
+  name: string;
+  description: string | null;
+  phase: string | null;
+  max_rpe_week: number | null;
+  is_published: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TemplateWeek = {
+  id: string;
+  template_mesocycle_id: string;
+  week_number: number;
+  load_type: string | null;
+  focus: string | null;
+  distribution: string | null;
+};
+
+export type TemplateDay = {
+  id: string;
+  template_week_id: string;
+  day_of_week: string;
+  day_focus: string | null;
+  is_rest: boolean;
+  position: number;
+};
+
+export type TemplateBlock = {
+  id: string;
+  template_day_id: string;
+  exercise_id: string | null;
+  exercise_name_freetext: string | null;
+  category: string | null;
+  rpe_target: string | null;
+  sets: string | null;
+  reps_or_time: string | null;
+  time: string | null;
+  load: string | null;
+  rest: string | null;
+  kinesio_notes: string | null;
+  position: number;
+};
+
 export const DAYS_OF_WEEK = [
   "Lunes",
   "Martes",

@@ -14,6 +14,7 @@ No es el código que generó Base44 — es una reimplementación equivalente, he
 - **Check-in semanal**: sueño, motivación, adherencia, dolor por zona.
 - **Analítica**: adherencia promedio, RPE promedio, bloques completados.
 - **Perfil**: datos del atleta, grados, objetivos, equipamiento, estado de salud, notas kinesiológicas — equivalente al `contexto_atleta.pdf`.
+- **Planes** (`/plantillas`): biblioteca de plantillas de mesociclo (sin atleta ni fechas) armadas por el Administrador. Cualquiera con acceso a un atleta puede "aplicar" una para generarle un mesociclo real y editable con fecha de inicio propia.
 
 Multi-atleta: un selector en la barra superior permite cambiar entre Seba y Diego (o cualquier otro atleta que agregues directo en la tabla `athletes`).
 
@@ -23,9 +24,18 @@ Tres roles, gestionados desde el panel **Admin** (visible solo para administrado
 
 - **Administrador**: acceso total a todo. Si la misma persona entrena y administra la app (tu caso), el rol admin ya incluye todo lo que haria como entrenador o escalador — no hace falta un rol combinado.
 - **Entrenador**: acceso total (crear mesociclos, editar evaluaciones/check-ins) solo sobre los escaladores que tenga asignados en el panel Admin.
-- **Escalador**: cuenta atada a un unico perfil de atleta. Ve su propio mesociclo pero no puede crear uno desde cero ni tocar la estructura de dias/semanas — solo puede agregar/editar sus propios bloques de ejercicio (eso se termina de habilitar en la UI en la Fase 2, junto con "planes por defecto").
+- **Escalador**: cuenta atada a un unico perfil de atleta. Ve su propio mesociclo pero no puede crear uno desde cero ni tocar la estructura de dias/semanas — solo puede agregar/editar sus propios bloques de ejercicio, o elegir una plantilla en **Planes** y aplicarla a su propio contexto (Fase 2).
 
 Al registrarse, una cuenta nueva queda **sin rol** (pantalla de espera) hasta que un administrador se lo asigne desde `/admin`. La primera cuenta que se crea en el proyecto queda como administrador automaticamente.
+
+## Planes por defecto (Fase 2)
+
+Un **plan por defecto** (`template_mesocycles` + `template_weeks/days/blocks`) es la misma estructura de un mesociclo (4 semanas, dias, bloques) pero sin atleta ni fechas — es una plantilla reutilizable.
+
+- Solo el **Administrador** puede crear/editar plantillas (`/plantillas/new`, editor identico al wizard de mesociclo).
+- Una plantilla marcada como **borrador** (no publicada) solo la ve el admin; el resto de los roles solo ven plantillas publicadas.
+- Cualquier rol con acceso a un atleta (admin, su entrenador, o el propio escalador) puede **aplicar** una plantilla desde `/plantillas`: elige fecha de inicio y se genera una copia real e independiente del mesociclo para ese atleta — a partir de ahi es un mesociclo normal, totalmente editable segun los permisos de cada rol.
+- La copia la hace una funcion de base de datos (`apply_mesocycle_template`, `security definer`) en vez del cliente: es la unica forma en que un Escalador puede terminar con un mesociclo propio, ya que no tiene permiso de `insert` directo sobre `mesocycles`/`weeks`/`days`.
 
 ## 1. Crear el proyecto en Supabase (gratis)
 
@@ -34,7 +44,8 @@ Al registrarse, una cuenta nueva queda **sin rol** (pantalla de espera) hasta qu
 3. Pegá y ejecutá el contenido de [`supabase/schema.sql`](supabase/schema.sql). Esto crea todas las tablas, los índices, las políticas de seguridad (RLS) y siembra dos atletas (`Seba`, `Diego`).
 4. Ejecutá también [`supabase/seed_exercises.sql`](supabase/seed_exercises.sql) para cargar el catálogo real de 22 ejercicios exportado de Base44.
 5. Ejecutá [`supabase/phase1_roles.sql`](supabase/phase1_roles.sql) para agregar roles y permisos. Si ya tenías una cuenta creada antes de correr esto, el script hace un backfill automático: la cuenta más antigua sin perfil queda como administrador.
-6. Andá a **Project Settings → API** y copiá:
+6. Ejecutá [`supabase/phase2_templates.sql`](supabase/phase2_templates.sql) para agregar los planes por defecto (plantillas de mesociclo).
+7. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
 
@@ -91,7 +102,8 @@ src/
       analitica/              # metricas
       atleta/[id]/             # perfil del atleta
       admin/                    # panel de administracion (solo admin)
-  components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, EvaluationForm, ui.tsx
+      plantillas/                # planes por defecto: lista+aplicar (new, [id] = solo admin)
+  components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, TemplateEditor, EvaluationForm, ui.tsx
   lib/
     supabase/            # clientes browser/server + proxy de sesion
     types.ts             # tipos TypeScript que reflejan el schema SQL
@@ -99,6 +111,7 @@ supabase/
   schema.sql             # tablas, indices, RLS
   seed_exercises.sql     # catalogo real exportado de Base44
   phase1_roles.sql       # roles, permisos, profiles, coach_athletes
+  phase2_templates.sql   # planes por defecto + funcion apply_mesocycle_template
 ```
 
 ## Notas de diseño

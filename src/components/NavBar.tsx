@@ -9,6 +9,7 @@ import { useProfile, isAdmin } from "./ProfileProvider";
 
 const TABS = [
   { href: "/", label: "Dashboard" },
+  { href: "/plantillas", label: "Planes" },
   { href: "/mesociclo", label: "Mesociclo" },
   { href: "/entrenamiento", label: "Entrenamiento" },
   { href: "/catalogo", label: "Catalogo" },
