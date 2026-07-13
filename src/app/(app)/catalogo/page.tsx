@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState } from "@/components/ui";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
+import { useProfile, canManageCatalog } from "@/components/ProfileProvider";
 
 const emptyExercise: Omit<Exercise, "id" | "created_at"> = {
   name: "",
@@ -19,6 +20,8 @@ const emptyExercise: Omit<Exercise, "id" | "created_at"> = {
 };
 
 export default function CatalogPage() {
+  const { profile } = useProfile();
+  const canEdit = canManageCatalog(profile);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -74,7 +77,7 @@ export default function CatalogPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">Catalogo de ejercicios</h1>
-        <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>
+        {canEdit && <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>}
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 mb-6">

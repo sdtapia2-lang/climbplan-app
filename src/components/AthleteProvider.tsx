@@ -25,6 +25,8 @@ export function AthleteProvider({ children }: { children: React.ReactNode }) {
   const load = useCallback(async () => {
     setLoading(true);
     const supabase = createClient();
+    // RLS filtra automaticamente segun el rol: admin ve todos, entrenador solo
+    // sus asignados (coach_athletes), escalador solo el suyo (profiles.athlete_id).
     const { data } = await supabase.from("athletes").select("*").order("name");
     const list = (data ?? []) as Athlete[];
     setAthletes(list);

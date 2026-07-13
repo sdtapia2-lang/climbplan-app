@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
+import { useProfile, isAdmin } from "./ProfileProvider";
 
 const TABS = [
   { href: "/", label: "Dashboard" },
@@ -16,11 +17,19 @@ const TABS = [
   { href: "/analitica", label: "Analitica" },
 ];
 
+const ROLE_LABELS: Record<string, string> = {
+  admin: "Administrador",
+  entrenador: "Entrenador",
+  escalador: "Escalador",
+};
+
 export function NavBar() {
   const pathname = usePathname();
   const router = useRouter();
   const { athletes, athlete, setAthleteId } = useAthlete();
+  const { profile } = useProfile();
   const [open, setOpen] = useState(false);
+  const canSwitch = athletes.length > 1;
 
   async function handleLogout() {
     const supabase = createClient();
@@ -28,6 +37,8 @@ export function NavBar() {
     router.push("/login");
     router.refresh();
   }
+
+  const tabs = isAdmin(profile) ? [...TABS, { href: "/admin", label: "Admin" }] : TABS;
 
   return (
     <div className="border-b border-neutral-200 bg-white sticky top-0 z-10">
@@ -40,14 +51,19 @@ export function NavBar() {
         </div>
 
         <div className="relative flex items-center gap-2">
+          {profile?.role && (
+            <span className="text-xs text-neutral-400 hidden sm:inline">{ROLE_LABELS[profile.role]}</span>
+          )}
           <button
-            onClick={() => setOpen((o) => !o)}
-            className="flex items-center gap-1 border border-neutral-300 rounded-md px-3 py-1.5 text-sm hover:bg-neutral-50"
+            onClick={() => canSwitch && setOpen((o) => !o)}
+            className={`flex items-center gap-1 border border-neutral-300 rounded-md px-3 py-1.5 text-sm ${
+              canSwitch ? "hover:bg-neutral-50" : "cursor-default"
+            }`}
           >
             {athlete?.name ?? "Sin atletas"}
-            <span className="text-xs text-neutral-400">v</span>
+            {canSwitch && <span className="text-xs text-neutral-400">v</span>}
           </button>
-          {open && (
+          {open && canSwitch && (
             <div className="absolute right-10 top-9 bg-white border border-neutral-200 rounded-md shadow-md min-w-[140px] py-1">
               {athletes.map((a) => (
                 <button
@@ -74,7 +90,7 @@ export function NavBar() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 flex gap-1 overflow-x-auto">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
           return (
             <Link

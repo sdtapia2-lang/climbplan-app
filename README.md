@@ -17,13 +17,24 @@ No es el código que generó Base44 — es una reimplementación equivalente, he
 
 Multi-atleta: un selector en la barra superior permite cambiar entre Seba y Diego (o cualquier otro atleta que agregues directo en la tabla `athletes`).
 
+## Roles y permisos (Fase 1)
+
+Tres roles, gestionados desde el panel **Admin** (visible solo para administradores):
+
+- **Administrador**: acceso total a todo. Si la misma persona entrena y administra la app (tu caso), el rol admin ya incluye todo lo que haria como entrenador o escalador — no hace falta un rol combinado.
+- **Entrenador**: acceso total (crear mesociclos, editar evaluaciones/check-ins) solo sobre los escaladores que tenga asignados en el panel Admin.
+- **Escalador**: cuenta atada a un unico perfil de atleta. Ve su propio mesociclo pero no puede crear uno desde cero ni tocar la estructura de dias/semanas — solo puede agregar/editar sus propios bloques de ejercicio (eso se termina de habilitar en la UI en la Fase 2, junto con "planes por defecto").
+
+Al registrarse, una cuenta nueva queda **sin rol** (pantalla de espera) hasta que un administrador se lo asigne desde `/admin`. La primera cuenta que se crea en el proyecto queda como administrador automaticamente.
+
 ## 1. Crear el proyecto en Supabase (gratis)
 
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
 2. Cuando el proyecto esté listo, andá a **SQL Editor → New query**.
 3. Pegá y ejecutá el contenido de [`supabase/schema.sql`](supabase/schema.sql). Esto crea todas las tablas, los índices, las políticas de seguridad (RLS) y siembra dos atletas (`Seba`, `Diego`).
 4. Ejecutá también [`supabase/seed_exercises.sql`](supabase/seed_exercises.sql) para cargar el catálogo real de 22 ejercicios exportado de Base44.
-5. Andá a **Project Settings → API** y copiá:
+5. Ejecutá [`supabase/phase1_roles.sql`](supabase/phase1_roles.sql) para agregar roles y permisos. Si ya tenías una cuenta creada antes de correr esto, el script hace un backfill automático: la cuenta más antigua sin perfil queda como administrador.
+6. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
 
@@ -79,17 +90,19 @@ src/
       checkin/               # check-in semanal
       analitica/              # metricas
       atleta/[id]/             # perfil del atleta
-  components/            # AthleteProvider, NavBar, MesocycleEditor, EvaluationForm, ui.tsx
+      admin/                    # panel de administracion (solo admin)
+  components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, EvaluationForm, ui.tsx
   lib/
     supabase/            # clientes browser/server + proxy de sesion
     types.ts             # tipos TypeScript que reflejan el schema SQL
 supabase/
   schema.sql             # tablas, indices, RLS
   seed_exercises.sql     # catalogo real exportado de Base44
+  phase1_roles.sql       # roles, permisos, profiles, coach_athletes
 ```
 
 ## Notas de diseño
 
-- **Sin roles**: cualquier usuario autenticado puede leer/escribir todos los datos (RLS solo exige `auth.role() = 'authenticated'`). Pensado para uso compartido de confianza entre Seba y Diego, no para un producto multi-tenant.
-- **Guardar mesociclo = reemplazo completo**: al editar un mesociclo existente, el botón "Guardar todo" borra las semanas/días/bloques previos y los vuelve a insertar desde el estado actual del formulario. Simplifica mucho la lógica a costa de no soportar edición concurrente entre dos personas al mismo tiempo (no es un caso de uso esperado aquí).
+- **Roles**: ver seccion "Roles y permisos" arriba. `ProfileProvider` carga el perfil del usuario logueado; `AthleteProvider` deja que las políticas de seguridad (RLS) filtren automáticamente qué atletas puede ver cada quien — no hay lógica de filtrado duplicada en el cliente.
+- **Guardar mesociclo = reemplazo completo**: al editar un mesociclo existente, el botón "Guardar todo" borra las semanas/días/bloques previos y los vuelve a insertar desde el estado actual del formulario. Simplifica mucho la lógica a costa de no soportar edición concurrente entre dos personas al mismo tiempo (no es un caso de uso esperado aquí). Por eso el wizard completo (`/mesociclo/new`, `/mesociclo/[id]`) está restringido a Admin/Entrenador — un Escalador no tiene permisos de escritura sobre `weeks`/`days`, así que "Guardar todo" fallaría para ese rol.
 - **Semana actual**: se calcula a partir de `start_date` del mesociclo + días transcurridos / 7, igual en el Dashboard y en Entrenamiento.

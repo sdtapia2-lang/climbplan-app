@@ -1,3 +1,22 @@
+export const ROLES = ["admin", "entrenador", "escalador"] as const;
+export type Role = (typeof ROLES)[number];
+
+export type Profile = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  role: Role | null;
+  athlete_id: string | null;
+  created_at: string;
+};
+
+export type CoachAthlete = {
+  id: string;
+  coach_id: string;
+  athlete_id: string;
+  created_at: string;
+};
+
 export type Athlete = {
   id: string;
   name: string;
