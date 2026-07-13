@@ -29,12 +29,19 @@ export default function EvaluationListPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-semibold">Evaluaciones &mdash; {athlete?.name}</h1>
         <Link href="/evaluacion/new">
           <Button>+ Nueva evaluacion</Button>
         </Link>
       </div>
+      <p className="text-sm text-neutral-500 mb-6">
+        Esta es la evaluacion completa por defecto. Para casos especificos (lesion, otra disciplina) hay{" "}
+        <Link href="/formularios" className="text-orange-600 hover:underline">
+          plantillas de evaluacion personalizadas
+        </Link>
+        .
+      </p>
 
       {loading ? (
         <Spinner />

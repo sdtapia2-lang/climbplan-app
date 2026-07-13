@@ -15,6 +15,7 @@ No es el código que generó Base44 — es una reimplementación equivalente, he
 - **Analítica**: adherencia promedio, RPE promedio, bloques completados.
 - **Perfil**: datos del atleta, grados, objetivos, equipamiento, estado de salud, notas kinesiológicas — equivalente al `contexto_atleta.pdf`.
 - **Planes** (`/plantillas`): biblioteca de plantillas de mesociclo (sin atleta ni fechas) armadas por el Administrador. Cualquiera con acceso a un atleta puede "aplicar" una para generarle un mesociclo real y editable con fecha de inicio propia.
+- **Formularios** (`/formularios`): plantillas de evaluación/check-in adicionales a las de por defecto, con campos configurables (texto, número, sí/no, selección, fecha), para casos específicos como lesiones u otras disciplinas.
 
 Multi-atleta: un selector en la barra superior permite cambiar entre Seba y Diego (o cualquier otro atleta que agregues directo en la tabla `athletes`).
 
@@ -37,6 +38,14 @@ Un **plan por defecto** (`template_mesocycles` + `template_weeks/days/blocks`) e
 - Cualquier rol con acceso a un atleta (admin, su entrenador, o el propio escalador) puede **aplicar** una plantilla desde `/plantillas`: elige fecha de inicio y se genera una copia real e independiente del mesociclo para ese atleta — a partir de ahi es un mesociclo normal, totalmente editable segun los permisos de cada rol.
 - La copia la hace una funcion de base de datos (`apply_mesocycle_template`, `security definer`) en vez del cliente: es la unica forma en que un Escalador puede terminar con un mesociclo propio, ya que no tiene permiso de `insert` directo sobre `mesocycles`/`weeks`/`days`.
 
+## Evaluaciones y check-ins configurables (Fase 3)
+
+El formulario por defecto de Evaluación (Tindeq, PAR-Q, etc.) y de Check-in **no se tocó** — sigue siendo el que usa `/evaluacion` y `/checkin` tal cual estaba. Esto agrega un sistema paralelo para plantillas adicionales:
+
+- **Admin o Entrenador** pueden crear plantillas en `/formularios`: eligen tipo (Evaluación o Check-in), y arman una lista de campos (etiqueta, clave interna, sección/pestaña, tipo de dato — texto, número, sí/no, texto largo, selección, fecha —, si es obligatorio).
+- Un Entrenador solo puede editar/borrar las plantillas que **el mismo creó**; el Admin puede editar cualquiera.
+- Cualquier rol con acceso a un atleta puede "usar" una plantilla (`/formularios/[id]/usar`): completa los campos definidos y la respuesta queda guardada (tabla genérica `form_responses`, con los valores en JSON), con historial de respuestas anteriores para ese atleta.
+
 ## 1. Crear el proyecto en Supabase (gratis)
 
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
@@ -45,7 +54,8 @@ Un **plan por defecto** (`template_mesocycles` + `template_weeks/days/blocks`) e
 4. Ejecutá también [`supabase/seed_exercises.sql`](supabase/seed_exercises.sql) para cargar el catálogo real de 22 ejercicios exportado de Base44.
 5. Ejecutá [`supabase/phase1_roles.sql`](supabase/phase1_roles.sql) para agregar roles y permisos. Si ya tenías una cuenta creada antes de correr esto, el script hace un backfill automático: la cuenta más antigua sin perfil queda como administrador.
 6. Ejecutá [`supabase/phase2_templates.sql`](supabase/phase2_templates.sql) para agregar los planes por defecto (plantillas de mesociclo).
-7. Andá a **Project Settings → API** y copiá:
+7. Ejecutá [`supabase/phase3_custom_forms.sql`](supabase/phase3_custom_forms.sql) para agregar las plantillas de evaluación/check-in configurables.
+8. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
 
@@ -103,7 +113,9 @@ src/
       atleta/[id]/             # perfil del atleta
       admin/                    # panel de administracion (solo admin)
       plantillas/                # planes por defecto: lista+aplicar (new, [id] = solo admin)
-  components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, TemplateEditor, EvaluationForm, ui.tsx
+      formularios/                # plantillas de evaluacion/check-in: lista+usar (new, [id] = admin/entrenador)
+  components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, TemplateEditor,
+                          # EvaluationForm, FormTemplateBuilder, DynamicForm, ui.tsx
   lib/
     supabase/            # clientes browser/server + proxy de sesion
     types.ts             # tipos TypeScript que reflejan el schema SQL
@@ -112,6 +124,7 @@ supabase/
   seed_exercises.sql     # catalogo real exportado de Base44
   phase1_roles.sql       # roles, permisos, profiles, coach_athletes
   phase2_templates.sql   # planes por defecto + funcion apply_mesocycle_template
+  phase3_custom_forms.sql # plantillas de evaluacion/check-in configurables
 ```
 
 ## Notas de diseño

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { Card, Field, Input, Textarea, Button, Modal, Spinner, EmptyState } from "@/components/ui";
@@ -58,10 +59,17 @@ export default function CheckInPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-semibold">Check-in semanal &mdash; {athlete?.name}</h1>
         <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>
       </div>
+      <p className="text-sm text-neutral-500 mb-6">
+        Este es el check-in por defecto. Tambien hay{" "}
+        <Link href="/formularios" className="text-orange-600 hover:underline">
+          plantillas de check-in personalizadas
+        </Link>
+        .
+      </p>
 
       {loading ? (
         <Spinner />

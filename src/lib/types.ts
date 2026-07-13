@@ -285,3 +285,43 @@ export type CheckIn = {
   comment: string | null;
   created_at: string;
 };
+
+// Fase 3: formularios configurables (evaluacion/check-in personalizados) ----
+export const FORM_TYPES = ["evaluation", "checkin"] as const;
+export type FormType = (typeof FORM_TYPES)[number];
+
+export const FIELD_TYPES = ["text", "number", "boolean", "textarea", "select", "date"] as const;
+export type FieldType = (typeof FIELD_TYPES)[number];
+
+export type FormTemplate = {
+  id: string;
+  type: FormType;
+  name: string;
+  description: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type FormTemplateField = {
+  id: string;
+  template_id: string;
+  section: string;
+  key: string;
+  label: string;
+  field_type: FieldType;
+  options: string[] | null;
+  help_text: string | null;
+  position: number;
+  required: boolean;
+};
+
+export type FormResponse = {
+  id: string;
+  template_id: string;
+  athlete_id: string;
+  response_date: string;
+  field_values: Record<string, string | number | boolean | null>;
+  created_by: string | null;
+  created_at: string;
+};
