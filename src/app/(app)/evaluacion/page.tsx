@@ -35,9 +35,9 @@ export default function EvaluationListPage() {
           <Button>+ Nueva evaluacion</Button>
         </Link>
       </div>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Esta es la evaluacion completa por defecto. Para casos especificos (lesion, otra disciplina) hay{" "}
-        <Link href="/formularios" className="text-orange-600 hover:underline">
+        <Link href="/formularios" className="text-[var(--color-accent-700)] hover:underline">
           plantillas de evaluacion personalizadas
         </Link>
         .
@@ -51,12 +51,12 @@ export default function EvaluationListPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {evaluations.map((ev) => (
             <Link key={ev.id} href={`/evaluacion/${ev.id}`}>
-              <Card className="hover:border-orange-300 transition-colors">
+              <Card className="hover:border-[var(--color-accent-300)] transition-colors">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-medium">{ev.eval_date}</p>
                   {ev.weight_kg && <Badge>{ev.weight_kg} kg</Badge>}
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-xs text-neutral-500">
+                <div className="grid grid-cols-2 gap-2 text-xs text-[var(--color-text)]/55">
                   <span>MVC izq: {ev.left_mvc_kg ?? "-"} kg</span>
                   <span>MVC der: {ev.right_mvc_kg ?? "-"} kg</span>
                   <span>CF izq: {ev.left_cf_avg_force_kg ?? "-"} kg</span>

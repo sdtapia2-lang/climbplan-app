@@ -49,7 +49,7 @@ function InviteForm() {
   return (
     <div className="max-w-md">
       <h1 className="text-xl font-semibold mb-2">Invitar escalador</h1>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Crea una cuenta que vos administras: el escalador solo va a ver los planes y formularios que vos le crees,
         y no va a poder agregar ni modificar ejercicios de su planificacion (solo registrar lo que hizo).
       </p>
@@ -78,10 +78,10 @@ function InviteForm() {
       {result && (
         <Card className="mt-6 border-green-300">
           <p className="font-medium mb-2">Cuenta creada para {result.athleteName}</p>
-          <p className="text-sm text-neutral-500 mb-3">
+          <p className="text-sm text-[var(--color-text)]/55 mb-3">
             Compartile estos datos por el medio que prefieras (no se envio ningun email automatico):
           </p>
-          <div className="text-sm font-mono bg-neutral-50 rounded-md p-3 space-y-1">
+          <div className="text-sm font-mono bg-[var(--color-neutral-100)] rounded-md p-3 space-y-1">
             <p>Email: {result.email}</p>
             <p>Contrasena: {result.password}</p>
           </div>

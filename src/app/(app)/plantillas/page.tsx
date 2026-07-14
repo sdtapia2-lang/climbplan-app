@@ -69,7 +69,7 @@ export default function TemplatesPage() {
           </Link>
         )}
       </div>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Plantillas de mesociclo listas para aplicar a {athlete?.name ?? "un atleta"}. Al aplicar una, se crea una
         copia editable con fecha de inicio propia.
       </p>
@@ -89,7 +89,7 @@ export default function TemplatesPage() {
                   {t.phase && <Badge tone="orange">{t.phase}</Badge>}
                 </div>
               </div>
-              {t.description && <p className="text-sm text-neutral-500 mb-3">{t.description}</p>}
+              {t.description && <p className="text-sm text-[var(--color-text)]/55 mb-3">{t.description}</p>}
               <div className="flex gap-2">
                 <Button onClick={() => { setApplying(t); setError(null); }} disabled={!athleteId}>
                   Aplicar a {athlete?.name ?? "..."}
@@ -107,7 +107,7 @@ export default function TemplatesPage() {
 
       <Modal open={!!applying} onClose={() => setApplying(null)} title={`Aplicar "${applying?.name ?? ""}"`}>
         <div className="space-y-4">
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[var(--color-text)]/55">
             Se va a crear un mesociclo nuevo para <strong>{athlete?.name}</strong> a partir de esta plantilla.
           </p>
           <Field label="Fecha de inicio">

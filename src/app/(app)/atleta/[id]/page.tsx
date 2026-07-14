@@ -60,13 +60,13 @@ export default function AthleteProfilePage() {
   }
 
   if (loading) return <Spinner />;
-  if (!athlete) return <p className="text-neutral-400">Atleta no encontrado.</p>;
+  if (!athlete) return <p className="text-[var(--color-text)]/40">Atleta no encontrado.</p>;
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700">
+          <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
             &larr;
           </button>
           <h1 className="text-xl font-semibold">Perfil de {athlete.name}</h1>
@@ -149,8 +149,8 @@ export default function AthleteProfilePage() {
                 onClick={() => toggleEquipment(item)}
                 className={`text-sm px-3 py-1.5 rounded-full border ${
                   active
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "border-neutral-300 hover:bg-neutral-50"
+                    ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]"
+                    : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
                 }`}
               >
                 {active ? "" : "+ "}
@@ -164,7 +164,7 @@ export default function AthleteProfilePage() {
               <button
                 key={item}
                 onClick={() => toggleEquipment(item)}
-                className="text-sm px-3 py-1.5 rounded-full bg-orange-500 text-white border border-orange-500"
+                className="text-sm px-3 py-1.5 rounded-full bg-[var(--color-accent-500)] text-white border border-[var(--color-accent-500)]"
               >
                 {item}
               </button>

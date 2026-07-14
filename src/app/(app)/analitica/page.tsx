@@ -66,19 +66,19 @@ export default function AnalyticsPage() {
       <h1 className="text-xl font-semibold mb-6">Analitica &mdash; {athlete?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="text-center">
-          <p className="text-3xl font-semibold text-orange-500">{stats.adherencePct}%</p>
-          <p className="text-sm text-neutral-500 mt-1">Adherencia promedio</p>
+          <p className="text-3xl font-semibold text-[var(--color-accent-500)]">{stats.adherencePct}%</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-1">Adherencia promedio</p>
         </Card>
         <Card className="text-center">
           <p className="text-3xl font-semibold text-blue-500">{stats.avgRpe ?? "—"}</p>
-          <p className="text-sm text-neutral-500 mt-1">RPE promedio general</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-1">RPE promedio general</p>
         </Card>
         <Card className="text-center">
           <p className="text-3xl font-semibold text-green-600">{stats.completedBlocks}</p>
-          <p className="text-sm text-neutral-500 mt-1">Bloques completados</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-1">Bloques completados</p>
         </Card>
       </div>
-      <p className="text-xs text-neutral-400 mt-4">
+      <p className="text-xs text-[var(--color-text)]/40 mt-4">
         Calculado sobre {stats.totalBlocks} bloques de entrenamiento cargados en todos los mesociclos del atleta.
       </p>
     </div>

@@ -111,7 +111,7 @@ export default function CatalogPage() {
               <div className="flex flex-wrap gap-1 mb-2">
                 <Badge>{ex.category}</Badge>
               </div>
-              {ex.description && <p className="text-sm text-neutral-500 mb-2">{ex.description}</p>}
+              {ex.description && <p className="text-sm text-[var(--color-text)]/55 mb-2">{ex.description}</p>}
               <div className="flex flex-wrap gap-1 mb-2">
                 {ex.equipment_required.map((eq) => (
                   <Badge key={eq} tone="green">
@@ -119,7 +119,7 @@ export default function CatalogPage() {
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-neutral-400">
+              <p className="text-xs text-[var(--color-text)]/40">
                 {[ex.typical_sets && `${ex.typical_sets} series`, ex.typical_reps, ex.typical_time, ex.typical_duration, ex.typical_effort]
                   .filter(Boolean)
                   .join(" · ")}
@@ -151,7 +151,7 @@ export default function CatalogPage() {
                     type="button"
                     onClick={() => toggleDraftEquipment(item)}
                     className={`text-sm px-3 py-1 rounded-full border ${
-                      active ? "bg-orange-500 text-white border-orange-500" : "border-neutral-300 hover:bg-neutral-50"
+                      active ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]" : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
                     }`}
                   >
                     {item}

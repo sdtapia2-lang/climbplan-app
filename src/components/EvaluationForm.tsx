@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Field, Input, Textarea, Button } from "./ui";
 import type { Evaluation } from "@/lib/types";
+import { TriangleAlert } from "lucide-react";
 
 const TABS = ["General", "Salud", "Movilidad", "Fuerza", "Dedos/Tindeq", "Resistencia", "Nivel"] as const;
 
@@ -140,7 +141,7 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
     router.refresh();
   }
 
-  if (loading) return <p className="text-neutral-400">Cargando...</p>;
+  if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;
 
   return (
     <div className="max-w-2xl">
@@ -150,13 +151,13 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
         </h2>
       </div>
 
-      <div className="flex gap-1 mb-6 border-b border-neutral-200 overflow-x-auto">
+      <div className="flex gap-1 mb-6 border-b border-[var(--color-divider)] overflow-x-auto">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`px-3 py-2 text-sm whitespace-nowrap border-b-2 ${
-              tab === t ? "border-orange-500 text-orange-600 font-medium" : "border-transparent text-neutral-500"
+              tab === t ? "border-[var(--color-accent-500)] text-[var(--color-accent-700)] font-medium" : "border-transparent text-[var(--color-text)]/55"
             }`}
           >
             {t}
@@ -183,7 +184,7 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
 
       {tab === "Salud" && (
         <div className="space-y-4">
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-[var(--color-text)]/55">
             Cualquier &quot;Si&quot; implica consultar con un profesional de salud antes de continuar con tests de maxima intensidad.
           </p>
           {HEALTH_QUESTIONS.map(([key, label]) => (
@@ -268,9 +269,13 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
           <HandSection label="Mano izquierda" prefix="left" draft={draft} set={set} />
           <HandSection label="Mano derecha" prefix="right" draft={draft} set={set} />
           {asymmetry !== null && (
-            <p className="text-sm text-neutral-600">
+            <p className="text-sm text-[var(--color-text)]/70">
               Asimetria MVC calculada: <span className="font-medium">{asymmetry.toFixed(1)}%</span>{" "}
-              {asymmetry > 15 && <span className="text-red-600">&#9888; supera 15%</span>}
+              {asymmetry > 15 && (
+                <span className="inline-flex items-center gap-1 text-red-600">
+                  <TriangleAlert size={13} strokeWidth={2.75} aria-hidden="true" /> supera 15%
+                </span>
+              )}
             </p>
           )}
         </div>
@@ -343,7 +348,7 @@ function HandSection({
   set: <K extends keyof Draft>(key: K, value: Draft[K]) => void;
 }) {
   return (
-    <div className="border border-neutral-200 rounded-lg p-4">
+    <div className="border border-[var(--color-divider)] rounded-lg p-4">
       <p className="font-medium mb-3">{label}</p>
       <div className="grid grid-cols-2 gap-3 mb-3">
         <Field label="MVC Peak Force (kg)">

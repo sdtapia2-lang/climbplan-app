@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { Card, Input, Button, Badge, Spinner, EmptyState } from "@/components/ui";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
+import { TriangleAlert, Check } from "lucide-react";
 
 type DayWithBlocks = Day & { blocks: Block[] };
 
@@ -101,7 +102,7 @@ export default function TrainingPage() {
       <EmptyState
         text="Sin semanas de entrenamiento"
         action={
-          <Link href="/mesociclo/new" className="text-orange-600 hover:underline">
+          <Link href="/mesociclo/new" className="text-[var(--color-accent-700)] hover:underline">
             Crear mesociclo &rarr;
           </Link>
         }
@@ -120,12 +121,12 @@ export default function TrainingPage() {
 
       <div className="space-y-4">
         {days.map((day) => (
-          <Card key={day.id} className={day.day_of_week === todayName ? "border-orange-400" : ""}>
+          <Card key={day.id} className={day.day_of_week === todayName ? "border-[var(--color-accent-400)]" : ""}>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{day.day_of_week}</span>
                 {day.day_of_week === todayName && <Badge tone="orange">Hoy</Badge>}
-                {day.day_focus && <span className="text-sm text-neutral-500">&mdash; {day.day_focus}</span>}
+                {day.day_focus && <span className="text-sm text-[var(--color-text)]/55">&mdash; {day.day_focus}</span>}
               </div>
               {day.is_rest && <Badge>Descanso</Badge>}
             </div>
@@ -133,24 +134,28 @@ export default function TrainingPage() {
             {!day.is_rest && day.blocks.length > 0 && (
               <div className="space-y-3">
                 {day.blocks.map((block) => (
-                  <div key={block.id} className="border border-neutral-200 rounded-lg p-4">
+                  <div key={block.id} className="border border-[var(--color-divider)] rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="font-medium">{block.exercise_name_freetext}</p>
-                        <p className="text-xs text-neutral-500">
+                        <p className="text-xs text-[var(--color-text)]/55">
                           {[block.sets && `${block.sets} series`, block.reps_or_time, block.time, block.load && `${block.load}`, block.rpe_target && `RPE ${block.rpe_target}`, block.rest && `descanso ${block.rest}`]
                             .filter(Boolean)
                             .join(" · ")}
                         </p>
                         {block.kinesio_notes && (
-                          <p className="text-xs text-orange-600 mt-1">&#9888; {block.kinesio_notes}</p>
+                          <p className="flex items-start gap-1 text-xs text-[var(--color-accent-700)] mt-1">
+                            <TriangleAlert size={13} strokeWidth={2.75} className="mt-px shrink-0" aria-hidden="true" />
+                            {block.kinesio_notes}
+                          </p>
                         )}
                       </div>
                       <Button
                         variant={block.completed ? "primary" : "secondary"}
                         onClick={() => toggleCompleted(block)}
                       >
-                        {block.completed ? "&#10003; Hecho" : "Marcar hecho"}
+                        {block.completed && <Check size={14} strokeWidth={2.75} aria-hidden="true" />}
+                        {block.completed ? "Hecho" : "Marcar hecho"}
                       </Button>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-3">
@@ -188,8 +193,9 @@ export default function TrainingPage() {
                       />
                     </div>
                     {Number(block.pain_during) >= 5 && (
-                      <p className="text-xs text-red-600 mt-2">
-                        &#9888; Dolor reportado &ge; 5. Considera detener y consultar a un profesional de salud.
+                      <p className="flex items-start gap-1 text-xs text-red-600 mt-2">
+                        <TriangleAlert size={13} strokeWidth={2.75} className="mt-px shrink-0" aria-hidden="true" />
+                        Dolor reportado &ge; 5. Considera detener y consultar a un profesional de salud.
                       </p>
                     )}
                   </div>
@@ -197,7 +203,7 @@ export default function TrainingPage() {
               </div>
             )}
             {!day.is_rest && day.blocks.length === 0 && (
-              <p className="text-sm text-neutral-400">Sin bloques cargados para este dia.</p>
+              <p className="text-sm text-[var(--color-text)]/40">Sin bloques cargados para este dia.</p>
             )}
           </Card>
         ))}

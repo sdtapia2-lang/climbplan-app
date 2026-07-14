@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useProfile } from "./ProfileProvider";
 import { Card, Field, Input, Select, Textarea, Button } from "./ui";
 import { FIELD_TYPES, FORM_TYPES, type FieldType, type FormType } from "@/lib/types";
+import { ChevronUp, ChevronDown, Trash2 } from "lucide-react";
 
 type FieldDraft = {
   id: string;
@@ -169,16 +170,16 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
     router.refresh();
   }
 
-  if (loading) return <p className="text-neutral-400">Cargando...</p>;
+  if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;
 
   const blockedByOwnership = !!templateId && profile?.role === "entrenador" && createdBy !== profile.id;
   if (blockedByOwnership) {
     return (
       <div>
-        <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700 mb-4">
+        <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)] mb-4">
           &larr; Volver
         </button>
-        <p className="text-neutral-500">Solo quien creo esta plantilla puede editarla.</p>
+        <p className="text-[var(--color-text)]/55">Solo quien creo esta plantilla puede editarla.</p>
       </div>
     );
   }
@@ -187,7 +188,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700">
+          <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
             &larr;
           </button>
           <h1 className="text-xl font-semibold">{templateId ? "Editar plantilla" : "Nueva plantilla"}</h1>
@@ -230,16 +231,16 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
         {fields.map((f, idx) => (
           <Card key={f.id}>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-medium text-neutral-400 tracking-wide">CAMPO {idx + 1}</span>
+              <span className="text-xs font-medium text-[var(--color-text)]/40 tracking-wide">CAMPO {idx + 1}</span>
               <div className="flex items-center gap-2">
-                <button onClick={() => moveField(idx, -1)} className="text-neutral-400 hover:text-neutral-700" title="Subir">
-                  &#8593;
+                <button onClick={() => moveField(idx, -1)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]" title="Subir">
+                  <ChevronUp size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
-                <button onClick={() => moveField(idx, 1)} className="text-neutral-400 hover:text-neutral-700" title="Bajar">
-                  &#8595;
+                <button onClick={() => moveField(idx, 1)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]" title="Bajar">
+                  <ChevronDown size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
                 <button onClick={() => removeField(idx)} className="text-red-400 hover:text-red-600" title="Quitar">
-                  &#128465;
+                  <Trash2 size={15} strokeWidth={2.75} aria-hidden="true" />
                 </button>
               </div>
             </div>

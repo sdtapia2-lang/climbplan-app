@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { X } from "lucide-react";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -118,9 +119,10 @@ export function Modal({
           <h2 className="font-[family-name:var(--font-heading)] text-xl m-0">{title}</h2>
           <button
             onClick={onClose}
-            className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] text-xl leading-none"
+            className="text-[var(--color-text)]/50 hover:text-[var(--color-text)]"
+            aria-label="Cerrar"
           >
-            &times;
+            <X size={20} strokeWidth={2.75} aria-hidden="true" />
           </button>
         </div>
         {children}

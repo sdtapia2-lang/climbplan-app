@@ -88,10 +88,10 @@ function AdminPanel() {
         <h2 className="font-medium mb-4">Usuarios y roles</h2>
         <div className="space-y-3">
           {profiles.map((p) => (
-            <div key={p.id} className="flex flex-wrap items-center gap-3 border border-neutral-200 rounded-lg p-3">
+            <div key={p.id} className="flex flex-wrap items-center gap-3 border border-[var(--color-divider)] rounded-lg p-3">
               <div className="min-w-[180px]">
                 <p className="text-sm font-medium">{p.full_name || p.email || p.id}</p>
-                <p className="text-xs text-neutral-400">{p.email}</p>
+                <p className="text-xs text-[var(--color-text)]/40">{p.email}</p>
               </div>
               <Select
                 value={p.role ?? ""}
@@ -121,7 +121,7 @@ function AdminPanel() {
               )}
               {p.role === "escalador" && p.athlete_id && <Badge tone="green">{athleteName(p.athlete_id)}</Badge>}
               {p.role === "escalador" && (
-                <label className="flex items-center gap-1 text-sm text-neutral-500">
+                <label className="flex items-center gap-1 text-sm text-[var(--color-text)]/55">
                   <input
                     type="checkbox"
                     checked={p.restricted}
@@ -155,9 +155,9 @@ function AdminPanel() {
       <Card>
         <h2 className="font-medium mb-4">Asignaciones entrenador &rarr; escalador</h2>
         <div className="space-y-2 mb-4">
-          {coachAthletes.length === 0 && <p className="text-sm text-neutral-400">Sin asignaciones todavia.</p>}
+          {coachAthletes.length === 0 && <p className="text-sm text-[var(--color-text)]/40">Sin asignaciones todavia.</p>}
           {coachAthletes.map((ca) => (
-            <div key={ca.id} className="flex items-center justify-between border border-neutral-200 rounded-lg p-3 text-sm">
+            <div key={ca.id} className="flex items-center justify-between border border-[var(--color-divider)] rounded-lg p-3 text-sm">
               <span>
                 {profileLabel(ca.coach_id)} &rarr; {athleteName(ca.athlete_id)}
               </span>

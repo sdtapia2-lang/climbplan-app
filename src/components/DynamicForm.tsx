@@ -84,23 +84,23 @@ export function DynamicForm({ templateId }: { templateId: string }) {
   }
 
   if (loading) return <Spinner />;
-  if (!template) return <p className="text-neutral-400">Plantilla no encontrada.</p>;
+  if (!template) return <p className="text-[var(--color-text)]/40">Plantilla no encontrada.</p>;
 
   return (
     <div className="max-w-2xl">
       <h1 className="text-xl font-semibold mb-1">{template.name}</h1>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         {template.description} &mdash; para {athlete?.name ?? "..."}
       </p>
 
       {sections.length > 1 && (
-        <div className="flex gap-1 mb-6 border-b border-neutral-200 overflow-x-auto">
+        <div className="flex gap-1 mb-6 border-b border-[var(--color-divider)] overflow-x-auto">
           {sections.map((s) => (
             <button
               key={s}
               onClick={() => setTab(s)}
               className={`px-3 py-2 text-sm whitespace-nowrap border-b-2 ${
-                tab === s ? "border-orange-500 text-orange-600 font-medium" : "border-transparent text-neutral-500"
+                tab === s ? "border-[var(--color-accent-500)] text-[var(--color-accent-700)] font-medium" : "border-transparent text-[var(--color-text)]/55"
               }`}
             >
               {s}
@@ -115,7 +115,7 @@ export function DynamicForm({ templateId }: { templateId: string }) {
           .map((f) => (
             <Field key={f.id} label={f.label + (f.required ? " *" : "")}>
               <DynamicInput field={f} value={values[f.key] ?? ""} onChange={(v) => setValue(f.key, v)} />
-              {f.help_text && <p className="text-xs text-neutral-400 mt-1">{f.help_text}</p>}
+              {f.help_text && <p className="text-xs text-[var(--color-text)]/40 mt-1">{f.help_text}</p>}
             </Field>
           ))}
       </div>
@@ -131,7 +131,7 @@ export function DynamicForm({ templateId }: { templateId: string }) {
             {responses.map((r) => (
               <Card key={r.id}>
                 <p className="text-sm font-medium mb-2">{r.response_date}</p>
-                <div className="grid grid-cols-2 gap-1 text-xs text-neutral-500">
+                <div className="grid grid-cols-2 gap-1 text-xs text-[var(--color-text)]/55">
                   {fields.map((f) => (
                     <span key={f.id}>
                       {f.label}: {String(r.field_values[f.key] ?? "-")}
@@ -169,7 +169,7 @@ function DynamicInput({
       return (
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
-          <span className="text-sm text-neutral-500">Si</span>
+          <span className="text-sm text-[var(--color-text)]/55">Si</span>
         </label>
       );
     case "textarea":

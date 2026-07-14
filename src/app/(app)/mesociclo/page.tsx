@@ -47,9 +47,9 @@ export default function MesocycleListPage() {
       </div>
 
       {!canOpenDetail && (
-        <p className="text-sm text-neutral-500 mb-4">
+        <p className="text-sm text-[var(--color-text)]/55 mb-4">
           Para ver el detalle dia a dia de tu semana actual y registrar tus series, andate a{" "}
-          <Link href="/entrenamiento" className="text-orange-600 hover:underline">
+          <Link href="/entrenamiento" className="text-[var(--color-accent-700)] hover:underline">
             Entrenamiento
           </Link>
           .
@@ -73,13 +73,13 @@ export default function MesocycleListPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {mesocycles.map((m) => {
             const content = (
-              <Card className={canOpenDetail ? "hover:border-orange-300 transition-colors" : ""}>
+              <Card className={canOpenDetail ? "hover:border-[var(--color-accent-300)] transition-colors" : ""}>
                 <div className="flex items-start justify-between mb-2">
                   <p className="font-medium">{m.name}</p>
                   <Badge tone="orange">{m.status}</Badge>
                 </div>
                 <div className="flex gap-2 mb-2">{m.phase && <Badge>{m.phase}</Badge>}</div>
-                <p className="text-sm text-neutral-500">
+                <p className="text-sm text-[var(--color-text)]/55">
                   {m.start_date ?? "?"} &rarr; {m.end_date ?? "?"}
                 </p>
               </Card>

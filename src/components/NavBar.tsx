@@ -7,6 +7,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { useProfile, isAdmin, canCreateMesocycles } from "./ProfileProvider";
+import { ChevronDown, LogOut } from "lucide-react";
 
 const TABS = [
   { href: "/", label: "Dashboard" },
@@ -90,7 +91,7 @@ export function NavBar() {
             }`}
           >
             {athlete?.name ?? "Sin atletas"}
-            {canSwitch && <span className="text-xs text-[var(--color-text)]/50">v</span>}
+            {canSwitch && <ChevronDown size={14} strokeWidth={2.75} className="text-[var(--color-text)]/50" aria-hidden="true" />}
           </button>
           {open && canSwitch && (
             <div className="absolute right-16 top-8 bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-organic-md)] min-w-[140px] py-1 z-20">
@@ -123,9 +124,10 @@ export function NavBar() {
           <button
             onClick={handleLogout}
             title="Cerrar sesion"
+            aria-label="Cerrar sesion"
             className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] px-1"
           >
-            &#x21aa;
+            <LogOut size={16} strokeWidth={2.75} aria-hidden="true" />
           </button>
         </div>
       </div>

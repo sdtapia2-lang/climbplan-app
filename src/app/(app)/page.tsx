@@ -6,6 +6,9 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { Card, Button, Spinner, Badge } from "@/components/ui";
 import type { Mesocycle, Week } from "@/lib/types";
+import { Calendar, TrendingUp, ClipboardList } from "lucide-react";
+
+const iconClass = "inline-block align-[-3px] mr-1";
 
 export default function DashboardPage() {
   const { athlete, athleteId, loading: athleteLoading } = useAthlete();
@@ -72,7 +75,10 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
-          <p className="text-sm text-neutral-500 mb-2">&#128197; Mesociclo activo</p>
+          <p className="text-sm text-[var(--color-text)]/55 mb-2">
+            <Calendar size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
+            Mesociclo activo
+          </p>
           {mesocycle ? (
             <>
               <p className="font-medium mb-1">{mesocycle.name}</p>
@@ -80,13 +86,13 @@ export default function DashboardPage() {
                 <Badge tone="orange">{mesocycle.status}</Badge>
                 {mesocycle.phase && <Badge>{mesocycle.phase}</Badge>}
               </div>
-              <Link href={`/mesociclo/${mesocycle.id}`} className="text-sm text-orange-600 hover:underline">
+              <Link href={`/mesociclo/${mesocycle.id}`} className="text-sm text-[var(--color-accent-700)] hover:underline">
                 Ver mesociclo &rarr;
               </Link>
             </>
           ) : (
             <>
-              <p className="text-neutral-400 mb-3">Sin mesociclo activo</p>
+              <p className="text-[var(--color-text)]/40 mb-3">Sin mesociclo activo</p>
               <Link href="/mesociclo/new">
                 <Button>Crear mesociclo</Button>
               </Link>
@@ -95,27 +101,33 @@ export default function DashboardPage() {
         </Card>
 
         <Card>
-          <p className="text-sm text-neutral-500 mb-2">&#128200; Semana actual</p>
+          <p className="text-sm text-[var(--color-text)]/55 mb-2">
+            <TrendingUp size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
+            Semana actual
+          </p>
           {currentWeek ? (
             <>
               <p className="font-medium mb-1">Semana {currentWeek.week_number}</p>
               <div className="flex gap-2 mb-3">
                 {currentWeek.load_type && <Badge tone="orange">{currentWeek.load_type}</Badge>}
               </div>
-              <Link href="/entrenamiento" className="text-sm text-orange-600 hover:underline">
+              <Link href="/entrenamiento" className="text-sm text-[var(--color-accent-700)] hover:underline">
                 Ir a entrenamiento &rarr;
               </Link>
             </>
           ) : (
-            <p className="text-neutral-400">Sin semanas cargadas</p>
+            <p className="text-[var(--color-text)]/40">Sin semanas cargadas</p>
           )}
         </Card>
 
         <Card>
-          <p className="text-sm text-neutral-500 mb-2">&#128201; Evaluaciones</p>
+          <p className="text-sm text-[var(--color-text)]/55 mb-2">
+            <ClipboardList size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
+            Evaluaciones
+          </p>
           <p className="text-2xl font-semibold mb-1">{evalCount}</p>
-          <p className="text-sm text-neutral-500 mb-3">evaluaciones registradas</p>
-          <Link href="/evaluacion" className="text-sm text-orange-600 hover:underline">
+          <p className="text-sm text-[var(--color-text)]/55 mb-3">evaluaciones registradas</p>
+          <Link href="/evaluacion" className="text-sm text-[var(--color-accent-700)] hover:underline">
             Ver historial &rarr;
           </Link>
         </Card>

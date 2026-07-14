@@ -19,7 +19,7 @@ function PendingScreen({ email }: { email: string | null }) {
     <div className="min-h-screen flex items-center justify-center px-4">
       <Card className="max-w-sm text-center">
         <p className="font-medium mb-2">Cuenta creada</p>
-        <p className="text-sm text-neutral-500 mb-4">
+        <p className="text-sm text-[var(--color-text)]/55 mb-4">
           {email ? <span className="font-mono">{email}</span> : "Tu cuenta"} todavia no tiene un rol
           asignado. Pedile a un administrador que te asigne un rol (Admin, Entrenador o Escalador)
           desde el panel de administracion.

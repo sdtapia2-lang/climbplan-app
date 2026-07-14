@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Card, Field, Input, Select, Textarea, Button } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
+import { Save, Copy, Files, Trash2 } from "lucide-react";
 
 type BlockDraft = {
   id: string;
@@ -328,19 +329,19 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     router.refresh();
   }
 
-  if (loading) return <p className="text-neutral-400">Cargando...</p>;
+  if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700">
+          <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
             &larr;
           </button>
           <h1 className="text-xl font-semibold">{mesocycleId ? "Editar mesociclo" : "Nuevo mesociclo"}</h1>
         </div>
         <Button onClick={saveAll} disabled={saving}>
-          &#128190; {saving ? "Guardando..." : "Guardar todo"}
+          <Save size={14} strokeWidth={2.75} aria-hidden="true" /> {saving ? "Guardando..." : "Guardar todo"}
         </Button>
       </div>
 
@@ -388,7 +389,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
               key={w.id}
               onClick={() => setActiveWeek(i)}
               className={`px-3 py-1.5 text-sm rounded-md border ${
-                i === activeWeek ? "bg-orange-500 text-white border-orange-500" : "border-neutral-300 hover:bg-neutral-50"
+                i === activeWeek ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]" : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
               }`}
             >
               S{w.week_number}
@@ -399,7 +400,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           {weeks.map((w, i) =>
             i === activeWeek ? null : (
               <Button key={w.id} variant="secondary" onClick={() => copyWeekTo(i)} title={`Copiar S${currentWeek.week_number} a S${w.week_number}`}>
-                &#8853; &rarr;S{w.week_number}
+                <Copy size={13} strokeWidth={2.75} aria-hidden="true" /> &rarr;S{w.week_number}
               </Button>
             ),
           )}
@@ -448,11 +449,11 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                   />
                   Descanso
                 </label>
-                <button title="Duplicar a dia siguiente" onClick={() => duplicateDayToNext(dayIdx)} className="text-neutral-400 hover:text-neutral-700">
-                  &#128203;
+                <button title="Duplicar a dia siguiente" onClick={() => duplicateDayToNext(dayIdx)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
+                  <Files size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
-                <button title="Vaciar dia" onClick={() => clearDay(dayIdx)} className="text-neutral-400 hover:text-red-500">
-                  &#128465;
+                <button title="Vaciar dia" onClick={() => clearDay(dayIdx)} className="text-[var(--color-text)]/40 hover:text-red-500">
+                  <Trash2 size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -460,11 +461,11 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
             {!day.is_rest && (
               <div className="space-y-3">
                 {day.blocks.map((block, blockIdx) => (
-                  <div key={block.id} className="border border-neutral-200 rounded-lg p-4">
+                  <div key={block.id} className="border border-[var(--color-divider)] rounded-lg p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-medium text-neutral-400 tracking-wide">BLOQUE</span>
+                      <span className="text-xs font-medium text-[var(--color-text)]/40 tracking-wide">BLOQUE</span>
                       <button onClick={() => removeBlock(dayIdx, blockIdx)} className="text-red-400 hover:text-red-600 text-sm">
-                        &#128465;
+                        <Trash2 size={15} strokeWidth={2.75} aria-hidden="true" />
                       </button>
                     </div>
                     <div className="mb-3">

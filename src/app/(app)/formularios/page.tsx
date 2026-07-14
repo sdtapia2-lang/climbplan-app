@@ -39,7 +39,7 @@ export default function FormTemplatesPage() {
           </Link>
         )}
       </div>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         El formulario por defecto de Evaluacion y Check-in (con el protocolo Tindeq, PAR-Q, etc.) sigue siempre
         disponible. Estas son plantillas adicionales para casos especificos: lesiones, otra disciplina, o cualquier
         informacion extra que le interese registrar a un entrenador.
@@ -60,7 +60,7 @@ export default function FormTemplatesPage() {
                   <Badge tone="orange">{TYPE_LABELS[t.type]}</Badge>
                 </div>
               </div>
-              {t.description && <p className="text-sm text-neutral-500 mb-3">{t.description}</p>}
+              {t.description && <p className="text-sm text-[var(--color-text)]/55 mb-3">{t.description}</p>}
               <div className="flex gap-2">
                 <Link href={`/formularios/${t.id}/usar`}>
                   <Button variant="secondary">Usar</Button>

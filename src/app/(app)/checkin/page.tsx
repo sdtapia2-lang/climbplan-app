@@ -63,9 +63,9 @@ export default function CheckInPage() {
         <h1 className="text-xl font-semibold">Check-in semanal &mdash; {athlete?.name}</h1>
         <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>
       </div>
-      <p className="text-sm text-neutral-500 mb-6">
+      <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Este es el check-in por defecto. Tambien hay{" "}
-        <Link href="/formularios" className="text-orange-600 hover:underline">
+        <Link href="/formularios" className="text-[var(--color-accent-700)] hover:underline">
           plantillas de check-in personalizadas
         </Link>
         .
@@ -81,13 +81,13 @@ export default function CheckInPage() {
             <Card key={c.id}>
               <div className="flex items-center justify-between mb-2">
                 <p className="font-medium">{c.checkin_date}</p>
-                <span className="text-sm text-neutral-500">Adherencia {c.adherence_pct}%</span>
+                <span className="text-sm text-[var(--color-text)]/55">Adherencia {c.adherence_pct}%</span>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-sm text-neutral-500 mb-2">
+              <div className="grid grid-cols-2 gap-2 text-sm text-[var(--color-text)]/55 mb-2">
                 <span>Sueno: {c.sleep_quality}/10</span>
                 <span>Motivacion: {c.motivation}/10</span>
               </div>
-              {c.comment && <p className="text-sm text-neutral-600">{c.comment}</p>}
+              {c.comment && <p className="text-sm text-[var(--color-text)]/70">{c.comment}</p>}
             </Card>
           ))}
         </div>
