@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -32,6 +33,7 @@ export function NavBar() {
   const { profile } = useProfile();
   const [open, setOpen] = useState(false);
   const canSwitch = athletes.length > 1;
+  const initial = (profile?.full_name || profile?.email || "?").trim().charAt(0).toUpperCase();
 
   async function handleLogout() {
     const supabase = createClient();
@@ -47,30 +49,51 @@ export function NavBar() {
   ];
 
   return (
-    <div className="border-b border-neutral-200 bg-white sticky top-0 z-10">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-orange-500 flex items-center justify-center text-white text-sm font-bold">
-            C
-          </div>
-          <span className="font-semibold">ClimbPlan</span>
+    <div className="bg-[var(--color-surface)] sticky top-0 z-10">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2 shrink-0">
+          <Image
+            src="/prusik-logo.png"
+            alt="Prusik"
+            width={30}
+            height={30}
+            unoptimized
+            className="rounded-[10px] object-cover shadow-[var(--shadow-organic-sm)]"
+          />
+          <span className="font-[family-name:var(--font-heading)] text-[18px]">Prusik</span>
         </div>
 
-        <div className="relative flex items-center gap-2">
-          {profile?.role && (
-            <span className="text-xs text-neutral-400 hidden sm:inline">{ROLE_LABELS[profile.role]}</span>
-          )}
+        <div className="flex-1 flex gap-1 overflow-x-auto">
+          {tabs.map((tab) => {
+            const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
+                  active
+                    ? "bg-[var(--color-accent-200)] text-[var(--color-accent-800)] font-semibold"
+                    : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
+                }`}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className="relative flex items-center gap-3 shrink-0">
           <button
             onClick={() => canSwitch && setOpen((o) => !o)}
-            className={`flex items-center gap-1 border border-neutral-300 rounded-md px-3 py-1.5 text-sm ${
-              canSwitch ? "hover:bg-neutral-50" : "cursor-default"
+            className={`flex items-center gap-1 text-sm text-[var(--color-text)]/80 ${
+              canSwitch ? "hover:text-[var(--color-text)]" : "cursor-default"
             }`}
           >
             {athlete?.name ?? "Sin atletas"}
-            {canSwitch && <span className="text-xs text-neutral-400">v</span>}
+            {canSwitch && <span className="text-xs text-[var(--color-text)]/50">v</span>}
           </button>
           {open && canSwitch && (
-            <div className="absolute right-10 top-9 bg-white border border-neutral-200 rounded-md shadow-md min-w-[140px] py-1">
+            <div className="absolute right-16 top-8 bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-organic-md)] min-w-[140px] py-1 z-20">
               {athletes.map((a) => (
                 <button
                   key={a.id}
@@ -78,40 +101,33 @@ export function NavBar() {
                     setAthleteId(a.id);
                     setOpen(false);
                   }}
-                  className="block w-full text-left px-3 py-1.5 text-sm hover:bg-neutral-50"
+                  className="block w-full text-left px-3 py-1.5 text-sm hover:bg-[var(--color-text)]/[0.06]"
                 >
                   {a.name}
                 </button>
               ))}
             </div>
           )}
+
+          {profile?.role && (
+            <span className="text-xs text-[var(--color-text)]/55 hidden sm:inline">{ROLE_LABELS[profile.role]}</span>
+          )}
+
+          <div
+            className="w-8 h-8 rounded-full bg-[var(--color-accent-300)] text-[var(--color-accent-800)] flex items-center justify-center text-sm font-semibold"
+            title={profile?.full_name || profile?.email || ""}
+          >
+            {initial}
+          </div>
+
           <button
             onClick={handleLogout}
             title="Cerrar sesion"
-            className="text-neutral-400 hover:text-neutral-700 px-1"
+            className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] px-1"
           >
             &#x21aa;
           </button>
         </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 flex gap-1 overflow-x-auto">
-        {tabs.map((tab) => {
-          const active = tab.href === "/" ? pathname === "/" : pathname.startsWith(tab.href);
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`px-3 py-2 text-sm border-b-2 whitespace-nowrap ${
-                active
-                  ? "border-orange-500 text-orange-600 font-medium"
-                  : "border-transparent text-neutral-500 hover:text-neutral-800"
-              }`}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
       </div>
     </div>
   );

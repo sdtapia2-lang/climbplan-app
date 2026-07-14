@@ -1,8 +1,20 @@
-# ClimbPlan
+# Prusik
 
-Reconstrucción propia (fuera de Base44) de la app de gestión de entrenamiento de escalada. Next.js 16 (App Router) + Supabase (Postgres + Auth), pensada para desplegarse gratis en Vercel + Supabase.
+App de gestión de entrenamiento de escalada (nombre interno de repo/proyecto: `climbplan-app`; marca de cara al usuario: **Prusik**). Next.js 16 (App Router) + Supabase (Postgres + Auth), pensada para desplegarse gratis en Vercel + Supabase.
 
 No es el código que generó Base44 — es una reimplementación equivalente, hecha inspeccionando la app publicada en `climb-coach.base44.app` y el catálogo exportado (`Base 44/ExerciseCatalog_export.csv`).
+
+## Marca
+
+Rediseño visual hecho en Claude Design (handoff completo en `Claude design/App de entrenamiento de escalada/design_handoff_prusik_rebrand/`, no versionado en git — son archivos de referencia, no código de producción). Aplicado hasta ahora:
+
+- **Tokens** (`src/app/globals.css`): paleta cálida (crema/terracota/salvia), tipografía Caprasimo (títulos) + Figtree (cuerpo), sombras y radios — vía `@theme` de Tailwind v4.
+- **`ui.tsx`**: todos los primitivos (`Card`, `Button`, `Input`, `Badge`, `Modal`, etc.) reescritos con los tokens nuevos — como todas las pantallas se arman con estos mismos componentes, el nuevo look se propaga a toda la app automáticamente.
+- **`NavBar`** y **login**: logo (`public/prusik-logo.png`), wordmark, tabs tipo píldora, chip de avatar.
+
+Pendiente (diseño ya especificado en el handoff, layouts específicos por pantalla todavía no implementados): grilla de 7 columnas en Mesociclo, control segmentado en Evaluación, gráfico de barras semanal en Analítica, vista de Dashboard multi-atleta para admin, nav inferior mobile, e íconos Lucide en toda la app.
+
+Nota tecnica: el logo usa `unoptimized` en `next/image` porque el optimizador de imagenes de Next (que depende de `sharp`) no corre bien en este entorno — el script de instalacion de `sharp` quedo bloqueado en el `npm install` original.
 
 ## Qué incluye
 

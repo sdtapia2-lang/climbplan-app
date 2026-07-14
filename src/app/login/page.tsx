@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
+import { Field, Input, Button } from "@/components/ui";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,52 +39,47 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4">
-      <div className="w-full max-w-sm bg-white border border-neutral-200 rounded-xl p-8 shadow-sm">
-        <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold">
-            C
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)] px-4">
+      <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-[32px] p-8 shadow-[var(--shadow-organic-md)]">
+        <div className="flex items-center gap-3 mb-2">
+          <Image
+            src="/prusik-logo.png"
+            alt="Prusik"
+            width={44}
+            height={44}
+            unoptimized
+            className="rounded-[16px] object-cover shadow-[var(--shadow-organic-sm)]"
+          />
+          <div>
+            <h1 className="font-[family-name:var(--font-heading)] text-2xl m-0">Prusik</h1>
           </div>
-          <h1 className="text-lg font-semibold">ClimbPlan</h1>
         </div>
+        <p className="text-sm text-[var(--color-text)]/70 mb-6">Tu cordada perfecta para progresar.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Contrasena</label>
-            <input
+          <Field label="Email">
+            <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+          </Field>
+          <Field label="Contrasena">
+            <Input
               type="password"
               required
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-neutral-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
-          </div>
+          </Field>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="text-sm text-red-700">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-md py-2 text-sm disabled:opacity-50"
-          >
+          <Button type="submit" disabled={loading} className="w-full justify-center">
             {loading ? "Un momento..." : mode === "signin" ? "Entrar" : "Crear cuenta"}
-          </button>
+          </Button>
         </form>
 
         <button
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="w-full text-center text-xs text-neutral-500 mt-4 hover:underline"
+          className="w-full text-center text-xs text-[var(--color-text)]/60 mt-4 hover:underline"
         >
           {mode === "signin"
             ? "Primera vez? Crear una cuenta"
