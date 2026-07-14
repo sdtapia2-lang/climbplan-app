@@ -147,3 +147,34 @@ export function Spinner() {
     </div>
   );
 }
+
+export function Segmented<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { value: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div className="inline-flex overflow-x-auto max-w-full rounded-full border border-[var(--color-divider)]">
+      {options.map((opt, i) => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          className={`px-3 py-1.5 text-[13px] whitespace-nowrap transition-colors ${
+            i > 0 ? "border-l border-[var(--color-divider)]" : ""
+          } ${
+            value === opt.value
+              ? "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
+              : "text-[var(--color-text)]/80 hover:bg-[var(--color-text)]/[0.07]"
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}

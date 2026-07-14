@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ProfileProvider, useProfile } from "@/components/ProfileProvider";
 import { AthleteProvider } from "@/components/AthleteProvider";
 import { Sidebar } from "@/components/Sidebar";
+import { MobileNav } from "@/components/MobileNav";
 import { Spinner, Button, Card } from "@/components/ui";
 
 function PendingScreen({ email }: { email: string | null }) {
@@ -42,10 +43,11 @@ function Gate({ children }: { children: React.ReactNode }) {
     <AthleteProvider>
       <div className="flex flex-1 min-h-screen">
         <Sidebar />
-        <main className="flex-1 min-w-0 overflow-x-hidden px-6 py-6">
+        <main className="flex-1 min-w-0 overflow-x-hidden px-4 md:px-6 py-6 pb-24 md:pb-6">
           <div className="max-w-5xl mx-auto">{children}</div>
         </main>
       </div>
+      <MobileNav />
     </AthleteProvider>
   );
 }

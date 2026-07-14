@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { Card, Field, Input, Select, Textarea, Button, Spinner } from "./ui";
+import { Card, Field, Input, Select, Textarea, Button, Spinner, Segmented } from "./ui";
 import type { FormResponse, FormTemplate, FormTemplateField } from "@/lib/types";
 
 type Values = Record<string, string | number | boolean | null>;
@@ -94,18 +94,8 @@ export function DynamicForm({ templateId }: { templateId: string }) {
       </p>
 
       {sections.length > 1 && (
-        <div className="flex gap-1 mb-6 border-b border-[var(--color-divider)] overflow-x-auto">
-          {sections.map((s) => (
-            <button
-              key={s}
-              onClick={() => setTab(s)}
-              className={`px-3 py-2 text-sm whitespace-nowrap border-b-2 ${
-                tab === s ? "border-[var(--color-accent-500)] text-[var(--color-accent-700)] font-medium" : "border-transparent text-[var(--color-text)]/55"
-              }`}
-            >
-              {s}
-            </button>
-          ))}
+        <div className="mb-6">
+          <Segmented options={sections.map((s) => ({ value: s, label: s }))} value={tab} onChange={setTab} />
         </div>
       )}
 

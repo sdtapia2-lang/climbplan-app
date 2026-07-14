@@ -84,7 +84,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`sticky top-0 h-screen shrink-0 bg-[var(--color-surface)] flex flex-col transition-[width] duration-150 ${
+      className={`hidden md:flex sticky top-0 h-screen shrink-0 bg-[var(--color-surface)] flex-col transition-[width] duration-150 ${
         collapsed ? "w-[68px]" : "w-[228px]"
       }`}
     >

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { Field, Input, Textarea, Button } from "./ui";
+import { Field, Input, Textarea, Button, Segmented } from "./ui";
 import type { Evaluation } from "@/lib/types";
 import { TriangleAlert } from "lucide-react";
 
@@ -151,18 +151,8 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
         </h2>
       </div>
 
-      <div className="flex gap-1 mb-6 border-b border-[var(--color-divider)] overflow-x-auto">
-        {TABS.map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`px-3 py-2 text-sm whitespace-nowrap border-b-2 ${
-              tab === t ? "border-[var(--color-accent-500)] text-[var(--color-accent-700)] font-medium" : "border-transparent text-[var(--color-text)]/55"
-            }`}
-          >
-            {t}
-          </button>
-        ))}
+      <div className="mb-6">
+        <Segmented options={TABS.map((t) => ({ value: t, label: t }))} value={tab} onChange={setTab} />
       </div>
 
       {tab === "General" && (
