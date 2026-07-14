@@ -30,8 +30,11 @@ export async function updateSession(request: NextRequest) {
   const isAuthRoute =
     request.nextUrl.pathname.startsWith("/login") ||
     request.nextUrl.pathname.startsWith("/auth");
+  // Las rutas /api/* devuelven su propio JSON de error (401/403) -- no las
+  // redirigimos a /login, que rompe cualquier cliente que espere JSON.
+  const isApiRoute = request.nextUrl.pathname.startsWith("/api/");
 
-  if (!user && !isAuthRoute) {
+  if (!user && !isAuthRoute && !isApiRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
