@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useProfile } from "./ProfileProvider";
 import { Card, Field, Input, Select, Textarea, Button } from "./ui";
 import { FIELD_TYPES, FORM_TYPES, type FieldType, type FormType } from "@/lib/types";
 
@@ -36,9 +37,12 @@ const TYPE_LABELS: Record<FormType, string> = { evaluation: "Evaluacion", checki
 
 export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
   const router = useRouter();
+  const { profile } = useProfile();
+  const [createdBy, setCreatedBy] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState<FormType>("evaluation");
+  const [isPublished, setIsPublished] = useState(true);
   const [fields, setFields] = useState<FieldDraft[]>([emptyField()]);
   const [loading, setLoading] = useState(!!templateId);
   const [saving, setSaving] = useState(false);
@@ -54,6 +58,8 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
         setName(t.name);
         setDescription(t.description ?? "");
         setType(t.type);
+        setIsPublished(t.is_published);
+        setCreatedBy(t.created_by);
       }
       const { data: f } = await supabase
         .from("form_template_fields")
@@ -125,12 +131,15 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
 
     let id = templateId;
     if (id) {
-      await supabase.from("form_templates").update({ name, description: description || null, updated_at: new Date().toISOString() }).eq("id", id);
+      await supabase
+        .from("form_templates")
+        .update({ name, description: description || null, is_published: isPublished, updated_at: new Date().toISOString() })
+        .eq("id", id);
       await supabase.from("form_template_fields").delete().eq("template_id", id);
     } else {
       const { data, error: insErr } = await supabase
         .from("form_templates")
-        .insert({ name, description: description || null, type, created_by: user?.id })
+        .insert({ name, description: description || null, type, is_published: isPublished, created_by: user?.id })
         .select("id")
         .single();
       if (insErr || !data) {
@@ -161,6 +170,18 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
   }
 
   if (loading) return <p className="text-neutral-400">Cargando...</p>;
+
+  const blockedByOwnership = !!templateId && profile?.role === "entrenador" && createdBy !== profile.id;
+  if (blockedByOwnership) {
+    return (
+      <div>
+        <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700 mb-4">
+          &larr; Volver
+        </button>
+        <p className="text-neutral-500">Solo quien creo esta plantilla puede editarla.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl">
@@ -197,6 +218,10 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
           <Field label="Descripcion">
             <Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
           </Field>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={isPublished} onChange={(e) => setIsPublished(e.target.checked)} />
+            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo vos y tus escaladores)</span>
+          </label>
         </div>
       </Card>
 

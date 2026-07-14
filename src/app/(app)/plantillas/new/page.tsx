@@ -5,7 +5,7 @@ import { RequireRole } from "@/components/ProfileProvider";
 
 export default function NewTemplatePage() {
   return (
-    <RequireRole roles={["admin"]} redirectTo="/plantillas">
+    <RequireRole roles={["admin", "entrenador"]} redirectTo="/plantillas">
       <TemplateEditor />
     </RequireRole>
   );

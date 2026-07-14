@@ -34,8 +34,7 @@ Al registrarse, una cuenta nueva queda **sin rol** (pantalla de espera) hasta qu
 
 Un **plan por defecto** (`template_mesocycles` + `template_weeks/days/blocks`) es la misma estructura de un mesociclo (4 semanas, dias, bloques) pero sin atleta ni fechas — es una plantilla reutilizable.
 
-- Solo el **Administrador** puede crear/editar plantillas (`/plantillas/new`, editor identico al wizard de mesociclo).
-- Una plantilla marcada como **borrador** (no publicada) solo la ve el admin; el resto de los roles solo ven plantillas publicadas.
+- **Admin o Entrenador** pueden crear/editar plantillas (`/plantillas/new`, editor identico al wizard de mesociclo) — desde la Fase 5, ya no es exclusivo del Admin. Ver seccion "Plantillas propias por entrenador" mas abajo para el detalle de publico/privado.
 - Cualquier rol con acceso a un atleta (admin, su entrenador, o el propio escalador) puede **aplicar** una plantilla desde `/plantillas`: elige fecha de inicio y se genera una copia real e independiente del mesociclo para ese atleta — a partir de ahi es un mesociclo normal, totalmente editable segun los permisos de cada rol.
 - La copia la hace una funcion de base de datos (`apply_mesocycle_template`, `security definer`) en vez del cliente: es la unica forma en que un Escalador puede terminar con un mesociclo propio, ya que no tiene permiso de `insert` directo sobre `mesocycles`/`weeks`/`days`.
 
@@ -46,6 +45,7 @@ El formulario por defecto de Evaluación (Tindeq, PAR-Q, etc.) y de Check-in **n
 - **Admin o Entrenador** pueden crear plantillas en `/formularios`: eligen tipo (Evaluación o Check-in), y arman una lista de campos (etiqueta, clave interna, sección/pestaña, tipo de dato — texto, número, sí/no, texto largo, selección, fecha —, si es obligatorio).
 - Un Entrenador solo puede editar/borrar las plantillas que **el mismo creó**; el Admin puede editar cualquiera.
 - Cualquier rol con acceso a un atleta puede "usar" una plantilla (`/formularios/[id]/usar`): completa los campos definidos y la respuesta queda guardada (tabla genérica `form_responses`, con los valores en JSON), con historial de respuestas anteriores para ese atleta.
+- Desde la Fase 5 también tienen público/privado (ver más abajo) — antes eran visibles para cualquier autenticado sin distinción.
 
 ## Escalador "libre" (Fase 4)
 
@@ -54,7 +54,17 @@ Basado en `Flujo usuarios.docx`: un Entrenador (o Admin) puede dar de alta direc
 - **Visibilidad acotada**: en **Planes** y **Formularios** solo ve las plantillas creadas por *su propio* entrenador asignado (via `coach_athletes`), no todas las publicadas.
 - **Sin edición de ejercicios**: no puede agregar, quitar ni modificar los bloques de su planificación (ejercicio, series, reps, carga) — solo registrar lo que hizo (series/reps/carga reales, RPE, dolor, comentario, marcar completado) en **Entrenamiento**. Esto lo aplica un trigger en la base de datos (`enforce_restricted_block_edit`), no solo la UI.
 
-El resto del flujo del documento (login con Google, pagos, directorio público de entrenadores, plantillas propias por entrenador en vez de solo Admin) queda pendiente de una conversación de alcance aparte antes de implementarse — son cambios grandes (marketplace, cobros) que ameritan su propia planificación.
+El resto del flujo del documento (login con Google, pagos, directorio público de entrenadores) queda pendiente de una conversación de alcance aparte antes de implementarse — son cambios grandes (marketplace, cobros) que ameritan su propia planificación.
+
+## Plantillas propias por entrenador (Fase 5)
+
+Hasta la Fase 4, solo el Admin podía crear planes por defecto (`template_mesocycles`). Ahora cualquier **Entrenador** también puede, con la misma noción de público/privado que ya tenían las plantillas de formulario:
+
+- **Pública**: la puede ver y aplicar cualquiera (mismo comportamiento que antes de esta fase).
+- **Privada**: solo la ve/aplica su propio creador y los escaladores que tiene asignados (`coach_athletes`) — antes, algo "no publicado" solo lo veía el Admin.
+- Un Entrenador solo puede editar/borrar lo que **él mismo creó** (`created_by`); si intenta abrir la edición de algo ajeno, la app se lo bloquea aunque pueda verlo en la lista (por ser público).
+- Las plantillas de formulario (Fase 3) ganaron la misma columna `is_published` — antes eran todas visibles para cualquier autenticado sin distinción.
+- Un escalador restringido (Fase 4) sigue viendo únicamente lo creado por su propio entrenador, sea público o privado — esta fase no cambia esa regla.
 
 ## 1. Crear el proyecto en Supabase (gratis)
 
@@ -66,7 +76,8 @@ El resto del flujo del documento (login con Google, pagos, directorio público d
 6. Ejecutá [`supabase/phase2_templates.sql`](supabase/phase2_templates.sql) para agregar los planes por defecto (plantillas de mesociclo).
 7. Ejecutá [`supabase/phase3_custom_forms.sql`](supabase/phase3_custom_forms.sql) para agregar las plantillas de evaluación/check-in configurables.
 8. Ejecutá [`supabase/phase4_escalador_libre.sql`](supabase/phase4_escalador_libre.sql) para agregar el escalador "libre" (visibilidad acotada + sin edición de ejercicios).
-9. Andá a **Project Settings → API** y copiá:
+9. Ejecutá [`supabase/phase5_shared_templates.sql`](supabase/phase5_shared_templates.sql) para que cualquier Entrenador pueda crear sus propias plantillas (públicas/privadas).
+10. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
    - **service_role key** (la vas a necesitar en el paso 3, para `/api/create-athlete`)
@@ -144,6 +155,7 @@ supabase/
   phase2_templates.sql   # planes por defecto + funcion apply_mesocycle_template
   phase3_custom_forms.sql # plantillas de evaluacion/check-in configurables
   phase4_escalador_libre.sql # escalador restringido: visibilidad acotada + bloqueo de ejercicios
+  phase5_shared_templates.sql # entrenador crea plantillas propias (publicas/privadas)
 ```
 
 ## Notas de diseño

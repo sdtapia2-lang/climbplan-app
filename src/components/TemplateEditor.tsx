@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useProfile } from "./ProfileProvider";
 import { Card, Field, Input, Select, Textarea, Button } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 
@@ -79,6 +80,8 @@ function emptyBlock(): BlockDraft {
 
 export function TemplateEditor({ templateId }: { templateId?: string }) {
   const router = useRouter();
+  const { profile } = useProfile();
+  const [createdBy, setCreatedBy] = useState<string | null>(null);
   const [meta, setMeta] = useState<TemplateMetaDraft>({
     name: "Plan 1",
     description: "",
@@ -114,6 +117,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
           max_rpe_week: tRow.max_rpe_week?.toString() ?? "",
           is_published: tRow.is_published,
         });
+        setCreatedBy(tRow.created_by);
       }
       const { data: weekRows } = await supabase
         .from("template_weeks")
@@ -318,6 +322,18 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
 
   if (loading) return <p className="text-neutral-400">Cargando...</p>;
 
+  const blockedByOwnership = !!templateId && profile?.role === "entrenador" && createdBy !== profile.id;
+  if (blockedByOwnership) {
+    return (
+      <div>
+        <button onClick={() => router.back()} className="text-neutral-400 hover:text-neutral-700 mb-4">
+          &larr; Volver
+        </button>
+        <p className="text-neutral-500">Solo quien creo esta plantilla puede editarla.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -366,7 +382,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
               checked={meta.is_published}
               onChange={(e) => setMeta({ ...meta, is_published: e.target.checked })}
             />
-            <span className="text-sm">Publicada (visible para escaladores)</span>
+            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo vos y tus escaladores)</span>
           </label>
         </div>
       </Card>

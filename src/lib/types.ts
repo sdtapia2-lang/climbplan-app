@@ -299,6 +299,7 @@ export type FormTemplate = {
   type: FormType;
   name: string;
   description: string | null;
+  is_published: boolean;
   created_by: string | null;
   created_at: string;
   updated_at: string;

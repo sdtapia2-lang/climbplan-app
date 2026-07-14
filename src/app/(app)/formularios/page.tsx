@@ -55,7 +55,10 @@ export default function FormTemplatesPage() {
             <Card key={t.id}>
               <div className="flex items-start justify-between mb-2">
                 <p className="font-medium">{t.name}</p>
-                <Badge tone="orange">{TYPE_LABELS[t.type]}</Badge>
+                <div className="flex gap-1">
+                  {!t.is_published && <Badge tone="red">Privada</Badge>}
+                  <Badge tone="orange">{TYPE_LABELS[t.type]}</Badge>
+                </div>
               </div>
               {t.description && <p className="text-sm text-neutral-500 mb-3">{t.description}</p>}
               <div className="flex gap-2">

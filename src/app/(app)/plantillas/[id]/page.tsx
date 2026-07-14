@@ -7,7 +7,7 @@ import { RequireRole } from "@/components/ProfileProvider";
 export default function EditTemplatePage() {
   const { id } = useParams<{ id: string }>();
   return (
-    <RequireRole roles={["admin"]} redirectTo="/plantillas">
+    <RequireRole roles={["admin", "entrenador"]} redirectTo="/plantillas">
       <TemplateEditor templateId={id} />
     </RequireRole>
   );

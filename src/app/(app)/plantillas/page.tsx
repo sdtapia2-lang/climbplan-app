@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
-import { useProfile, isAdmin } from "@/components/ProfileProvider";
+import { useProfile, isAdmin, canCreateMesocycles } from "@/components/ProfileProvider";
 import { Card, Button, Badge, Spinner, EmptyState, Modal, Field, Input } from "@/components/ui";
 import type { TemplateMesocycle } from "@/lib/types";
 
@@ -14,6 +14,8 @@ export default function TemplatesPage() {
   const { profile } = useProfile();
   const router = useRouter();
   const admin = isAdmin(profile);
+  const canCreate = canCreateMesocycles(profile);
+  const canEdit = (t: TemplateMesocycle) => admin || (profile?.role === "entrenador" && t.created_by === profile.id);
   const [templates, setTemplates] = useState<TemplateMesocycle[]>([]);
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState<TemplateMesocycle | null>(null);
@@ -61,7 +63,7 @@ export default function TemplatesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">Planes por defecto</h1>
-        {admin && (
+        {canCreate && (
           <Link href="/plantillas/new">
             <Button>+ Nueva plantilla</Button>
           </Link>
@@ -83,7 +85,7 @@ export default function TemplatesPage() {
               <div className="flex items-start justify-between mb-2">
                 <p className="font-medium">{t.name}</p>
                 <div className="flex gap-1">
-                  {!t.is_published && <Badge tone="red">Borrador</Badge>}
+                  {!t.is_published && <Badge tone="red">Privada</Badge>}
                   {t.phase && <Badge tone="orange">{t.phase}</Badge>}
                 </div>
               </div>
@@ -92,7 +94,7 @@ export default function TemplatesPage() {
                 <Button onClick={() => { setApplying(t); setError(null); }} disabled={!athleteId}>
                   Aplicar a {athlete?.name ?? "..."}
                 </Button>
-                {admin && (
+                {canEdit(t) && (
                   <Link href={`/plantillas/${t.id}`}>
                     <Button variant="secondary">Editar</Button>
                   </Link>
