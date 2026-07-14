@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { useProfile, isAdmin } from "./ProfileProvider";
+import { useProfile, isAdmin, canCreateMesocycles } from "./ProfileProvider";
 
 const TABS = [
   { href: "/", label: "Dashboard" },
@@ -40,7 +40,11 @@ export function NavBar() {
     router.refresh();
   }
 
-  const tabs = isAdmin(profile) ? [...TABS, { href: "/admin", label: "Admin" }] : TABS;
+  const tabs = [
+    ...TABS,
+    ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar" }] : []),
+    ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin" }] : []),
+  ];
 
   return (
     <div className="border-b border-neutral-200 bg-white sticky top-0 z-10">

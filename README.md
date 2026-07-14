@@ -16,6 +16,7 @@ No es el código que generó Base44 — es una reimplementación equivalente, he
 - **Perfil**: datos del atleta, grados, objetivos, equipamiento, estado de salud, notas kinesiológicas — equivalente al `contexto_atleta.pdf`.
 - **Planes** (`/plantillas`): biblioteca de plantillas de mesociclo (sin atleta ni fechas) armadas por el Administrador. Cualquiera con acceso a un atleta puede "aplicar" una para generarle un mesociclo real y editable con fecha de inicio propia.
 - **Formularios** (`/formularios`): plantillas de evaluación/check-in adicionales a las de por defecto, con campos configurables (texto, número, sí/no, selección, fecha), para casos específicos como lesiones u otras disciplinas.
+- **Invitar** (`/escaladores/nuevo`, admin/entrenador): da de alta directamente una cuenta de escalador "libre" para un cliente propio — sin auto-registro ni email de confirmación, se comparten las credenciales a mano.
 
 Multi-atleta: un selector en la barra superior permite cambiar entre Seba y Diego (o cualquier otro atleta que agregues directo en la tabla `athletes`).
 
@@ -46,6 +47,15 @@ El formulario por defecto de Evaluación (Tindeq, PAR-Q, etc.) y de Check-in **n
 - Un Entrenador solo puede editar/borrar las plantillas que **el mismo creó**; el Admin puede editar cualquiera.
 - Cualquier rol con acceso a un atleta puede "usar" una plantilla (`/formularios/[id]/usar`): completa los campos definidos y la respuesta queda guardada (tabla genérica `form_responses`, con los valores en JSON), con historial de respuestas anteriores para ese atleta.
 
+## Escalador "libre" (Fase 4)
+
+Basado en `Flujo usuarios.docx`: un Entrenador (o Admin) puede dar de alta directamente la cuenta de un cliente propio desde **Invitar** (`/escaladores/nuevo`), en vez de que esa persona se registre sola. Esa cuenta queda marcada `profiles.restricted = true`, con dos restricciones extra sobre el Escalador normal:
+
+- **Visibilidad acotada**: en **Planes** y **Formularios** solo ve las plantillas creadas por *su propio* entrenador asignado (via `coach_athletes`), no todas las publicadas.
+- **Sin edición de ejercicios**: no puede agregar, quitar ni modificar los bloques de su planificación (ejercicio, series, reps, carga) — solo registrar lo que hizo (series/reps/carga reales, RPE, dolor, comentario, marcar completado) en **Entrenamiento**. Esto lo aplica un trigger en la base de datos (`enforce_restricted_block_edit`), no solo la UI.
+
+El resto del flujo del documento (login con Google, pagos, directorio público de entrenadores, plantillas propias por entrenador en vez de solo Admin) queda pendiente de una conversación de alcance aparte antes de implementarse — son cambios grandes (marketplace, cobros) que ameritan su propia planificación.
+
 ## 1. Crear el proyecto en Supabase (gratis)
 
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
@@ -55,9 +65,11 @@ El formulario por defecto de Evaluación (Tindeq, PAR-Q, etc.) y de Check-in **n
 5. Ejecutá [`supabase/phase1_roles.sql`](supabase/phase1_roles.sql) para agregar roles y permisos. Si ya tenías una cuenta creada antes de correr esto, el script hace un backfill automático: la cuenta más antigua sin perfil queda como administrador.
 6. Ejecutá [`supabase/phase2_templates.sql`](supabase/phase2_templates.sql) para agregar los planes por defecto (plantillas de mesociclo).
 7. Ejecutá [`supabase/phase3_custom_forms.sql`](supabase/phase3_custom_forms.sql) para agregar las plantillas de evaluación/check-in configurables.
-8. Andá a **Project Settings → API** y copiá:
+8. Ejecutá [`supabase/phase4_escalador_libre.sql`](supabase/phase4_escalador_libre.sql) para agregar el escalador "libre" (visibilidad acotada + sin edición de ejercicios).
+9. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
+   - **service_role key** (la vas a necesitar en el paso 3, para `/api/create-athlete`)
 
 ### Confirmación de email (importante)
 
@@ -73,12 +85,15 @@ Si lo dejás activado, vas a tener que confirmar el mail que te llega antes de p
 cp .env.local.example .env.local
 ```
 
-Completá `.env.local` con la URL y la anon key que copiaste:
+Completá `.env.local` con la URL, la anon key y la service role key que copiaste:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY` es un secreto con acceso total a la base de datos (bypassea RLS) — nunca le pongas el prefijo `NEXT_PUBLIC_`, y nunca la subas a git (el `.gitignore` ya excluye `.env.local`, solo revisá que sigas usando ese nombre de archivo).
 
 ## 3. Correr en local
 
@@ -93,7 +108,7 @@ Abrí `http://localhost:3000`. La primera vez, usá el link "Primera vez? Crear 
 
 1. Subí este proyecto a un repo de GitHub (podés pedirme que lo haga si querés).
 2. Andá a [vercel.com](https://vercel.com), creá una cuenta gratis e importá el repo.
-3. En **Environment Variables** del proyecto en Vercel, agregá las mismas dos variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+3. En **Environment Variables** del proyecto en Vercel, agregá las mismas tres variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`).
 4. Deploy. Vercel te da una URL pública (tipo `climbplan.vercel.app`) accesible desde el celular, igual que la app de Base44.
 
 ## Estructura del proyecto
@@ -114,10 +129,13 @@ src/
       admin/                    # panel de administracion (solo admin)
       plantillas/                # planes por defecto: lista+aplicar (new, [id] = solo admin)
       formularios/                # plantillas de evaluacion/check-in: lista+usar (new, [id] = admin/entrenador)
+      escaladores/nuevo/           # invitar escalador libre (admin/entrenador)
+    api/
+      create-athlete/         # route handler server-side, usa la service role key
   components/            # AthleteProvider, ProfileProvider, NavBar, MesocycleEditor, TemplateEditor,
                           # EvaluationForm, FormTemplateBuilder, DynamicForm, ui.tsx
   lib/
-    supabase/            # clientes browser/server + proxy de sesion
+    supabase/            # clientes browser/server/admin + proxy de sesion
     types.ts             # tipos TypeScript que reflejan el schema SQL
 supabase/
   schema.sql             # tablas, indices, RLS
@@ -125,6 +143,7 @@ supabase/
   phase1_roles.sql       # roles, permisos, profiles, coach_athletes
   phase2_templates.sql   # planes por defecto + funcion apply_mesocycle_template
   phase3_custom_forms.sql # plantillas de evaluacion/check-in configurables
+  phase4_escalador_libre.sql # escalador restringido: visibilidad acotada + bloqueo de ejercicios
 ```
 
 ## Notas de diseño

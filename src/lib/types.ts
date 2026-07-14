@@ -7,6 +7,7 @@ export type Profile = {
   full_name: string | null;
   role: Role | null;
   athlete_id: string | null;
+  restricted: boolean;
   created_at: string;
 };
 

@@ -120,6 +120,16 @@ function AdminPanel() {
                 </Select>
               )}
               {p.role === "escalador" && p.athlete_id && <Badge tone="green">{athleteName(p.athlete_id)}</Badge>}
+              {p.role === "escalador" && (
+                <label className="flex items-center gap-1 text-sm text-neutral-500">
+                  <input
+                    type="checkbox"
+                    checked={p.restricted}
+                    onChange={(e) => updateProfile(p.id, { restricted: e.target.checked })}
+                  />
+                  Restringido (solo ve contenido de su entrenador, no toca ejercicios)
+                </label>
+              )}
             </div>
           ))}
         </div>
