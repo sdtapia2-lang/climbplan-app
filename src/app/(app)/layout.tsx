@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ProfileProvider, useProfile } from "@/components/ProfileProvider";
 import { AthleteProvider } from "@/components/AthleteProvider";
-import { NavBar } from "@/components/NavBar";
+import { Sidebar } from "@/components/Sidebar";
 import { Spinner, Button, Card } from "@/components/ui";
 
 function PendingScreen({ email }: { email: string | null }) {
@@ -40,8 +40,12 @@ function Gate({ children }: { children: React.ReactNode }) {
 
   return (
     <AthleteProvider>
-      <NavBar />
-      <main className="max-w-6xl w-full mx-auto px-4 py-6 flex-1">{children}</main>
+      <div className="flex flex-1 min-h-screen">
+        <Sidebar />
+        <main className="flex-1 min-w-0 overflow-x-hidden px-6 py-6">
+          <div className="max-w-5xl mx-auto">{children}</div>
+        </main>
+      </div>
     </AthleteProvider>
   );
 }
