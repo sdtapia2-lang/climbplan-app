@@ -111,7 +111,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
   async function save() {
     setError(null);
     if (!name.trim()) {
-      setError("Poné un nombre para la plantilla.");
+      setError("Pon un nombre para la plantilla.");
       return;
     }
     const keys = fields.map((f) => f.key.trim());
@@ -221,7 +221,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
           </Field>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={isPublished} onChange={(e) => setIsPublished(e.target.checked)} />
-            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo vos y tus escaladores)</span>
+            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo tu y tus escaladores)</span>
           </label>
         </div>
       </Card>

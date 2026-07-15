@@ -393,7 +393,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
               checked={meta.is_published}
               onChange={(e) => setMeta({ ...meta, is_published: e.target.checked })}
             />
-            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo vos y tus escaladores)</span>
+            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo tu y tus escaladores)</span>
           </label>
         </div>
       </Card>

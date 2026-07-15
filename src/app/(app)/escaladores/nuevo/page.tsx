@@ -50,7 +50,7 @@ function InviteForm() {
     <div className="max-w-md">
       <h1 className="text-xl font-semibold mb-2">Invitar escalador</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        Crea una cuenta que vos administras: el escalador solo va a ver los planes y formularios que vos le crees,
+        Crea una cuenta que tu administras: el escalador solo va a ver los planes y formularios que tu le creas,
         y no va a poder agregar ni modificar ejercicios de su planificacion (solo registrar lo que hizo).
       </p>
 
@@ -61,7 +61,7 @@ function InviteForm() {
         <Field label="Email">
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nombre@ejemplo.com" />
         </Field>
-        <Field label="Contrasena (se la compartis vos, no se envia mail)">
+        <Field label="Contrasena (se la compartes tu, no se envia mail)">
           <div className="flex gap-2">
             <Input value={password} onChange={(e) => setPassword(e.target.value)} />
             <Button variant="secondary" onClick={() => setPassword(randomPassword())}>

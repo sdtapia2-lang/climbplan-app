@@ -71,7 +71,7 @@ function PerfilForm() {
             rows={4}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="Contale a los escaladores quien sos y como entrenas..."
+            placeholder="Cuentale a los escaladores quien eres y como entrenas..."
           />
         </Field>
         <Field label="Certificaciones / logros">
@@ -88,7 +88,7 @@ function PerfilForm() {
               type="email"
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
-              placeholder="vos@ejemplo.com"
+              placeholder="nombre@ejemplo.com"
             />
           </Field>
           <Field label="Telefono de contacto">

@@ -118,12 +118,12 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
           <div className="space-y-4">
             <div className="text-center mb-2">
               <p className="font-[family-name:var(--font-heading)] text-2xl">Bienvenido a Prusik</p>
-              <p className="text-sm text-[var(--color-text)]/55 mt-1">Elegi como queres empezar a entrenar.</p>
+              <p className="text-sm text-[var(--color-text)]/55 mt-1">Elige como quieres empezar a entrenar.</p>
             </div>
 
             {declinedByCoachName && (
               <p className="text-sm text-center text-[var(--color-text)]/60 bg-[var(--color-neutral-100)] rounded-2xl px-4 py-2">
-                {declinedByCoachName} no pudo tomarte por ahora. Podes elegir otro entrenador o arrancar con entrenamiento libre.
+                {declinedByCoachName} no pudo tomarte por ahora. Puedes elegir otro entrenador o arrancar con entrenamiento libre.
               </p>
             )}
 
@@ -142,7 +142,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
               <Compass size={20} strokeWidth={2.75} className="text-[var(--color-accent-500)] mb-2" aria-hidden="true" />
               <p className="font-medium mb-1">Buscar entrenador</p>
               <p className="text-sm text-[var(--color-text)]/55 mb-4">
-                Elegi un entrenador del directorio y pedile una entrevista.
+                Elige un entrenador del directorio y pidele una entrevista.
               </p>
               <Button variant="secondary" onClick={loadDirectory} className="w-full justify-center">
                 Ver entrenadores
@@ -190,7 +190,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
             <p className="font-medium mb-1">Solicitar entrevista</p>
             <p className="text-sm text-[var(--color-text)]/55 mb-4">A {selectedCoach.full_name || "este entrenador"}</p>
             <div className="space-y-4">
-              <Field label="Como queres que te identifique">
+              <Field label="Como quieres que te identifique">
                 <Input value={athleteName} onChange={(e) => setAthleteName(e.target.value)} placeholder="Tu nombre" />
               </Field>
               <Field label="Mensaje (opcional)">
@@ -198,7 +198,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Contale brevemente tu objetivo o disponibilidad..."
+                  placeholder="Cuentale brevemente tu objetivo o disponibilidad..."
                 />
               </Field>
               {error && <p className="text-sm text-red-700">{error}</p>}

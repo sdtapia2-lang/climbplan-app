@@ -48,7 +48,7 @@ export default function MesocycleListPage() {
 
       {!canOpenDetail && (
         <p className="text-sm text-[var(--color-text)]/55 mb-4">
-          Para ver el detalle dia a dia de tu semana actual y registrar tus series, andate a{" "}
+          Para ver el detalle dia a dia de tu semana actual y registrar tus series, ve a{" "}
           <Link href="/entrenamiento" className="text-[var(--color-accent-700)] hover:underline">
             Entrenamiento
           </Link>
