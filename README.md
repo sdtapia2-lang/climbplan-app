@@ -107,7 +107,7 @@ Reemplaza la pantalla "pedile a un Admin que te asigne un rol" por dos caminos d
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
 2. Cuando el proyecto esté listo, andá a **SQL Editor → New query**.
 3. Pegá y ejecutá el contenido de [`supabase/schema.sql`](supabase/schema.sql). Esto crea todas las tablas, los índices, las políticas de seguridad (RLS) y siembra dos atletas (`Seba`, `Diego`).
-4. Ejecutá también [`supabase/seed_exercises.sql`](supabase/seed_exercises.sql) para cargar el catálogo real de 22 ejercicios exportado de Base44.
+4. Ejecutá [`supabase/seed_exercises_lattice.sql`](supabase/seed_exercises_lattice.sql) para cargar el catálogo real de Lattice Training (178 ejercicios, extraídos y verificados directamente de capturas de la app — 5 categorías: Aerobic Base, Conditioning, Power Endurance, Strength and Power, Flexibility). Este script borra y reemplaza cualquier catálogo anterior; no hace falta correr `seed_exercises.sql` (el catálogo chico exportado de Base44, ya obsoleto). Nota: este catálogo no incluye ejercicios de Fingerboard/hangboard porque las capturas disponibles no cubrieron esa sección de la app — se pueden seguir agregando como ejercicios "fuera de catálogo" hasta tener capturas de esa parte.
 5. Ejecutá [`supabase/phase1_roles.sql`](supabase/phase1_roles.sql) para agregar roles y permisos. Si ya tenías una cuenta creada antes de correr esto, el script hace un backfill automático: la cuenta más antigua sin perfil queda como administrador.
 6. Ejecutá [`supabase/phase2_templates.sql`](supabase/phase2_templates.sql) para agregar los planes por defecto (plantillas de mesociclo).
 7. Ejecutá [`supabase/phase3_custom_forms.sql`](supabase/phase3_custom_forms.sql) para agregar las plantillas de evaluación/check-in configurables.
@@ -204,7 +204,8 @@ src/
     types.ts             # tipos TypeScript que reflejan el schema SQL
 supabase/
   schema.sql             # tablas, indices, RLS
-  seed_exercises.sql     # catalogo real exportado de Base44
+  seed_exercises.sql     # catalogo chico exportado de Base44 (obsoleto, ver seed_exercises_lattice.sql)
+  seed_exercises_lattice.sql # catalogo real de Lattice Training (178 ejercicios verificados)
   phase1_roles.sql       # roles, permisos, profiles, coach_athletes
   phase2_templates.sql   # planes por defecto + funcion apply_mesocycle_template
   phase3_custom_forms.sql # plantillas de evaluacion/check-in configurables
