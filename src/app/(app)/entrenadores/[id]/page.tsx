@@ -21,7 +21,7 @@ export default function EntrenadorDetailPage() {
         .from("profiles")
         .select("*")
         .eq("id", id)
-        .eq("role", "entrenador")
+        .in("role", ["entrenador", "admin"])
         .eq("public_profile", true)
         .maybeSingle();
       setCoach((data as Profile) ?? null);

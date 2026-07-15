@@ -11,6 +11,9 @@ alter table profiles add column if not exists contact_email text;
 alter table profiles add column if not exists contact_phone text;
 alter table profiles add column if not exists public_profile boolean not null default false;
 
+-- admin cuenta como entrenador tambien (ver Fase 1: admin incluye las
+-- capacidades de entrenador), asi que puede aparecer en el directorio si
+-- activa su perfil publico.
 drop policy if exists "profiles select public coaches" on profiles;
 create policy "profiles select public coaches" on profiles for select
-  using (role = 'entrenador' and public_profile = true);
+  using (role in ('entrenador', 'admin') and public_profile = true);

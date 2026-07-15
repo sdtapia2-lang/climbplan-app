@@ -17,7 +17,7 @@ export default function EntrenadoresPage() {
       const { data } = await supabase
         .from("profiles")
         .select("*")
-        .eq("role", "entrenador")
+        .in("role", ["entrenador", "admin"])
         .eq("public_profile", true)
         .order("full_name");
       setCoaches((data as Profile[]) ?? []);
