@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
+import { RequireRole } from "@/components/ProfileProvider";
 import { Card, Spinner } from "@/components/ui";
 
 type Stats = {
@@ -26,6 +27,14 @@ function weekLabel(mesoStart: string | null, weekNumber: number): string {
 }
 
 export default function AnalyticsPage() {
+  return (
+    <RequireRole roles={["admin", "entrenador"]} redirectTo="/">
+      <AnalyticsPanel />
+    </RequireRole>
+  );
+}
+
+function AnalyticsPanel() {
   const { athlete, athleteId } = useAthlete();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<Stats>({ adherencePct: 0, avgRpe: null, completedBlocks: 0, totalBlocks: 0 });

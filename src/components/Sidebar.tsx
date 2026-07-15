@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { useProfile, isAdmin, isCoach, canCreateMesocycles } from "./ProfileProvider";
+import { useProfile, isAdmin, isCoach, isAthleteRole, canCreateMesocycles } from "./ProfileProvider";
 import {
   LayoutDashboard,
   Layers,
@@ -37,7 +37,6 @@ const NAV_ITEMS = [
   { href: "/evaluacion", label: "Evaluacion", icon: ClipboardCheck },
   { href: "/checkin", label: "Check-in", icon: Heart },
   { href: "/formularios", label: "Formularios", icon: FileText },
-  { href: "/analitica", label: "Analitica", icon: BarChart3 },
   { href: "/entrenadores", label: "Entrenadores", icon: Compass },
 ];
 
@@ -82,12 +81,16 @@ export function Sidebar() {
 
   const items = [
     ...NAV_ITEMS,
+    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/analitica", label: "Analitica", icon: BarChart3 }] : []),
     ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
     ...(isCoach(profile) || isAdmin(profile)
       ? [
           { href: "/solicitudes", label: "Solicitudes", icon: Inbox },
           { href: "/perfil", label: "Mi perfil", icon: UserCog },
         ]
+      : []),
+    ...(isAthleteRole(profile) && athlete
+      ? [{ href: `/atleta/${athlete.id}`, label: "Mi perfil", icon: UserCog }]
       : []),
     ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
   ];
