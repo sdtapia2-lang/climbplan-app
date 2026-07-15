@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
-import { useProfile, isAdmin, isCoach } from "@/components/ProfileProvider";
+import { useProfile, isAdmin, isCoach, canManageOwnMesocycle } from "@/components/ProfileProvider";
 import { Card, Button, Spinner, Badge } from "@/components/ui";
 import type { Mesocycle, Week } from "@/lib/types";
 import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge } from "lucide-react";
@@ -164,6 +164,8 @@ function computeCurrentWeekNumber(
 
 function AthleteDashboard() {
   const { athlete, athleteId, loading: athleteLoading } = useAthlete();
+  const { profile } = useProfile();
+  const canManageMeso = canManageOwnMesocycle(profile);
   const [loading, setLoading] = useState(true);
   const [mesocycle, setMesocycle] = useState<Mesocycle | null>(null);
   const [weeks, setWeeks] = useState<Week[]>([]);
@@ -238,16 +240,25 @@ function AthleteDashboard() {
                 <Badge tone="orange">{mesocycle.status}</Badge>
                 {mesocycle.phase && <Badge>{mesocycle.phase}</Badge>}
               </div>
-              <Link href={`/mesociclo/${mesocycle.id}`} className="text-sm text-[var(--color-accent-700)] hover:underline">
-                Ver mesociclo &rarr;
+              <Link
+                href={canManageMeso ? `/mesociclo/${mesocycle.id}` : "/entrenamiento"}
+                className="text-sm text-[var(--color-accent-700)] hover:underline"
+              >
+                {canManageMeso ? "Ver mesociclo" : "Ir a entrenamiento"} &rarr;
               </Link>
             </>
           ) : (
             <>
               <p className="text-[var(--color-text)]/40 mb-3">Sin mesociclo activo</p>
-              <Link href="/mesociclo/new">
-                <Button>Crear mesociclo</Button>
-              </Link>
+              {canManageMeso ? (
+                <Link href="/mesociclo/new">
+                  <Button>Crear mesociclo</Button>
+                </Link>
+              ) : (
+                <Link href="/plantillas">
+                  <Button variant="secondary">Ver planes disponibles</Button>
+                </Link>
+              )}
             </>
           )}
         </Card>
