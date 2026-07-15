@@ -81,6 +81,7 @@ export const EXERCISE_CATEGORIES = [
   "Power Endurance",
   "Strength and Power",
   "Flexibility",
+  "Fingerboard",
   "Otro",
 ] as const;
 export type ExerciseCategory = (typeof EXERCISE_CATEGORIES)[number];
