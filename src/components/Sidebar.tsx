@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Compass,
   UserCog,
+  Inbox,
   ChevronDown,
   ChevronsLeft,
   ChevronsRight,
@@ -82,7 +83,12 @@ export function Sidebar() {
   const items = [
     ...NAV_ITEMS,
     ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
-    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/perfil", label: "Mi perfil", icon: UserCog }] : []),
+    ...(isCoach(profile) || isAdmin(profile)
+      ? [
+          { href: "/solicitudes", label: "Solicitudes", icon: Inbox },
+          { href: "/perfil", label: "Mi perfil", icon: UserCog },
+        ]
+      : []),
     ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
   ];
 

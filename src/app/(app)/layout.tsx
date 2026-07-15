@@ -1,43 +1,68 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ProfileProvider, useProfile } from "@/components/ProfileProvider";
 import { AthleteProvider } from "@/components/AthleteProvider";
 import { Sidebar } from "@/components/Sidebar";
 import { MobileNav } from "@/components/MobileNav";
-import { Spinner, Button, Card } from "@/components/ui";
+import { OnboardingScreen } from "@/components/OnboardingScreen";
+import { EvaluationForm } from "@/components/EvaluationForm";
+import { Spinner, Card } from "@/components/ui";
 
-function PendingScreen({ email }: { email: string | null }) {
-  const router = useRouter();
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
-  }
+function CompleteEvaluationGate() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <Card className="max-w-sm text-center">
-        <p className="font-medium mb-2">Cuenta creada</p>
-        <p className="text-sm text-[var(--color-text)]/55 mb-4">
-          {email ? <span className="font-mono">{email}</span> : "Tu cuenta"} todavia no tiene un rol
-          asignado. Pedile a un administrador que te asigne un rol (Admin, Entrenador o Escalador)
-          desde el panel de administracion.
-        </p>
-        <Button variant="secondary" onClick={handleLogout}>
-          Cerrar sesion
-        </Button>
-      </Card>
+    <div className="min-h-screen px-4 py-10 flex justify-center">
+      <div className="w-full max-w-2xl">
+        <Card className="mb-6">
+          <p className="font-medium mb-1">Antes de planificar, completa tu evaluacion fisica</p>
+          <p className="text-sm text-[var(--color-text)]/55">
+            Nos da una linea base para armar tu plan desde el catalogo. Vas a poder completarla de nuevo mas adelante.
+          </p>
+        </Card>
+        <EvaluationForm />
+      </div>
     </div>
   );
 }
 
 function Gate({ children }: { children: React.ReactNode }) {
-  const { profile, loading } = useProfile();
+  const { profile, loading, refresh } = useProfile();
+  const pathname = usePathname();
+  const needsEvalGate = !!profile && profile.role === "escalador" && profile.onboarded_via_free && !!profile.athlete_id;
+  const [evalCount, setEvalCount] = useState<number | null>(null);
 
-  if (loading) return <Spinner />;
-  if (!profile || !profile.role) return <PendingScreen email={profile?.email ?? null} />;
+  useEffect(() => {
+    if (!needsEvalGate) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resetea el gate si deja de aplicar
+      setEvalCount(null);
+      return;
+    }
+    (async () => {
+      const supabase = createClient();
+      const { count } = await supabase
+        .from("evaluations")
+        .select("id", { count: "exact", head: true })
+        .eq("athlete_id", profile!.athlete_id!);
+      setEvalCount(count ?? 0);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsEvalGate, profile?.athlete_id, pathname]);
+
+  if (loading || !profile) return <Spinner />;
+  if (!profile.role) return <OnboardingScreen profile={profile} onDone={refresh} />;
+
+  if (needsEvalGate) {
+    if (evalCount === null) return <Spinner />;
+    if (evalCount === 0) {
+      return (
+        <AthleteProvider>
+          <CompleteEvaluationGate />
+        </AthleteProvider>
+      );
+    }
+  }
 
   return (
     <AthleteProvider>

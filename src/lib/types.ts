@@ -13,6 +13,7 @@ export type Profile = {
   contact_email: string | null;
   contact_phone: string | null;
   public_profile: boolean;
+  onboarded_via_free: boolean;
   created_at: string;
 };
 
@@ -21,6 +22,19 @@ export type CoachAthlete = {
   coach_id: string;
   athlete_id: string;
   created_at: string;
+};
+
+export type CoachRequestStatus = "pending" | "accepted" | "declined";
+
+export type CoachRequest = {
+  id: string;
+  requester_id: string;
+  coach_id: string;
+  athlete_name: string;
+  message: string | null;
+  status: CoachRequestStatus;
+  created_at: string;
+  resolved_at: string | null;
 };
 
 export type Athlete = {
