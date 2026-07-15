@@ -331,6 +331,21 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
     router.refresh();
   }
 
+  async function deleteTemplate() {
+    if (!templateId) return;
+    if (!confirm(`¿Eliminar la plantilla "${meta.name || "sin nombre"}"? Esta acción no se puede deshacer.`)) return;
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("template_mesocycles").delete().eq("id", templateId);
+    setSaving(false);
+    if (error) {
+      alert("No se pudo eliminar la plantilla: " + error.message);
+      return;
+    }
+    router.push("/plantillas");
+    router.refresh();
+  }
+
   if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;
 
   const blockedByOwnership = !!templateId && profile?.role === "entrenador" && createdBy !== profile.id;
@@ -354,9 +369,16 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
           </button>
           <h1 className="text-xl font-semibold">{templateId ? "Editar plantilla" : "Nueva plantilla"}</h1>
         </div>
-        <Button onClick={saveAll} disabled={saving}>
-          <Save size={14} strokeWidth={2.75} aria-hidden="true" /> {saving ? "Guardando..." : "Guardar todo"}
-        </Button>
+        <div className="flex items-center gap-2">
+          {templateId && (
+            <Button variant="danger" onClick={deleteTemplate} disabled={saving}>
+              <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" /> Eliminar
+            </Button>
+          )}
+          <Button onClick={saveAll} disabled={saving}>
+            <Save size={14} strokeWidth={2.75} aria-hidden="true" /> {saving ? "Guardando..." : "Guardar todo"}
+          </Button>
+        </div>
       </div>
 
       <Card className="mb-6">
