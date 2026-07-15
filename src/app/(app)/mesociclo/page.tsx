@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
-import { useProfile, canCreateMesocycles } from "@/components/ProfileProvider";
+import { useProfile, canManageOwnMesocycle } from "@/components/ProfileProvider";
 import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
 import type { Mesocycle } from "@/lib/types";
 
 export default function MesocycleListPage() {
   const { athlete, athleteId } = useAthlete();
   const { profile } = useProfile();
-  const canCreate = canCreateMesocycles(profile);
-  const canOpenDetail = profile?.role !== "escalador";
+  const canCreate = canManageOwnMesocycle(profile);
+  const canOpenDetail = canCreate || profile?.role !== "escalador";
   const [mesocycles, setMesocycles] = useState<Mesocycle[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -1,14 +1,21 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { MesocycleEditor } from "@/components/MesocycleEditor";
-import { RequireRole } from "@/components/ProfileProvider";
+import { useProfile, canManageOwnMesocycle } from "@/components/ProfileProvider";
+import { Spinner } from "@/components/ui";
 
 export default function EditMesocyclePage() {
   const { id } = useParams<{ id: string }>();
-  return (
-    <RequireRole roles={["admin", "entrenador"]} redirectTo="/mesociclo">
-      <MesocycleEditor mesocycleId={id} />
-    </RequireRole>
-  );
+  const { profile, loading } = useProfile();
+  const router = useRouter();
+  const allowed = canManageOwnMesocycle(profile);
+
+  useEffect(() => {
+    if (!loading && !allowed) router.replace("/mesociclo");
+  }, [loading, allowed, router]);
+
+  if (loading || !allowed) return <Spinner />;
+  return <MesocycleEditor mesocycleId={id} />;
 }

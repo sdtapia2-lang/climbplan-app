@@ -67,6 +67,14 @@ export function canManageCatalog(profile: Profile | null) {
 export function canCreateMesocycles(profile: Profile | null) {
   return isAdmin(profile) || isCoach(profile);
 }
+/** Escalador que se auto-onboardeo como "entrenamiento libre" (Fase 8): es su propio coach en coach_athletes. */
+export function isSelfCoached(profile: Profile | null) {
+  return isAthleteRole(profile) && !!profile?.onboarded_via_free;
+}
+/** Puede crear/editar el mesociclo del atleta seleccionado: coach real, admin, o escalador libre gestionando el suyo. */
+export function canManageOwnMesocycle(profile: Profile | null) {
+  return canCreateMesocycles(profile) || isSelfCoached(profile);
+}
 
 /** Redirige si el rol actual no esta en la lista permitida. Usar dentro de una pagina. */
 export function RequireRole({
