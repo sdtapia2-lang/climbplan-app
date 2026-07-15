@@ -339,6 +339,21 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     router.refresh();
   }
 
+  async function deleteMesocycle() {
+    if (!mesocycleId) return;
+    if (!confirm(`¿Eliminar el mesociclo "${meso.name || "sin nombre"}"? Esta acción no se puede deshacer.`)) return;
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("mesocycles").delete().eq("id", mesocycleId);
+    setSaving(false);
+    if (error) {
+      alert("No se pudo eliminar el mesociclo: " + error.message);
+      return;
+    }
+    router.push("/mesociclo");
+    router.refresh();
+  }
+
   if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;
 
   return (
@@ -350,9 +365,16 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           </button>
           <h1 className="text-xl font-semibold">{mesocycleId ? "Editar mesociclo" : "Nuevo mesociclo"}</h1>
         </div>
-        <Button onClick={saveAll} disabled={saving}>
-          <Save size={14} strokeWidth={2.75} aria-hidden="true" /> {saving ? "Guardando..." : "Guardar todo"}
-        </Button>
+        <div className="flex items-center gap-2">
+          {mesocycleId && (
+            <Button variant="danger" onClick={deleteMesocycle} disabled={saving}>
+              <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" /> Eliminar
+            </Button>
+          )}
+          <Button onClick={saveAll} disabled={saving}>
+            <Save size={14} strokeWidth={2.75} aria-hidden="true" /> {saving ? "Guardando..." : "Guardar todo"}
+          </Button>
+        </div>
       </div>
 
       <Card className="mb-6">
