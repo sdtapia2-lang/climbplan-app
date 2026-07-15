@@ -87,6 +87,13 @@ Del resto de `Flujo usuarios.docx` (login con Google, pagos, elegir modalidad de
 - Esto no cambia las políticas de `profiles` existentes (cada quien sigue viendo solo su propio perfil salvo el Admin) — se agregó una policy nueva y aislada que solo expone filas `role = 'entrenador' and public_profile = true`.
 - No hay todavía ninguna acción de "solicitar entrenador" ni asignación automática: la asignación Entrenador↔Escalador se sigue haciendo desde el panel de Admin (Fase 1), igual que antes.
 
+## Login con Google (Fase 7)
+
+Botón "Continuar con Google" en `/login`, además del login por email/contraseña que ya existía (no se toca). Al entrar por primera vez con Google, el trigger `handle_new_user` (Fase 1) crea el `profile` igual que con cualquier alta nueva — la cuenta queda con `role = null` ("pendiente") hasta que un Admin le asigna un rol desde el panel.
+
+- `src/app/auth/callback/route.ts`: intercambia el `code` que devuelve Google por una sesión de Supabase y redirige a `/`.
+- Esto requiere configuración manual en Google Cloud Console y en el dashboard de Supabase — no es algo que se resuelva solo con código. Ver el paso 2 más abajo.
+
 ## 1. Crear el proyecto en Supabase (gratis)
 
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
@@ -99,7 +106,7 @@ Del resto de `Flujo usuarios.docx` (login con Google, pagos, elegir modalidad de
 8. Ejecutá [`supabase/phase4_escalador_libre.sql`](supabase/phase4_escalador_libre.sql) para agregar el escalador "libre" (visibilidad acotada + sin edición de ejercicios).
 9. Ejecutá [`supabase/phase5_shared_templates.sql`](supabase/phase5_shared_templates.sql) para que cualquier Entrenador pueda crear sus propias plantillas (públicas/privadas).
 10. Ejecutá [`supabase/phase6_coach_directory.sql`](supabase/phase6_coach_directory.sql) para agregar el perfil público de Entrenador y el directorio.
-10. Andá a **Project Settings → API** y copiá:
+11. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
    - **service_role key** (la vas a necesitar en el paso 3, para `/api/create-athlete`)
@@ -111,6 +118,22 @@ Por defecto Supabase Auth pide confirmar el email al crear una cuenta. Para este
 - **Authentication → Providers → Email → Confirm email** → apagar.
 
 Si lo dejás activado, vas a tener que confirmar el mail que te llega antes de poder entrar la primera vez.
+
+### Login con Google (opcional, Fase 7)
+
+Esto es configuración externa que tenés que hacer vos — no hay forma de automatizarla desde acá.
+
+1. **Google Cloud Console** ([console.cloud.google.com](https://console.cloud.google.com)): creá un proyecto (o reusá uno) y andá a **APIs & Services → Credentials → Create Credentials → OAuth client ID**.
+   - Tipo de aplicación: **Web application**.
+   - **Authorized JavaScript origins**: agregá `https://climbplan-app.vercel.app` y, si probás en local, `http://localhost:3000`.
+   - **Authorized redirect URIs**: agregá `https://<tu-project-ref>.supabase.co/auth/v1/callback` (reemplazá `<tu-project-ref>` por el de tu Project URL de Supabase — este es el callback de Supabase, no el de la app). Si Google te pide configurar la pantalla de consentimiento (OAuth consent screen) primero, hacelo con los datos básicos (nombre de la app, email de soporte).
+   - Al crear, Google te da un **Client ID** y un **Client Secret**.
+2. **Supabase Dashboard → Authentication → Providers → Google**: activalo y pegá el Client ID y el Client Secret del paso anterior.
+3. **Supabase Dashboard → Authentication → URL Configuration**:
+   - **Site URL**: `https://climbplan-app.vercel.app`
+   - **Redirect URLs**: agregá `https://climbplan-app.vercel.app/auth/callback` y, si probás en local, `http://localhost:3000/auth/callback`.
+
+Sin estos tres pasos, el botón "Continuar con Google" en `/login` va a mostrar un error de Supabase (provider no habilitado) en vez de redirigir a Google.
 
 ## 2. Configurar variables de entorno
 
