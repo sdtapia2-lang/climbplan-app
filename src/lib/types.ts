@@ -8,6 +8,11 @@ export type Profile = {
   role: Role | null;
   athlete_id: string | null;
   restricted: boolean;
+  bio: string | null;
+  certifications: string | null;
+  contact_email: string | null;
+  contact_phone: string | null;
+  public_profile: boolean;
   created_at: string;
 };
 

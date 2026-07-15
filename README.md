@@ -78,6 +78,15 @@ Hasta la Fase 4, solo el Admin podía crear planes por defecto (`template_mesocy
 - Las plantillas de formulario (Fase 3) ganaron la misma columna `is_published` — antes eran todas visibles para cualquier autenticado sin distinción.
 - Un escalador restringido (Fase 4) sigue viendo únicamente lo creado por su propio entrenador, sea público o privado — esta fase no cambia esa regla.
 
+## Perfil público de entrenador + directorio (Fase 6)
+
+Del resto de `Flujo usuarios.docx` (login con Google, pagos, elegir modalidad de entrenamiento al registrarse) se scopeó solo la parte de descubrimiento: que un Entrenador pueda armar un perfil público y que cualquier usuario lo encuentre. Registro propio, login con Google y pagos siguen pendientes de su propia conversación de alcance.
+
+- **Mi perfil** (`/perfil`, Entrenador/Admin): cada Entrenador carga su propia bio, certificaciones/logros y contacto (correo/teléfono), y decide si su perfil es público o privado con un toggle. Nadie edita el perfil de otro — ni el Admin, salvo que use el SQL directo.
+- **Entrenadores** (`/entrenadores`, cualquier autenticado): directorio con los Entrenadores que se marcaron como públicos. Click en una tarjeta lleva a `/entrenadores/[id]` con el perfil completo (bio, certificaciones, contacto).
+- Esto no cambia las políticas de `profiles` existentes (cada quien sigue viendo solo su propio perfil salvo el Admin) — se agregó una policy nueva y aislada que solo expone filas `role = 'entrenador' and public_profile = true`.
+- No hay todavía ninguna acción de "solicitar entrenador" ni asignación automática: la asignación Entrenador↔Escalador se sigue haciendo desde el panel de Admin (Fase 1), igual que antes.
+
 ## 1. Crear el proyecto en Supabase (gratis)
 
 1. Andá a [supabase.com](https://supabase.com), creá una cuenta y un nuevo proyecto (plan Free).
@@ -89,6 +98,7 @@ Hasta la Fase 4, solo el Admin podía crear planes por defecto (`template_mesocy
 7. Ejecutá [`supabase/phase3_custom_forms.sql`](supabase/phase3_custom_forms.sql) para agregar las plantillas de evaluación/check-in configurables.
 8. Ejecutá [`supabase/phase4_escalador_libre.sql`](supabase/phase4_escalador_libre.sql) para agregar el escalador "libre" (visibilidad acotada + sin edición de ejercicios).
 9. Ejecutá [`supabase/phase5_shared_templates.sql`](supabase/phase5_shared_templates.sql) para que cualquier Entrenador pueda crear sus propias plantillas (públicas/privadas).
+10. Ejecutá [`supabase/phase6_coach_directory.sql`](supabase/phase6_coach_directory.sql) para agregar el perfil público de Entrenador y el directorio.
 10. Andá a **Project Settings → API** y copiá:
    - **Project URL**
    - **anon public key**
@@ -168,6 +178,7 @@ supabase/
   phase3_custom_forms.sql # plantillas de evaluacion/check-in configurables
   phase4_escalador_libre.sql # escalador restringido: visibilidad acotada + bloqueo de ejercicios
   phase5_shared_templates.sql # entrenador crea plantillas propias (publicas/privadas)
+  phase6_coach_directory.sql # perfil publico de entrenador + directorio
 ```
 
 ## Notas de diseño

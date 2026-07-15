@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { useProfile, isAdmin, canCreateMesocycles } from "./ProfileProvider";
+import { useProfile, isAdmin, isCoach, canCreateMesocycles } from "./ProfileProvider";
 import {
   LayoutDashboard,
   Layers,
@@ -19,6 +19,8 @@ import {
   BarChart3,
   UserPlus,
   ShieldCheck,
+  Compass,
+  UserCog,
   ChevronDown,
   ChevronsLeft,
   ChevronsRight,
@@ -35,6 +37,7 @@ const NAV_ITEMS = [
   { href: "/checkin", label: "Check-in", icon: Heart },
   { href: "/formularios", label: "Formularios", icon: FileText },
   { href: "/analitica", label: "Analitica", icon: BarChart3 },
+  { href: "/entrenadores", label: "Entrenadores", icon: Compass },
 ];
 
 const ROLE_LABELS: Record<string, string> = {
@@ -79,6 +82,7 @@ export function Sidebar() {
   const items = [
     ...NAV_ITEMS,
     ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
+    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/perfil", label: "Mi perfil", icon: UserCog }] : []),
     ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
   ];
 
