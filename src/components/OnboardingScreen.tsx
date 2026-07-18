@@ -117,7 +117,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
         {step === "choose" && (
           <div className="space-y-4">
             <div className="text-center mb-2">
-              <p className="font-[family-name:var(--font-heading)] text-2xl">Bienvenido a Prusik</p>
+              <p className="font-[family-name:var(--font-heading)] text-2xl">Bienvenido a Ápex</p>
               <p className="text-sm text-[var(--color-text)]/55 mt-1">Elige como quieres empezar a entrenar.</p>
             </div>
 

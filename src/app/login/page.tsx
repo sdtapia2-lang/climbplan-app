@@ -59,18 +59,18 @@ export default function LoginPage() {
       <div className="w-full max-w-sm bg-[var(--color-surface)] rounded-[32px] p-8 shadow-[var(--shadow-organic-md)]">
         <div className="flex items-center gap-3 mb-2">
           <Image
-            src="/prusik-logo.png"
-            alt="Prusik"
+            src="/apex-logo.svg"
+            alt="Ápex"
             width={44}
             height={44}
             unoptimized
             className="rounded-[16px] object-cover shadow-[var(--shadow-organic-sm)]"
           />
           <div>
-            <h1 className="font-[family-name:var(--font-heading)] text-2xl m-0">Prusik</h1>
+            <h1 className="font-[family-name:var(--font-heading)] text-2xl m-0">Ápex</h1>
           </div>
         </div>
-        <p className="text-sm text-[var(--color-text)]/70 mb-6">Tu cordada perfecta para progresar.</p>
+        <p className="text-sm text-[var(--color-text)]/70 mb-6">Tu cordada de entrenamiento.</p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Email">

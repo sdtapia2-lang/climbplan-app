@@ -14,8 +14,8 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "Prusik",
-  description: "Tu cordada perfecta para progresar",
+  title: "Ápex",
+  description: "Tu cordada de entrenamiento",
 };
 
 export default function RootLayout({

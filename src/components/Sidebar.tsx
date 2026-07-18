@@ -103,14 +103,14 @@ export function Sidebar() {
     >
       <div className={`flex items-center gap-2 p-3 ${collapsed ? "justify-center" : ""}`}>
         <Image
-          src="/prusik-logo.png"
-          alt="Prusik"
+          src="/apex-logo.svg"
+          alt="Ápex"
           width={30}
           height={30}
           unoptimized
           className="rounded-[10px] object-cover shadow-[var(--shadow-organic-sm)] shrink-0"
         />
-        {!collapsed && <span className="font-[family-name:var(--font-heading)] text-[18px]">Prusik</span>}
+        {!collapsed && <span className="font-[family-name:var(--font-heading)] text-[18px]">Ápex</span>}
       </div>
 
       <button
