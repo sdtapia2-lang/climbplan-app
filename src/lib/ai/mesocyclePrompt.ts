@@ -12,7 +12,7 @@ const RULES = `Sos un coach de escalada experto armando planificaciones de entre
 
 5. ANTAGONISTAS Y CORE: todas las semanas deben incluir al menos un bloque de trabajo de antagonistas (empuje, extensores de dedos/muneca) y al menos un bloque de estabilidad/core, para compensar el sesgo de traccion de la escalada.
 
-6. DESCANSO: minimo 1 dia completo de descanso por semana (is_rest=true, blocks vacio), no negociable.
+6. DESCANSO: minimo 1 dia completo de descanso por semana (is_rest=true, blocks vacio), no negociable. Si la ficha del atleta especifica una cantidad de dias de descanso o dias disponibles para entrenar, respeta esa estructura (los dias no disponibles tambien van como is_rest=true).
 
 7. LESIONES Y HALLAZGOS: traduci cada hallazgo relevante de la evaluacion (dolor, asimetrias, limitaciones de movilidad) en restricciones concretas de programacion -- por ejemplo una asimetria de rotacion de hombro con dolor implica evitar press por encima de la cabeza con carga y priorizar estabilidad escapular con RPE bajo, no simplemente "tener cuidado". Cada bloock relevante debe tener su kinesio_notes explicando la restriccion.
 
@@ -51,6 +51,8 @@ function serializeAthlete(athlete: Athlete): string {
   return [
     `Nombre: ${athlete.name}`,
     athlete.age ? `Edad: ${athlete.age}` : null,
+    athlete.years_climbing ? `Anos escalando: ${athlete.years_climbing}` : null,
+    athlete.discipline ? `Disciplina: ${athlete.discipline}` : null,
     athlete.height_cm ? `Altura: ${athlete.height_cm}cm` : null,
     athlete.weight_kg ? `Peso: ${athlete.weight_kg}kg` : null,
     athlete.wingspan_cm ? `Envergadura: ${athlete.wingspan_cm}cm` : null,
@@ -67,6 +69,8 @@ function serializeAthlete(athlete: Athlete): string {
     athlete.current_limiter ? `Limitante actual: ${athlete.current_limiter}` : null,
     athlete.target_horizon ? `Horizonte objetivo: ${athlete.target_horizon}` : null,
     athlete.equipment?.length ? `Equipamiento disponible: ${athlete.equipment.join(", ")}` : "Equipamiento disponible: sin datos",
+    athlete.training_days?.length ? `Dias disponibles para entrenar: ${athlete.training_days.join(", ")}` : null,
+    athlete.rest_days_per_week ? `Dias de descanso requeridos por semana: ${athlete.rest_days_per_week}` : null,
     athlete.has_active_injury
       ? `LESION ACTIVA: ${athlete.injury_location ?? "?"} -- ${athlete.injury_description ?? ""}. Diagnostico: ${athlete.injury_diagnosis ?? "sin diagnostico"}. Restricciones: ${athlete.injury_restrictions ?? "sin especificar"}.`
       : "Sin lesion activa reportada.",
@@ -90,15 +94,16 @@ function serializeEvaluation(ev: Evaluation): string {
   return [
     `Fecha de evaluacion: ${ev.eval_date}`,
     painZones ? `Dolor actual por zona: ${painZones}` : "Sin dolor actual reportado.",
-    ev.shoulder_ir || ev.shoulder_er ? `Movilidad hombro -- RI: ${ev.shoulder_ir ?? "?"}, RE: ${ev.shoulder_er ?? "?"}` : null,
-    ev.wrist_mobility ? `Movilidad muneca: ${ev.wrist_mobility}` : null,
-    ev.thomas_test ? `Test de Thomas: ${ev.thomas_test}` : null,
+    ev.shoulder_ir_l || ev.shoulder_ir_r ? `Movilidad interna hombro -- izq: ${ev.shoulder_ir_l ?? "?"}, der: ${ev.shoulder_ir_r ?? "?"}` : null,
+    ev.frog_l || ev.frog_r ? `Apertura de ranita (cadera) -- izq: ${ev.frog_l ?? "?"}, der: ${ev.frog_r ?? "?"}` : null,
+    ev.thomas_l || ev.thomas_r ? `Test de Thomas -- izq: ${ev.thomas_l ?? "?"}, der: ${ev.thomas_r ?? "?"}` : null,
     ev.mobility_notes ? `Notas de movilidad: ${ev.mobility_notes}` : null,
-    ev.pullups_max ? `Dominadas max: ${ev.pullups_max}` : null,
-    ev.horizontal_push ? `Empuje horizontal: ${ev.horizontal_push}` : null,
+    ev.weighted_pullup_kg ? `Dominadas lastradas: +${ev.weighted_pullup_kg}kg` : null,
+    ev.bench_press_kg ? `Press banca: ${ev.bench_press_kg}kg` : null,
+    ev.deadlift_kg ? `Peso muerto: ${ev.deadlift_kg}kg` : null,
     ev.plank_seconds ? `Plancha: ${ev.plank_seconds}s` : null,
-    `Tindeq mano izq -- MVC:${ev.left_mvc_kg ?? "?"}kg (${ev.left_mvc_bw_pct ?? "?"}%BW), CF reps:${ev.left_cf_reps ?? "?"}, CF caida:${ev.left_cf_drop_pct ?? "?"}%, RFD200:${ev.left_rfd_200 ?? "?"}`,
-    `Tindeq mano der -- MVC:${ev.right_mvc_kg ?? "?"}kg (${ev.right_mvc_bw_pct ?? "?"}%BW), CF reps:${ev.right_cf_reps ?? "?"}, CF caida:${ev.right_cf_drop_pct ?? "?"}%, RFD200:${ev.right_rfd_200 ?? "?"}`,
+    `Tindeq mano izq -- MVC:${ev.left_mvc_kg ?? "?"}kg (${ev.left_mvc_bw_pct != null ? ev.left_mvc_bw_pct.toFixed(1) : "?"}%BW), CF reps:${ev.left_cf_reps ?? "?"}, CF caida:${ev.left_cf_drop_pct ?? "?"}%, RFD100:${ev.left_rfd_100 ?? "?"}kg/s, RFD20-80:${ev.left_rfd_2080 ?? "?"}kg/s`,
+    `Tindeq mano der -- MVC:${ev.right_mvc_kg ?? "?"}kg (${ev.right_mvc_bw_pct != null ? ev.right_mvc_bw_pct.toFixed(1) : "?"}%BW), CF reps:${ev.right_cf_reps ?? "?"}, CF caida:${ev.right_cf_drop_pct ?? "?"}%, RFD100:${ev.right_rfd_100 ?? "?"}kg/s, RFD20-80:${ev.right_rfd_2080 ?? "?"}kg/s`,
     ev.asymmetry_mvc_pct != null ? `Asimetria MVC: ${ev.asymmetry_mvc_pct.toFixed(1)}%${ev.asymmetry_mvc_pct > 15 ? " (SUPERA 15%, atender en la programacion)" : ""}` : null,
     ev.arc_duration_min ? `ARC: ${ev.arc_duration_min}min, RPE ${ev.arc_rpe ?? "?"}, completo sin caer: ${ev.arc_completed ? "si" : "no"}` : "Sin test ARC registrado -- programar como test de linea base en semana 1.",
     ev.boulder_redpoint || ev.boulder_onsight ? `Nivel boulder: redpoint ${ev.boulder_redpoint ?? "?"}, onsight ${ev.boulder_onsight ?? "?"}` : null,

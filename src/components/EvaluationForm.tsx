@@ -20,14 +20,16 @@ function emptyDraft(): Draft {
     wingspan_cm: null,
     health_screening: {},
     pain_by_zone: {},
-    shoulder_ir: "",
-    shoulder_er: "",
-    wrist_mobility: "",
-    deep_squat: null,
-    thomas_test: "",
+    shoulder_ir_l: "",
+    shoulder_ir_r: "",
+    frog_l: "",
+    frog_r: "",
+    thomas_l: "",
+    thomas_r: "",
     mobility_notes: "",
-    pullups_max: "",
-    horizontal_push: "",
+    weighted_pullup_kg: null,
+    bench_press_kg: null,
+    deadlift_kg: null,
     plank_seconds: null,
     lsit_seconds: null,
     vertical_jump_cm: null,
@@ -37,18 +39,14 @@ function emptyDraft(): Draft {
     left_cf_avg_force_kg: null,
     left_cf_drop_pct: null,
     left_rfd_100: null,
-    left_rfd_150: null,
-    left_rfd_200: null,
-    left_rfd_250: null,
+    left_rfd_2080: null,
     right_mvc_kg: null,
     right_mvc_bw_pct: null,
     right_cf_reps: null,
     right_cf_avg_force_kg: null,
     right_cf_drop_pct: null,
     right_rfd_100: null,
-    right_rfd_150: null,
-    right_rfd_200: null,
-    right_rfd_250: null,
+    right_rfd_2080: null,
     asymmetry_mvc_pct: null,
     asymmetry_cf_pct: null,
     arc_duration_min: null,
@@ -132,12 +130,22 @@ export function EvaluationForm({
     leftMvc && rightMvc
       ? (Math.abs(leftMvc - rightMvc) / Math.max(leftMvc, rightMvc)) * 100
       : null;
+  const leftMvcBwPct = leftMvc && draft.weight_kg ? (leftMvc / draft.weight_kg) * 100 : null;
+  const rightMvcBwPct = rightMvc && draft.weight_kg ? (rightMvc / draft.weight_kg) * 100 : null;
+
+  const [savedForGate, setSavedForGate] = useState(false);
 
   async function save() {
     if (!athleteId) return;
     setSaving(true);
     const supabase = createClient();
-    const payload = { ...draft, athlete_id: athleteId, asymmetry_mvc_pct: asymmetry };
+    const payload = {
+      ...draft,
+      athlete_id: athleteId,
+      asymmetry_mvc_pct: asymmetry,
+      left_mvc_bw_pct: leftMvcBwPct,
+      right_mvc_bw_pct: rightMvcBwPct,
+    };
 
     if (evaluationId) {
       await supabase.from("evaluations").update(payload).eq("id", evaluationId);
@@ -145,18 +153,7 @@ export function EvaluationForm({
     } else if (isOnboardingGate) {
       await supabase.from("evaluations").insert(payload);
       setSaving(false);
-      setGeneratingPlan(true);
-      try {
-        await fetch("/api/generate-mesocycle", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ athleteId, mode: "initial" }),
-        });
-      } catch {
-        // Si falla la generacion (red, API caida, etc.) igual dejamos pasar al
-        // atleta -- va a ver el estado vacio de /mesociclo con su opcion manual.
-      }
-      onOnboardingComplete?.();
+      setSavedForGate(true);
       return;
     } else {
       const { data } = await supabase.from("evaluations").insert(payload).select("id").single();
@@ -164,6 +161,21 @@ export function EvaluationForm({
     }
     setSaving(false);
     router.refresh();
+  }
+
+  async function generatePlan() {
+    setGeneratingPlan(true);
+    try {
+      await fetch("/api/generate-mesocycle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ athleteId, mode: "initial" }),
+      });
+    } catch {
+      // Si falla la generacion (red, API caida, etc.) igual dejamos pasar al
+      // atleta -- va a ver el estado vacio de /mesociclo con su opcion manual.
+    }
+    onOnboardingComplete?.();
   }
 
   if (generatingPlan) {
@@ -242,28 +254,30 @@ export function EvaluationForm({
 
       {tab === "Movilidad" && (
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="Rotacion interna hombro">
-              <Input value={draft.shoulder_ir ?? ""} onChange={(e) => set("shoulder_ir", e.target.value)} />
-            </Field>
-            <Field label="Rotacion externa hombro">
-              <Input value={draft.shoulder_er ?? ""} onChange={(e) => set("shoulder_er", e.target.value)} />
-            </Field>
-            <Field label="Movilidad de muneca">
-              <Input value={draft.wrist_mobility ?? ""} onChange={(e) => set("wrist_mobility", e.target.value)} />
-            </Field>
-            <Field label="Test de Thomas (cadera)">
-              <Input value={draft.thomas_test ?? ""} onChange={(e) => set("thomas_test", e.target.value)} />
-            </Field>
-          </div>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={!!draft.deep_squat}
-              onChange={(e) => set("deep_squat", e.target.checked)}
-            />
-            Sentadilla profunda completa (talones apoyados)
-          </label>
+          <MobilityTestRow
+            label="Movilidad interna (hombro)"
+            tooltip="Rotacion interna de hombro con el brazo en abduccion de 90 grados: cuanto rota el hombro hacia adentro. Limitacion tipica en escaladores por el sesgo de traccion."
+            leftValue={draft.shoulder_ir_l ?? ""}
+            rightValue={draft.shoulder_ir_r ?? ""}
+            onLeftChange={(v) => set("shoulder_ir_l", v)}
+            onRightChange={(v) => set("shoulder_ir_r", v)}
+          />
+          <MobilityTestRow
+            label="Apertura de ranita (cadera)"
+            tooltip="Acostado boca arriba, rodillas y caderas flexionadas abriendo hacia los costados (posicion de rana). Evalua movilidad de cadera en rotacion externa."
+            leftValue={draft.frog_l ?? ""}
+            rightValue={draft.frog_r ?? ""}
+            onLeftChange={(v) => set("frog_l", v)}
+            onRightChange={(v) => set("frog_r", v)}
+          />
+          <MobilityTestRow
+            label="Test de Thomas (cadera)"
+            tooltip="Acostado boca arriba al borde de la camilla, una pierna llevada al pecho y la otra colgando extendida. Evalua acortamiento de psoas / recto femoral."
+            leftValue={draft.thomas_l ?? ""}
+            rightValue={draft.thomas_r ?? ""}
+            onLeftChange={(v) => set("thomas_l", v)}
+            onRightChange={(v) => set("thomas_r", v)}
+          />
           <Field label="Notas de movilidad">
             <Textarea rows={3} value={draft.mobility_notes ?? ""} onChange={(e) => set("mobility_notes", e.target.value)} />
           </Field>
@@ -272,11 +286,14 @@ export function EvaluationForm({
 
       {tab === "Fuerza" && (
         <div className="grid grid-cols-2 gap-4">
-          <Field label="Dominadas maximas">
-            <Input value={draft.pullups_max ?? ""} onChange={(e) => set("pullups_max", e.target.value)} />
+          <Field label="Dominadas lastradas (kg)">
+            <Input type="number" value={draft.weighted_pullup_kg ?? ""} onChange={(e) => set("weighted_pullup_kg", numOrNull(e.target.value))} />
           </Field>
-          <Field label="Empuje horizontal">
-            <Input value={draft.horizontal_push ?? ""} onChange={(e) => set("horizontal_push", e.target.value)} />
+          <Field label="Press banca (kg)">
+            <Input type="number" value={draft.bench_press_kg ?? ""} onChange={(e) => set("bench_press_kg", numOrNull(e.target.value))} />
+          </Field>
+          <Field label="Peso muerto (kg)">
+            <Input type="number" value={draft.deadlift_kg ?? ""} onChange={(e) => set("deadlift_kg", numOrNull(e.target.value))} />
           </Field>
           <Field label="Plancha (segundos)">
             <Input type="number" value={draft.plank_seconds ?? ""} onChange={(e) => set("plank_seconds", numOrNull(e.target.value))} />
@@ -292,8 +309,8 @@ export function EvaluationForm({
 
       {tab === "Dedos/Tindeq" && (
         <div className="space-y-6">
-          <HandSection label="Mano izquierda" prefix="left" draft={draft} set={set} />
-          <HandSection label="Mano derecha" prefix="right" draft={draft} set={set} />
+          <HandSection label="Mano izquierda" prefix="left" draft={draft} set={set} bwPct={leftMvcBwPct} />
+          <HandSection label="Mano derecha" prefix="right" draft={draft} set={set} bwPct={rightMvcBwPct} />
           {asymmetry !== null && (
             <p className="text-sm text-[var(--color-text)]/70">
               Asimetria MVC calculada: <span className="font-medium">{asymmetry.toFixed(1)}%</span>{" "}
@@ -353,11 +370,43 @@ export function EvaluationForm({
         </div>
       )}
 
-      <div className="mt-6 flex justify-end">
-        <Button onClick={save} disabled={saving}>
-          {saving ? "Guardando..." : "Guardar"}
+      <div className="mt-6 flex justify-end gap-2">
+        {isOnboardingGate && (
+          <Button onClick={generatePlan} disabled={!savedForGate} variant="secondary">
+            Generar planificacion
+          </Button>
+        )}
+        <Button onClick={save} disabled={saving || (isOnboardingGate && savedForGate)}>
+          {saving ? "Guardando..." : isOnboardingGate && savedForGate ? "Guardado" : "Guardar"}
         </Button>
       </div>
+    </div>
+  );
+}
+
+function MobilityTestRow({
+  label,
+  tooltip,
+  leftValue,
+  rightValue,
+  onLeftChange,
+  onRightChange,
+}: {
+  label: string;
+  tooltip: string;
+  leftValue: string;
+  rightValue: string;
+  onLeftChange: (value: string) => void;
+  onRightChange: (value: string) => void;
+}) {
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <Field label={`${label} -- izquierda`} tooltip={tooltip}>
+        <Input value={leftValue} onChange={(e) => onLeftChange(e.target.value)} />
+      </Field>
+      <Field label={`${label} -- derecha`} tooltip={tooltip}>
+        <Input value={rightValue} onChange={(e) => onRightChange(e.target.value)} />
+      </Field>
     </div>
   );
 }
@@ -367,11 +416,13 @@ function HandSection({
   prefix,
   draft,
   set,
+  bwPct,
 }: {
   label: string;
   prefix: "left" | "right";
   draft: Draft;
   set: <K extends keyof Draft>(key: K, value: Draft[K]) => void;
+  bwPct: number | null;
 }) {
   return (
     <div className="border border-[var(--color-divider)] rounded-lg p-4">
@@ -384,12 +435,8 @@ function HandSection({
             onChange={(e) => set(`${prefix}_mvc_kg`, numOrNull(e.target.value))}
           />
         </Field>
-        <Field label="MVC %BW">
-          <Input
-            type="number"
-            value={draft[`${prefix}_mvc_bw_pct`] ?? ""}
-            onChange={(e) => set(`${prefix}_mvc_bw_pct`, numOrNull(e.target.value))}
-          />
+        <Field label="MVC %BW" tooltip="Se calcula solo: MVC (kg) / peso corporal de la evaluacion x 100.">
+          <Input type="number" value={bwPct !== null ? bwPct.toFixed(1) : ""} disabled readOnly className="opacity-70" />
         </Field>
       </div>
       <div className="grid grid-cols-2 gap-3 mb-3">
@@ -416,36 +463,20 @@ function HandSection({
             onChange={(e) => set(`${prefix}_cf_drop_pct`, numOrNull(e.target.value))}
           />
         </Field>
-        <Field label="RFD 100ms">
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="RFD 100ms (kg/s)">
           <Input
             type="number"
             value={draft[`${prefix}_rfd_100`] ?? ""}
             onChange={(e) => set(`${prefix}_rfd_100`, numOrNull(e.target.value))}
           />
         </Field>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <Field label="RFD 150ms">
+        <Field label="RFD 20-80% (kg/s)" tooltip="RFD entre el 20% y el 80% de la MVC -- asi lo reporta la app de Tindeq.">
           <Input
             type="number"
-            value={draft[`${prefix}_rfd_150`] ?? ""}
-            onChange={(e) => set(`${prefix}_rfd_150`, numOrNull(e.target.value))}
-          />
-        </Field>
-        <Field label="RFD 200ms">
-          <Input
-            type="number"
-            value={draft[`${prefix}_rfd_200`] ?? ""}
-            onChange={(e) => set(`${prefix}_rfd_200`, numOrNull(e.target.value))}
-          />
-        </Field>
-      </div>
-      <div className="grid grid-cols-2 gap-3 mt-3">
-        <Field label="RFD 250ms">
-          <Input
-            type="number"
-            value={draft[`${prefix}_rfd_250`] ?? ""}
-            onChange={(e) => set(`${prefix}_rfd_250`, numOrNull(e.target.value))}
+            value={draft[`${prefix}_rfd_2080`] ?? ""}
+            onChange={(e) => set(`${prefix}_rfd_2080`, numOrNull(e.target.value))}
           />
         </Field>
       </div>

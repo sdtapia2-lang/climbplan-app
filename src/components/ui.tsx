@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { X } from "lucide-react";
+import { X, Info } from "lucide-react";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -35,14 +35,23 @@ export function CardMeta({ children }: { children: ReactNode }) {
 
 export function Field({
   label,
+  tooltip,
   children,
 }: {
   label: string;
+  tooltip?: string;
   children: ReactNode;
 }) {
   return (
     <div>
-      <label className="block text-xs mb-1 text-[var(--color-text)]/70">{label}</label>
+      <label className="flex items-center gap-1 text-xs mb-1 text-[var(--color-text)]/70">
+        {label}
+        {tooltip && (
+          <span title={tooltip} className="inline-flex text-[var(--color-text)]/40 hover:text-[var(--color-accent-500)] cursor-help">
+            <Info size={12} strokeWidth={2.5} aria-hidden="true" />
+          </span>
+        )}
+      </label>
       {children}
     </div>
   );

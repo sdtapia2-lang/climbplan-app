@@ -71,9 +71,15 @@ export type Athlete = {
   medical_conditions: string | null;
   general_notes: string | null;
   transversal_rules: string | null;
+  years_climbing: number | null;
+  discipline: string | null;
+  training_days: string[];
+  rest_days_per_week: number | null;
   created_at: string;
   updated_at: string;
 };
+
+export const DISCIPLINE_OPTIONS = ["Boulder", "Deportiva", "Ambas"] as const;
 
 export const EXERCISE_CATEGORIES = [
   "Aerobic Base",
@@ -236,14 +242,16 @@ export type Evaluation = {
   wingspan_cm: number | null;
   health_screening: Record<string, boolean>;
   pain_by_zone: Record<string, number>;
-  shoulder_ir: string | null;
-  shoulder_er: string | null;
-  wrist_mobility: string | null;
-  deep_squat: boolean | null;
-  thomas_test: string | null;
+  shoulder_ir_l: string | null;
+  shoulder_ir_r: string | null;
+  frog_l: string | null;
+  frog_r: string | null;
+  thomas_l: string | null;
+  thomas_r: string | null;
   mobility_notes: string | null;
-  pullups_max: string | null;
-  horizontal_push: string | null;
+  weighted_pullup_kg: number | null;
+  bench_press_kg: number | null;
+  deadlift_kg: number | null;
   plank_seconds: number | null;
   lsit_seconds: number | null;
   vertical_jump_cm: number | null;
@@ -253,18 +261,14 @@ export type Evaluation = {
   left_cf_avg_force_kg: number | null;
   left_cf_drop_pct: number | null;
   left_rfd_100: number | null;
-  left_rfd_150: number | null;
-  left_rfd_200: number | null;
-  left_rfd_250: number | null;
+  left_rfd_2080: number | null;
   right_mvc_kg: number | null;
   right_mvc_bw_pct: number | null;
   right_cf_reps: number | null;
   right_cf_avg_force_kg: number | null;
   right_cf_drop_pct: number | null;
   right_rfd_100: number | null;
-  right_rfd_150: number | null;
-  right_rfd_200: number | null;
-  right_rfd_250: number | null;
+  right_rfd_2080: number | null;
   asymmetry_mvc_pct: number | null;
   asymmetry_cf_pct: number | null;
   arc_duration_min: number | null;

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
-import { Card, Field, Input, Textarea, Button, Spinner } from "@/components/ui";
-import { EQUIPMENT_OPTIONS, type Athlete } from "@/lib/types";
+import { Card, Field, Input, Select, Textarea, Button, Spinner } from "@/components/ui";
+import { EQUIPMENT_OPTIONS, DISCIPLINE_OPTIONS, DAYS_OF_WEEK, type Athlete } from "@/lib/types";
+import { X } from "lucide-react";
 
 export default function AthleteProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -42,6 +43,30 @@ export default function AthleteProfilePage() {
     if (!athlete || !customEquipment.trim()) return;
     update("equipment", [...athlete.equipment, customEquipment.trim()]);
     setCustomEquipment("");
+  }
+
+  function toggleTrainingDay(day: string) {
+    if (!athlete) return;
+    const has = athlete.training_days.includes(day);
+    update("training_days", has ? athlete.training_days.filter((d) => d !== day) : [...athlete.training_days, day]);
+  }
+
+  function addInjuryHistory() {
+    if (!athlete) return;
+    update("injury_history", [...athlete.injury_history, { injury: "", year: "", status: "" }]);
+  }
+
+  function updateInjuryHistory(index: number, field: "injury" | "year" | "status", value: string) {
+    if (!athlete) return;
+    update(
+      "injury_history",
+      athlete.injury_history.map((entry, i) => (i === index ? { ...entry, [field]: value } : entry)),
+    );
+  }
+
+  function removeInjuryHistory(index: number) {
+    if (!athlete) return;
+    update("injury_history", athlete.injury_history.filter((_, i) => i !== index));
   }
 
   async function save() {
@@ -94,6 +119,19 @@ export default function AthleteProfilePage() {
           <Field label="Envergadura (cm)">
             <Input type="number" value={athlete.wingspan_cm ?? ""} onChange={(e) => update("wingspan_cm", e.target.value ? Number(e.target.value) : null)} />
           </Field>
+          <Field label="Anos escalando">
+            <Input type="number" value={athlete.years_climbing ?? ""} onChange={(e) => update("years_climbing", e.target.value ? Number(e.target.value) : null)} />
+          </Field>
+          <Field label="Disciplina">
+            <Select value={athlete.discipline ?? ""} onChange={(e) => update("discipline", e.target.value || null)}>
+              <option value="">Sin especificar</option>
+              {DISCIPLINE_OPTIONS.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </Select>
+          </Field>
         </div>
       </Card>
 
@@ -134,6 +172,42 @@ export default function AthleteProfilePage() {
           </Field>
           <Field label="Formato de periodizacion">
             <Input value={athlete.periodization_format ?? ""} onChange={(e) => update("periodization_format", e.target.value)} />
+          </Field>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-medium mb-4">Planificacion</h2>
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs mb-2 text-[var(--color-text)]/70">Dias disponibles para entrenar</p>
+            <div className="flex flex-wrap gap-2">
+              {DAYS_OF_WEEK.map((day) => {
+                const active = athlete.training_days.includes(day);
+                return (
+                  <button
+                    key={day}
+                    onClick={() => toggleTrainingDay(day)}
+                    className={`text-sm px-3 py-1.5 rounded-full border ${
+                      active
+                        ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]"
+                        : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
+                    }`}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <Field label="Cantidad de dias de descanso por semana">
+            <Input
+              type="number"
+              min={0}
+              max={7}
+              value={athlete.rest_days_per_week ?? ""}
+              onChange={(e) => update("rest_days_per_week", e.target.value ? Number(e.target.value) : null)}
+            />
           </Field>
         </div>
       </Card>
@@ -219,6 +293,44 @@ export default function AthleteProfilePage() {
             </div>
           </div>
         )}
+
+        <div className="mt-6">
+          <p className="text-sm font-medium mb-3">Historial de lesiones</p>
+          <div className="space-y-3">
+            {athlete.injury_history.map((entry, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <Input
+                  placeholder="Lesion"
+                  value={entry.injury}
+                  onChange={(e) => updateInjuryHistory(i, "injury", e.target.value)}
+                  className="flex-[2]"
+                />
+                <Input
+                  placeholder="Ano"
+                  value={entry.year}
+                  onChange={(e) => updateInjuryHistory(i, "year", e.target.value)}
+                  className="flex-1"
+                />
+                <Input
+                  placeholder="Estado (resuelta, cronica...)"
+                  value={entry.status}
+                  onChange={(e) => updateInjuryHistory(i, "status", e.target.value)}
+                  className="flex-1"
+                />
+                <button
+                  onClick={() => removeInjuryHistory(i)}
+                  className="shrink-0 mt-1.5 text-[var(--color-text)]/40 hover:text-red-600"
+                  aria-label="Eliminar lesion"
+                >
+                  <X size={16} strokeWidth={2.5} />
+                </button>
+              </div>
+            ))}
+          </div>
+          <Button variant="secondary" className="mt-3" onClick={addInjuryHistory}>
+            + Agregar lesion
+          </Button>
+        </div>
       </Card>
 
       <Card>
