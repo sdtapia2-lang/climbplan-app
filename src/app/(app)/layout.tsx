@@ -11,7 +11,7 @@ import { OnboardingScreen } from "@/components/OnboardingScreen";
 import { EvaluationForm } from "@/components/EvaluationForm";
 import { Spinner, Card } from "@/components/ui";
 
-function CompleteEvaluationGate() {
+function CompleteEvaluationGate({ onDone }: { onDone: () => void }) {
   return (
     <div className="min-h-screen px-4 py-10 flex justify-center">
       <div className="w-full max-w-2xl">
@@ -21,7 +21,7 @@ function CompleteEvaluationGate() {
             Nos da una linea base para armar tu plan desde el catalogo. Vas a poder completarla de nuevo mas adelante.
           </p>
         </Card>
-        <EvaluationForm />
+        <EvaluationForm isOnboardingGate onOnboardingComplete={onDone} />
       </div>
     </div>
   );
@@ -58,7 +58,7 @@ function Gate({ children }: { children: React.ReactNode }) {
     if (evalCount === 0) {
       return (
         <AthleteProvider>
-          <CompleteEvaluationGate />
+          <CompleteEvaluationGate onDone={() => setEvalCount((c) => (c ?? 0) + 1)} />
         </AthleteProvider>
       );
     }

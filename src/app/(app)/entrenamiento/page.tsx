@@ -4,18 +4,23 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
+import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Input, Button, Badge, Spinner, EmptyState } from "@/components/ui";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
-import { TriangleAlert, Check } from "lucide-react";
+import { computeCurrentWeek } from "@/lib/weeks";
+import { TriangleAlert, Check, Sparkles, X } from "lucide-react";
 
 type DayWithBlocks = Day & { blocks: Block[] };
+type PendingAdjustmentBanner = { runId: string; completedAt: string | null };
 
 export default function TrainingPage() {
   const { athleteId } = useAthlete();
+  const { profile } = useProfile();
   const [loading, setLoading] = useState(true);
   const [mesocycle, setMesocycle] = useState<Mesocycle | null>(null);
   const [week, setWeek] = useState<Week | null>(null);
   const [days, setDays] = useState<DayWithBlocks[]>([]);
+  const [adjustmentBanner, setAdjustmentBanner] = useState<PendingAdjustmentBanner | null>(null);
   const todayName = DAYS_OF_WEEK[(new Date().getDay() + 6) % 7];
 
   async function load() {
@@ -79,6 +84,38 @@ export default function TrainingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [athleteId]);
 
+  useEffect(() => {
+    if (!athleteId || !isSelfCoached(profile)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resetea si deja de aplicar
+      setAdjustmentBanner(null);
+      return;
+    }
+    (async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("ai_generation_runs")
+        .select("id, completed_at")
+        .eq("athlete_id", athleteId)
+        .eq("trigger_type", "checkin_adjustment")
+        .eq("status", "succeeded")
+        .is("acknowledged_at", null)
+        .order("completed_at", { ascending: false })
+        .limit(1);
+      setAdjustmentBanner(data?.[0] ? { runId: data[0].id, completedAt: data[0].completed_at } : null);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [athleteId, profile?.id]);
+
+  async function dismissAdjustmentBanner() {
+    if (!adjustmentBanner) return;
+    const supabase = createClient();
+    await supabase
+      .from("ai_generation_runs")
+      .update({ acknowledged_at: new Date().toISOString() })
+      .eq("id", adjustmentBanner.runId);
+    setAdjustmentBanner(null);
+  }
+
   async function updateBlockField(blockId: string, patch: Partial<Block>) {
     setDays((ds) =>
       ds.map((d) => ({ ...d, blocks: d.blocks.map((b) => (b.id === blockId ? { ...b, ...patch } : b)) })),
@@ -97,21 +134,37 @@ export default function TrainingPage() {
 
   if (loading) return <Spinner />;
 
+  const banner = adjustmentBanner && (
+    <Card className="mb-4 flex items-start justify-between gap-3 border-[var(--color-accent-400)]">
+      <div className="flex items-start gap-2">
+        <Sparkles size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-[var(--color-accent-500)]" aria-hidden="true" />
+        <p className="text-sm">Tu plan se actualizo segun tu ultimo check-in.</p>
+      </div>
+      <button onClick={dismissAdjustmentBanner} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)] shrink-0">
+        <X size={16} strokeWidth={2.5} aria-hidden="true" />
+      </button>
+    </Card>
+  );
+
   if (!mesocycle) {
     return (
-      <EmptyState
-        text="Sin semanas de entrenamiento"
-        action={
-          <Link href="/mesociclo/new" className="text-[var(--color-accent-700)] hover:underline">
-            Crear mesociclo &rarr;
-          </Link>
-        }
-      />
+      <div>
+        {banner}
+        <EmptyState
+          text="Sin semanas de entrenamiento"
+          action={
+            <Link href="/mesociclo/new" className="text-[var(--color-accent-700)] hover:underline">
+              Crear mesociclo &rarr;
+            </Link>
+          }
+        />
+      </div>
     );
   }
 
   return (
     <div>
+      {banner}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-xl font-semibold">
           {mesocycle.name} &mdash; Semana {week?.week_number}
@@ -210,14 +263,4 @@ export default function TrainingPage() {
       </div>
     </div>
   );
-}
-
-function computeCurrentWeek(mesocycle: Mesocycle, weeks: Week[]): Week | null {
-  if (weeks.length === 0) return null;
-  if (!mesocycle.start_date) return weeks[0];
-  const start = new Date(mesocycle.start_date);
-  const today = new Date();
-  const diffDays = Math.floor((today.getTime() - start.getTime()) / 86400000);
-  const idx = Math.min(Math.max(Math.floor(diffDays / 7), 0), weeks.length - 1);
-  return weeks[idx] ?? weeks[0];
 }

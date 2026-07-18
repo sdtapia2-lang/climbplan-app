@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
+import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Field, Input, Textarea, Button, Modal, Spinner, EmptyState } from "@/components/ui";
-import { PAIN_ZONES, type CheckIn } from "@/lib/types";
+import { PAIN_ZONES, type CheckIn, type Mesocycle, type Week } from "@/lib/types";
+import { computeCurrentWeek } from "@/lib/weeks";
 
 function emptyDraft(): Omit<CheckIn, "id" | "athlete_id" | "created_at"> {
   return {
@@ -21,11 +23,13 @@ function emptyDraft(): Omit<CheckIn, "id" | "athlete_id" | "created_at"> {
 
 export default function CheckInPage() {
   const { athlete, athleteId } = useAthlete();
+  const { profile } = useProfile();
   const [checkins, setCheckins] = useState<CheckIn[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [draft, setDraft] = useState(emptyDraft());
   const [saving, setSaving] = useState(false);
+  const [activeWeekId, setActiveWeekId] = useState<string | null>(null);
 
   async function load() {
     if (!athleteId) return;
@@ -37,6 +41,23 @@ export default function CheckInPage() {
       .eq("athlete_id", athleteId)
       .order("checkin_date", { ascending: false });
     setCheckins((data as CheckIn[]) ?? []);
+
+    const { data: mesos } = await supabase
+      .from("mesocycles")
+      .select("*")
+      .eq("athlete_id", athleteId)
+      .neq("status", "Completado")
+      .order("created_at", { ascending: false })
+      .limit(1);
+    const meso = (mesos?.[0] as Mesocycle) ?? null;
+    if (meso) {
+      const { data: weeksData } = await supabase.from("weeks").select("*").eq("mesocycle_id", meso.id).order("week_number");
+      const currentWeek = computeCurrentWeek(meso, (weeksData as Week[]) ?? []);
+      setActiveWeekId(currentWeek?.id ?? null);
+    } else {
+      setActiveWeekId(null);
+    }
+
     setLoading(false);
   }
 
@@ -50,11 +71,24 @@ export default function CheckInPage() {
     if (!athleteId) return;
     setSaving(true);
     const supabase = createClient();
-    await supabase.from("checkins").insert({ ...draft, athlete_id: athleteId });
+    const { data } = await supabase
+      .from("checkins")
+      .insert({ ...draft, athlete_id: athleteId, week_id: activeWeekId })
+      .select("id")
+      .single();
     setSaving(false);
     setModalOpen(false);
     setDraft(emptyDraft());
     load();
+
+    if (data?.id && isSelfCoached(profile)) {
+      // Dispara el ajuste de IA en segundo plano -- no bloquea el cierre del modal.
+      fetch("/api/adjust-mesocycle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ athleteId, checkinId: data.id }),
+      }).catch(() => {});
+    }
   }
 
   return (

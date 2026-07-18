@@ -86,13 +86,22 @@ function numOrNull(v: string) {
   return v === "" ? null : Number(v);
 }
 
-export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
+export function EvaluationForm({
+  evaluationId,
+  isOnboardingGate = false,
+  onOnboardingComplete,
+}: {
+  evaluationId?: string;
+  isOnboardingGate?: boolean;
+  onOnboardingComplete?: () => void;
+}) {
   const { athleteId } = useAthlete();
   const router = useRouter();
   const [tab, setTab] = useState<(typeof TABS)[number]>("General");
   const [draft, setDraft] = useState<Draft>(emptyDraft());
   const [loading, setLoading] = useState(!!evaluationId);
   const [saving, setSaving] = useState(false);
+  const [generatingPlan, setGeneratingPlan] = useState(false);
 
   useEffect(() => {
     if (!evaluationId) return;
@@ -133,12 +142,39 @@ export function EvaluationForm({ evaluationId }: { evaluationId?: string }) {
     if (evaluationId) {
       await supabase.from("evaluations").update(payload).eq("id", evaluationId);
       router.push("/evaluacion");
+    } else if (isOnboardingGate) {
+      await supabase.from("evaluations").insert(payload);
+      setSaving(false);
+      setGeneratingPlan(true);
+      try {
+        await fetch("/api/generate-mesocycle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ athleteId, mode: "initial" }),
+        });
+      } catch {
+        // Si falla la generacion (red, API caida, etc.) igual dejamos pasar al
+        // atleta -- va a ver el estado vacio de /mesociclo con su opcion manual.
+      }
+      onOnboardingComplete?.();
+      return;
     } else {
       const { data } = await supabase.from("evaluations").insert(payload).select("id").single();
       router.push(data ? `/evaluacion/${data.id}` : "/evaluacion");
     }
     setSaving(false);
     router.refresh();
+  }
+
+  if (generatingPlan) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
+        <div className="w-8 h-8 border-2 border-[var(--color-neutral-300)] border-t-[var(--color-accent-500)] rounded-full animate-spin" />
+        <p className="text-sm text-[var(--color-text)]/70 max-w-xs">
+          Generando tu plan de entrenamiento inicial... esto puede tardar uno o dos minutos.
+        </p>
+      </div>
+    );
   }
 
   if (loading) return <p className="text-[var(--color-text)]/40">Cargando...</p>;

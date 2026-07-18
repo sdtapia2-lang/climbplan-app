@@ -156,9 +156,12 @@ Completá `.env.local` con la URL, la anon key y la service role key que copiast
 NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
 SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
+ANTHROPIC_API_KEY=tu-anthropic-api-key
 ```
 
 `SUPABASE_SERVICE_ROLE_KEY` es un secreto con acceso total a la base de datos (bypassea RLS) — nunca le pongas el prefijo `NEXT_PUBLIC_`, y nunca la subas a git (el `.gitignore` ya excluye `.env.local`, solo revisá que sigas usando ese nombre de archivo).
+
+`ANTHROPIC_API_KEY` (console.anthropic.com > API Keys) es la que usan las rutas `/api/generate-mesocycle` y `/api/adjust-mesocycle` para generar y ajustar con IA los planes de los escaladores libres. Mismas reglas que la service role key: nunca `NEXT_PUBLIC_`, nunca a git.
 
 ## 3. Correr en local
 
@@ -173,7 +176,7 @@ Abrí `http://localhost:3000`. La primera vez, usá el link "Primera vez? Crear 
 
 1. Subí este proyecto a un repo de GitHub (podés pedirme que lo haga si querés).
 2. Andá a [vercel.com](https://vercel.com), creá una cuenta gratis e importá el repo.
-3. En **Environment Variables** del proyecto en Vercel, agregá las mismas tres variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`).
+3. En **Environment Variables** del proyecto en Vercel, agregá las mismas cuatro variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`).
 4. Deploy. Vercel te da una URL pública (tipo `climbplan.vercel.app`) accesible desde el celular, igual que la app de Base44.
 
 ## Estructura del proyecto

@@ -2,19 +2,55 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
-import { useProfile, canManageOwnMesocycle } from "@/components/ProfileProvider";
+import { useProfile, canManageOwnMesocycle, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
+import { Sparkles } from "lucide-react";
 import type { Mesocycle } from "@/lib/types";
 
 export default function MesocycleListPage() {
   const { athlete, athleteId } = useAthlete();
   const { profile } = useProfile();
+  const router = useRouter();
   const canCreate = canManageOwnMesocycle(profile);
   const canOpenDetail = canCreate || profile?.role !== "escalador";
   const [mesocycles, setMesocycles] = useState<Mesocycle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingNext, setGeneratingNext] = useState(false);
+
+  const latestMesocycle = mesocycles[0] ?? null;
+  const latestIsFinished =
+    !!latestMesocycle &&
+    (latestMesocycle.status === "Completado" || (!!latestMesocycle.end_date && new Date(latestMesocycle.end_date) < new Date()));
+  const showGenerateNext = isSelfCoached(profile) && latestMesocycle && latestIsFinished;
+
+  async function generateNext() {
+    if (!athleteId) return;
+    setGeneratingNext(true);
+    try {
+      const res = await fetch("/api/generate-mesocycle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ athleteId, mode: "next" }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) {
+        alert(data?.error ?? "No se pudo generar el siguiente mesociclo.");
+        setGeneratingNext(false);
+        return;
+      }
+      if (data?.mesocycleId) {
+        router.push(`/mesociclo/${data.mesocycleId}`);
+        return;
+      }
+      setGeneratingNext(false);
+    } catch {
+      alert("No se pudo generar el siguiente mesociclo.");
+      setGeneratingNext(false);
+    }
+  }
 
   useEffect(() => {
     if (!athleteId) {
@@ -39,11 +75,19 @@ export default function MesocycleListPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
-        {canCreate && (
-          <Link href="/mesociclo/new">
-            <Button>+ Nuevo mesociclo</Button>
-          </Link>
-        )}
+        <div className="flex items-center gap-2">
+          {showGenerateNext && (
+            <Button onClick={generateNext} disabled={generatingNext} variant="secondary">
+              <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
+              {generatingNext ? "Generando..." : "Generar siguiente mesociclo"}
+            </Button>
+          )}
+          {canCreate && (
+            <Link href="/mesociclo/new">
+              <Button>+ Nuevo mesociclo</Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       {!canOpenDetail && (
