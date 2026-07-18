@@ -103,6 +103,16 @@ export const EQUIPMENT_OPTIONS = [
   "Banda elastica",
   "Poleas",
   "Spray wall",
+  "Barra",
+  "Peso corporal",
+  "Tablero de circuitos",
+  "Mancuernas",
+  "Pesas rusas",
+  "Pared de dificultad",
+  "Regleta de lastre",
+  "Aros/TRX",
+  "Bloque de yoga",
+  "Colchoneta",
 ] as const;
 
 export type Exercise = {
