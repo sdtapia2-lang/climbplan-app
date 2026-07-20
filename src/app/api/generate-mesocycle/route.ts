@@ -4,6 +4,7 @@ import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { DAYS_OF_WEEK, type Athlete, type Evaluation, type Exercise } from "@/lib/types";
 import { generateInitialMesocyclePlan, generateNextMesocyclePlan, MesocycleGenerationError } from "@/lib/ai/generateMesocycle";
+import { generateInitialMesocyclePlanRules, generateNextMesocyclePlanRules } from "@/lib/planner";
 import type { AiMesocyclePlan } from "@/lib/ai/mesocycleSchema";
 
 type SupabaseAdmin = ReturnType<typeof createAdminClient>;
@@ -173,6 +174,9 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const athleteId = typeof body?.athleteId === "string" ? body.athleteId : "";
   const mode = body?.mode === "next" ? "next" : "initial";
+  // Motor de generación: reglas determinista por defecto (0 tokens); "ai"
+  // fuerza el camino Claude original.
+  const engine = body?.engine === "ai" ? "ai" : "rules";
 
   if (!athleteId) {
     return NextResponse.json({ error: "Falta athleteId." }, { status: 400 });
@@ -236,18 +240,46 @@ export async function POST(request: Request) {
   }
 
   try {
-    let generated: { result: AiMesocyclePlan; model: string };
-    if (mode === "initial") {
-      generated = await generateInitialMesocyclePlan(athlete as Athlete, latestEvaluation!, exercises as Exercise[]);
-    } else {
-      const { pastMesocyclesSummary, allCheckinsSummary } = await buildHistorySummaries(admin, athleteId);
-      generated = await generateNextMesocyclePlan(
-        athlete as Athlete,
-        latestEvaluation,
-        pastMesocyclesSummary,
-        allCheckinsSummary,
-        exercises as Exercise[],
-      );
+    let generated: { result: AiMesocyclePlan; model: string } | null = null;
+
+    if (engine === "rules") {
+      try {
+        if (mode === "initial") {
+          generated = generateInitialMesocyclePlanRules(athlete as Athlete, latestEvaluation!, exercises as Exercise[]);
+        } else {
+          const { count: prevCount } = await admin
+            .from("mesocycles")
+            .select("id", { count: "exact", head: true })
+            .eq("athlete_id", athleteId);
+          generated = generateNextMesocyclePlanRules({
+            athlete: athlete as Athlete,
+            latestEvaluation,
+            exercises: exercises as Exercise[],
+            previousMesocycles: prevCount ?? 0,
+          });
+        }
+      } catch (rulesErr) {
+        // Fallback automático a Claude solo si hay API key configurada;
+        // si no, el error del motor de reglas se propaga tal cual.
+        if (!process.env.ANTHROPIC_API_KEY) throw rulesErr;
+        console.error("Motor de reglas falló, fallback a Claude:", rulesErr instanceof Error ? rulesErr.message : rulesErr);
+        generated = null;
+      }
+    }
+
+    if (!generated) {
+      if (mode === "initial") {
+        generated = await generateInitialMesocyclePlan(athlete as Athlete, latestEvaluation!, exercises as Exercise[]);
+      } else {
+        const { pastMesocyclesSummary, allCheckinsSummary } = await buildHistorySummaries(admin, athleteId);
+        generated = await generateNextMesocyclePlan(
+          athlete as Athlete,
+          latestEvaluation,
+          pastMesocyclesSummary,
+          allCheckinsSummary,
+          exercises as Exercise[],
+        );
+      }
     }
 
     const mesocycleId = await writePlanToMesocycle(admin, { athleteId, plan: generated.result, runId: run.id });

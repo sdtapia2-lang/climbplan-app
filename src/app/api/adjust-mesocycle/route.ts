@@ -4,6 +4,7 @@ import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Athlete, CheckIn, Exercise } from "@/lib/types";
 import { adjustMesocyclePlan, MesocycleGenerationError } from "@/lib/ai/adjustMesocycle";
+import { adjustMesocyclePlanRules } from "@/lib/planner";
 import type { AiAdjustmentPlan } from "@/lib/ai/mesocycleSchema";
 
 type SupabaseAdmin = ReturnType<typeof createAdminClient>;
@@ -74,6 +75,8 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const athleteId = typeof body?.athleteId === "string" ? body.athleteId : "";
   const checkinId = typeof body?.checkinId === "string" ? body.checkinId : "";
+  // Motor de ajuste: reglas determinista por defecto (0 tokens); "ai" fuerza Claude.
+  const engine = body?.engine === "ai" ? "ai" : "rules";
   if (!athleteId || !checkinId) {
     return NextResponse.json({ error: "Falta athleteId o checkinId." }, { status: 400 });
   }
@@ -212,15 +215,46 @@ export async function POST(request: Request) {
       })),
     }));
 
-    const generated = await adjustMesocyclePlan({
-      athlete,
-      mesocycleName: mesocycle.name,
-      checkin,
-      recentCheckins: (recentCheckinsData as CheckIn[]) ?? [],
-      finishedWeekBlocks,
-      futureWeeks: futureWeeksState,
-      exercises: exercises as Exercise[],
-    });
+    let generated: { result: AiAdjustmentPlan; model: string } | null = null;
+
+    if (engine === "rules") {
+      try {
+        const rulesResult = adjustMesocyclePlanRules({
+          athlete,
+          checkin,
+          recentCheckins: (recentCheckinsData as CheckIn[]) ?? [],
+          finishedWeekBlocks,
+          futureWeeks: futureWeeksState,
+          exercises: exercises as Exercise[],
+        });
+        if (rulesResult.noChanges) {
+          // Nada que ajustar: no se reescriben semanas idénticas (mejora
+          // sobre el camino IA, que siempre regeneraba).
+          await admin
+            .from("ai_generation_runs")
+            .update({ status: "succeeded", model: "rules-engine/v1", completed_at: new Date().toISOString() })
+            .eq("id", run.id);
+          return NextResponse.json({ adjusted: false, reason: rulesResult.reason });
+        }
+        generated = { result: rulesResult.result, model: rulesResult.model };
+      } catch (rulesErr) {
+        if (!process.env.ANTHROPIC_API_KEY) throw rulesErr;
+        console.error("Ajuste por reglas falló, fallback a Claude:", rulesErr instanceof Error ? rulesErr.message : rulesErr);
+        generated = null;
+      }
+    }
+
+    if (!generated) {
+      generated = await adjustMesocyclePlan({
+        athlete,
+        mesocycleName: mesocycle.name,
+        checkin,
+        recentCheckins: (recentCheckinsData as CheckIn[]) ?? [],
+        finishedWeekBlocks,
+        futureWeeks: futureWeeksState,
+        exercises: exercises as Exercise[],
+      });
+    }
 
     await writeAdjustment(admin, weeks, generated.result);
 

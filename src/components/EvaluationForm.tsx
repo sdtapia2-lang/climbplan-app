@@ -183,7 +183,7 @@ export function EvaluationForm({
       <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
         <div className="w-8 h-8 border-2 border-[var(--color-neutral-300)] border-t-[var(--color-accent-500)] rounded-full animate-spin" />
         <p className="text-sm text-[var(--color-text)]/70 max-w-xs">
-          Generando tu plan de entrenamiento inicial... esto puede tardar uno o dos minutos.
+          Armando tu planificación inicial...
         </p>
       </div>
     );
