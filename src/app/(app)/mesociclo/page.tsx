@@ -17,38 +17,45 @@ export default function MesocycleListPage() {
   const canCreate = canManageOwnMesocycle(profile);
   const canOpenDetail = canCreate || profile?.role !== "escalador";
   const [mesocycles, setMesocycles] = useState<Mesocycle[]>([]);
+  const [hasEvaluation, setHasEvaluation] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [generatingNext, setGeneratingNext] = useState(false);
+  const [generating, setGenerating] = useState(false);
 
   const latestMesocycle = mesocycles[0] ?? null;
   const latestIsFinished =
     !!latestMesocycle &&
     (latestMesocycle.status === "Completado" || (!!latestMesocycle.end_date && new Date(latestMesocycle.end_date) < new Date()));
-  const showGenerateNext = isSelfCoached(profile) && latestMesocycle && latestIsFinished;
+  const selfCoached = isSelfCoached(profile);
+  const showGenerateNext = selfCoached && latestMesocycle && latestIsFinished;
+  // Escalador auto-gestionado, sin mesociclos todavía pero con evaluación:
+  // puede generar su primer plan automáticamente desde la evaluación.
+  const showGenerateInitial = selfCoached && mesocycles.length === 0 && hasEvaluation;
 
-  async function generateNext() {
+  async function generate(mode: "initial" | "next") {
     if (!athleteId) return;
-    setGeneratingNext(true);
+    setGenerating(true);
     try {
       const res = await fetch("/api/generate-mesocycle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ athleteId, mode: "next" }),
+        body: JSON.stringify({ athleteId, mode }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        alert(data?.error ?? "No se pudo generar el siguiente mesociclo.");
-        setGeneratingNext(false);
+        alert(data?.error ?? "No se pudo generar el plan.");
+        setGenerating(false);
         return;
       }
       if (data?.mesocycleId) {
         router.push(`/mesociclo/${data.mesocycleId}`);
         return;
       }
-      setGeneratingNext(false);
+      // El único caso sin mesocycleId con ok=true es "ya existe": recargar.
+      router.refresh();
+      setGenerating(false);
     } catch {
-      alert("No se pudo generar el siguiente mesociclo.");
-      setGeneratingNext(false);
+      alert("No se pudo generar el plan.");
+      setGenerating(false);
     }
   }
 
@@ -61,15 +68,24 @@ export default function MesocycleListPage() {
     (async () => {
       setLoading(true);
       const supabase = createClient();
-      const { data } = await supabase
-        .from("mesocycles")
-        .select("*")
-        .eq("athlete_id", athleteId)
-        .order("created_at", { ascending: false });
+      const [{ data }, { count }] = await Promise.all([
+        supabase.from("mesocycles").select("*").eq("athlete_id", athleteId).order("created_at", { ascending: false }),
+        supabase.from("evaluations").select("id", { count: "exact", head: true }).eq("athlete_id", athleteId),
+      ]);
       setMesocycles((data as Mesocycle[]) ?? []);
+      setHasEvaluation((count ?? 0) > 0);
       setLoading(false);
     })();
   }, [athleteId]);
+
+  if (generating) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
+        <div className="w-8 h-8 border-2 border-[var(--color-neutral-300)] border-t-[var(--color-accent-500)] rounded-full animate-spin" />
+        <p className="text-sm text-[var(--color-text)]/70">Armando tu planificación...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -77,14 +93,14 @@ export default function MesocycleListPage() {
         <h1 className="text-xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
         <div className="flex items-center gap-2">
           {showGenerateNext && (
-            <Button onClick={generateNext} disabled={generatingNext} variant="secondary">
+            <Button onClick={() => generate("next")} disabled={generating} variant="secondary">
               <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
-              {generatingNext ? "Generando..." : "Generar siguiente mesociclo"}
+              Generar siguiente mesociclo
             </Button>
           )}
           {canCreate && (
             <Link href="/mesociclo/new">
-              <Button>+ Nuevo mesociclo</Button>
+              <Button variant={showGenerateInitial ? "secondary" : "primary"}>+ Nuevo mesociclo</Button>
             </Link>
           )}
         </div>
@@ -104,13 +120,32 @@ export default function MesocycleListPage() {
         <Spinner />
       ) : mesocycles.length === 0 ? (
         <EmptyState
-          text={`Aún no hay mesociclos para ${athlete?.name ?? ""}`}
+          text={
+            showGenerateInitial
+              ? `Aún no tienes un plan. Genera tu primera planificación a partir de tu evaluación.`
+              : selfCoached && !hasEvaluation
+                ? `Antes de generar tu plan, completa una evaluación en la sección Evaluación.`
+                : `Aún no hay mesociclos para ${athlete?.name ?? ""}`
+          }
           action={
-            canCreate && (
-              <Link href="/mesociclo/new">
-                <Button>Crear primer mesociclo</Button>
-              </Link>
-            )
+            <div className="flex items-center gap-2">
+              {showGenerateInitial && (
+                <Button onClick={() => generate("initial")} disabled={generating}>
+                  <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
+                  Generar planificación
+                </Button>
+              )}
+              {selfCoached && !hasEvaluation && (
+                <Link href="/evaluacion/new">
+                  <Button>Ir a la evaluación</Button>
+                </Link>
+              )}
+              {canCreate && (
+                <Link href="/mesociclo/new">
+                  <Button variant={showGenerateInitial ? "secondary" : "primary"}>Crear a mano</Button>
+                </Link>
+              )}
+            </div>
           }
         />
       ) : (
