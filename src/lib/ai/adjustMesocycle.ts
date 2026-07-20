@@ -20,7 +20,7 @@ export function validateAdjustmentPlan(plan: AiAdjustmentPlan, exercises: Exerci
       for (const block of day.blocks) {
         if (block.is_catalog_exercise) {
           if (!catalogNames.has(block.exercise_name.trim().toLowerCase())) {
-            issues.push(`Semana ${week.week_number} ${day.day_of_week}: "${block.exercise_name}" no existe en el catalogo pero is_catalog_exercise=true.`);
+            issues.push(`Semana ${week.week_number} ${day.day_of_week}: "${block.exercise_name}" no existe en el catálogo pero is_catalog_exercise=true.`);
           }
         } else if (!block.non_catalog_reason?.trim()) {
           issues.push(`Semana ${week.week_number} ${day.day_of_week}: "${block.exercise_name}" tiene is_catalog_exercise=false sin non_catalog_reason.`);

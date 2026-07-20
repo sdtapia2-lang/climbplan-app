@@ -2,7 +2,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 /**
  * Cliente con la service role key: bypassea RLS por completo.
- * SOLO se debe importar desde codigo server-side (Route Handlers, Server
+ * SOLO se debe importar desde código server-side (Route Handlers, Server
  * Components) -- nunca desde un archivo "use client". La service role key
  * vive en SUPABASE_SERVICE_ROLE_KEY (sin prefijo NEXT_PUBLIC_) para que
  * Next.js nunca la incluya en el bundle del navegador.

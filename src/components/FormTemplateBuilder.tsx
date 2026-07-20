@@ -34,7 +34,7 @@ function emptyField(): FieldDraft {
   return { id: uid(), section: "General", key: "", label: "", field_type: "text", options: "", help_text: "", required: false };
 }
 
-const TYPE_LABELS: Record<FormType, string> = { evaluation: "Evaluacion", checkin: "Check-in" };
+const TYPE_LABELS: Record<FormType, string> = { evaluation: "Evaluación", checkin: "Check-in" };
 
 export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
   const router = useRouter();
@@ -179,7 +179,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
         <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)] mb-4">
           &larr; Volver
         </button>
-        <p className="text-[var(--color-text)]/55">Solo quien creo esta plantilla puede editarla.</p>
+        <p className="text-[var(--color-text)]/55">Solo quien creó esta plantilla puede editarla.</p>
       </div>
     );
   }
@@ -203,7 +203,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
       <Card className="mb-6">
         <div className="space-y-4">
           <Field label="Nombre">
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej: Evaluacion post-lesion de hombro" />
+            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej: Evaluación post-lesión de hombro" />
           </Field>
           {!templateId && (
             <Field label="Tipo">
@@ -216,12 +216,12 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
               </Select>
             </Field>
           )}
-          <Field label="Descripcion">
+          <Field label="Descripción">
             <Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
           </Field>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={isPublished} onChange={(e) => setIsPublished(e.target.checked)} />
-            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo tu y tus escaladores)</span>
+            <span className="text-sm">Pública (la puede usar cualquiera; si no, solo tú y tus escaladores)</span>
           </label>
         </div>
       </Card>
@@ -253,7 +253,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
               </Field>
             </div>
             <div className="grid grid-cols-3 gap-3 mb-3">
-              <Field label="Seccion / pestana">
+              <Field label="Sección / pestaña">
                 <Input value={f.section} onChange={(e) => updateField(idx, { section: e.target.value })} />
               </Field>
               <Field label="Tipo de dato">

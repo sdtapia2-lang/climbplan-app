@@ -98,7 +98,7 @@ async function writePlanToMesocycle(admin: SupabaseAdmin, params: {
           time: b.time,
           load: b.load,
           rest: b.rest,
-          kinesio_notes: b.non_catalog_reason ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catalogo: ${b.non_catalog_reason})`.trim() : b.kinesio_notes,
+          kinesio_notes: b.non_catalog_reason ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catálogo: ${b.non_catalog_reason})`.trim() : b.kinesio_notes,
           position: pos,
         });
       });
@@ -149,7 +149,7 @@ async function buildHistorySummaries(admin: SupabaseAdmin, athleteId: string) {
           .filter(([, v]) => v > 0)
           .map(([k, v]) => `${k}:${v}`)
           .join(",");
-        return `- ${c.checkin_date}: sueno ${c.sleep_quality}, motivacion ${c.motivation}, adherencia ${c.adherence_pct}%${pain ? `, dolor ${pain}` : ""}${c.comment ? `, "${c.comment}"` : ""}`;
+        return `- ${c.checkin_date}: sueño ${c.sleep_quality}, motivación ${c.motivation}, adherencia ${c.adherence_pct}%${pain ? `, dolor ${pain}` : ""}${c.comment ? `, "${c.comment}"` : ""}`;
       })
       .join("\n") || "Sin check-ins registrados.";
 
@@ -207,13 +207,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ skipped: true, reason: "already_has_mesocycle" });
     }
     if (!latestEvaluation) {
-      return NextResponse.json({ error: "El atleta todavia no tiene ninguna evaluacion." }, { status: 400 });
+      return NextResponse.json({ error: "El atleta todavía no tiene ninguna evaluación." }, { status: 400 });
     }
   }
 
   const { data: exercises } = await admin.from("exercises").select("*");
   if (!exercises || exercises.length === 0) {
-    return NextResponse.json({ error: "El catalogo de ejercicios esta vacio." }, { status: 500 });
+    return NextResponse.json({ error: "El catálogo de ejercicios está vacío." }, { status: 500 });
   }
 
   const { data: run, error: runError } = await admin
@@ -230,9 +230,9 @@ export async function POST(request: Request) {
 
   if (runError || !run) {
     if (runError?.code === "23505") {
-      return NextResponse.json({ error: "Ya hay una generacion en curso para este atleta." }, { status: 409 });
+      return NextResponse.json({ error: "Ya hay una generación en curso para este atleta." }, { status: 409 });
     }
-    return NextResponse.json({ error: runError?.message ?? "No se pudo iniciar la generacion." }, { status: 500 });
+    return NextResponse.json({ error: runError?.message ?? "No se pudo iniciar la generación." }, { status: 500 });
   }
 
   try {

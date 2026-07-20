@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   if (!athleteName || !email || password.length < 6) {
     return NextResponse.json(
-      { error: "Nombre, email y una contrasena de al menos 6 caracteres son obligatorios." },
+      { error: "Nombre, email y una contraseña de al menos 6 caracteres son obligatorios." },
       { status: 400 },
     );
   }
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
   const newUserId = created.user.id;
 
-  // El trigger on_auth_user_created ya inserto un profile con role null;
+  // El trigger on_auth_user_created ya insertó un profile con role null;
   // lo completamos con los datos del escalador libre.
   const { error: profileError } = await admin
     .from("profiles")

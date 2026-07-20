@@ -82,7 +82,7 @@ function AdminPanel() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Administracion</h1>
+      <h1 className="text-xl font-semibold">Administración</h1>
 
       <Card>
         <h2 className="font-medium mb-4">Usuarios y roles</h2>
@@ -155,7 +155,7 @@ function AdminPanel() {
       <Card>
         <h2 className="font-medium mb-4">Asignaciones entrenador &rarr; escalador</h2>
         <div className="space-y-2 mb-4">
-          {coachAthletes.length === 0 && <p className="text-sm text-[var(--color-text)]/40">Sin asignaciones todavia.</p>}
+          {coachAthletes.length === 0 && <p className="text-sm text-[var(--color-text)]/40">Sin asignaciones todavía.</p>}
           {coachAthletes.map((ca) => (
             <div key={ca.id} className="flex items-center justify-between border border-[var(--color-divider)] rounded-lg p-3 text-sm">
               <span>
@@ -184,7 +184,7 @@ function AdminPanel() {
               </option>
             ))}
           </Select>
-          <Button onClick={addAssignment}>Agregar asignacion</Button>
+          <Button onClick={addAssignment}>Agregar asignación</Button>
         </div>
       </Card>
     </div>

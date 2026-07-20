@@ -159,7 +159,7 @@ function DynamicInput({
       return (
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
-          <span className="text-sm text-[var(--color-text)]/55">Si</span>
+          <span className="text-sm text-[var(--color-text)]/55">Sí</span>
         </label>
       );
     case "textarea":

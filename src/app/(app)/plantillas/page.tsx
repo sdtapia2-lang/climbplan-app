@@ -77,7 +77,7 @@ export default function TemplatesPage() {
       {loading ? (
         <Spinner />
       ) : templates.length === 0 ? (
-        <EmptyState text="No hay plantillas todavia." />
+        <EmptyState text="No hay plantillas todavía." />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {templates.map((t) => (

@@ -98,7 +98,7 @@ export default function CheckInPage() {
         <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>
       </div>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        Este es el check-in por defecto. Tambien hay{" "}
+        Este es el check-in por defecto. También hay{" "}
         <Link href="/formularios" className="text-[var(--color-accent-700)] hover:underline">
           plantillas de check-in personalizadas
         </Link>
@@ -118,8 +118,8 @@ export default function CheckInPage() {
                 <span className="text-sm text-[var(--color-text)]/55">Adherencia {c.adherence_pct}%</span>
               </div>
               <div className="grid grid-cols-2 gap-2 text-sm text-[var(--color-text)]/55 mb-2">
-                <span>Sueno: {c.sleep_quality}/10</span>
-                <span>Motivacion: {c.motivation}/10</span>
+                <span>Sueño: {c.sleep_quality}/10</span>
+                <span>Motivación: {c.motivation}/10</span>
               </div>
               {c.comment && <p className="text-sm text-[var(--color-text)]/70">{c.comment}</p>}
             </Card>
@@ -134,12 +134,12 @@ export default function CheckInPage() {
           </Field>
 
           <SliderField
-            label={`Calidad de sueno: ${draft.sleep_quality}/10`}
+            label={`Calidad de sueño: ${draft.sleep_quality}/10`}
             value={draft.sleep_quality ?? 7}
             onChange={(v) => setDraft({ ...draft, sleep_quality: v })}
           />
           <SliderField
-            label={`Motivacion: ${draft.motivation}/10`}
+            label={`Motivación: ${draft.motivation}/10`}
             value={draft.motivation ?? 7}
             onChange={(v) => setDraft({ ...draft, motivation: v })}
           />

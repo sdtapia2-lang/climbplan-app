@@ -138,7 +138,7 @@ export default function TrainingPage() {
     <Card className="mb-4 flex items-start justify-between gap-3 border-[var(--color-accent-400)]">
       <div className="flex items-start gap-2">
         <Sparkles size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-[var(--color-accent-500)]" aria-hidden="true" />
-        <p className="text-sm">Tu plan se actualizo segun tu ultimo check-in.</p>
+        <p className="text-sm">Tu plan se actualizó según tu último check-in.</p>
       </div>
       <button onClick={dismissAdjustmentBanner} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)] shrink-0">
         <X size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -256,7 +256,7 @@ export default function TrainingPage() {
               </div>
             )}
             {!day.is_rest && day.blocks.length === 0 && (
-              <p className="text-sm text-[var(--color-text)]/40">Sin bloques cargados para este dia.</p>
+              <p className="text-sm text-[var(--color-text)]/40">Sin bloques cargados para este día.</p>
             )}
           </Card>
         ))}

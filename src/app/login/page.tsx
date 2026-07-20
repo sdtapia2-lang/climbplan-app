@@ -32,7 +32,7 @@ export default function LoginPage() {
       return;
     }
     if (mode === "signup") {
-      setError("Cuenta creada. Si tu proyecto Supabase pide confirmacion por email, revisa tu correo antes de entrar.");
+      setError("Cuenta creada. Si tu proyecto Supabase pide confirmación por email, revisa tu correo antes de entrar.");
       return;
     }
     router.push("/");
@@ -51,7 +51,7 @@ export default function LoginPage() {
       setError(error.message);
       setGoogleLoading(false);
     }
-    // si no hay error, el navegador redirige a Google y esta pagina se abandona.
+    // si no hay error, el navegador redirige a Google y esta página se abandona.
   }
 
   return (
@@ -76,7 +76,7 @@ export default function LoginPage() {
           <Field label="Email">
             <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </Field>
-          <Field label="Contrasena">
+          <Field label="Contraseña">
             <Input
               type="password"
               required
@@ -118,8 +118,8 @@ export default function LoginPage() {
           className="w-full text-center text-xs text-[var(--color-text)]/60 mt-4 hover:underline"
         >
           {mode === "signin"
-            ? "Primera vez? Crear una cuenta"
-            : "Ya tengo cuenta, iniciar sesion"}
+            ? "¿Primera vez? Crear una cuenta"
+            : "Ya tengo cuenta, iniciar sesión"}
         </button>
       </div>
     </div>

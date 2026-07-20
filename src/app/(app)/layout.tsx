@@ -16,9 +16,9 @@ function CompleteEvaluationGate({ onDone }: { onDone: () => void }) {
     <div className="min-h-screen px-4 py-10 flex justify-center">
       <div className="w-full max-w-2xl">
         <Card className="mb-6">
-          <p className="font-medium mb-1">Antes de planificar, completa tu evaluacion fisica</p>
+          <p className="font-medium mb-1">Antes de planificar, completa tu evaluación física</p>
           <p className="text-sm text-[var(--color-text)]/55">
-            Nos da una linea base para armar tu plan desde el catalogo. Vas a poder completarla de nuevo mas adelante.
+            Nos da una línea base para armar tu plan desde el catálogo. Vas a poder completarla de nuevo más adelante.
           </p>
         </Card>
         <EvaluationForm isOnboardingGate onOnboardingComplete={onDone} />

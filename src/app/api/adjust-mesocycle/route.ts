@@ -86,7 +86,7 @@ export async function POST(request: Request) {
 
   const admin = createAdminClient();
 
-  // Idempotencia: si este check-in ya disparo un ajuste exitoso, no repetir.
+  // Idempotencia: si este check-in ya disparó un ajuste exitoso, no repetir.
   const { data: existingRun } = await admin
     .from("ai_generation_runs")
     .select("id")
@@ -142,7 +142,7 @@ export async function POST(request: Request) {
 
   const { data: exercises } = await admin.from("exercises").select("*");
   if (!exercises || exercises.length === 0) {
-    return NextResponse.json({ error: "El catalogo de ejercicios esta vacio." }, { status: 500 });
+    return NextResponse.json({ error: "El catálogo de ejercicios está vacío." }, { status: 500 });
   }
 
   const { data: recentCheckinsData } = await admin
@@ -167,7 +167,7 @@ export async function POST(request: Request) {
 
   if (runError || !run) {
     if (runError?.code === "23505") {
-      return NextResponse.json({ error: "Ya hay una generacion en curso para este atleta." }, { status: 409 });
+      return NextResponse.json({ error: "Ya hay una generación en curso para este atleta." }, { status: 409 });
     }
     return NextResponse.json({ error: runError?.message ?? "No se pudo iniciar el ajuste." }, { status: 500 });
   }
@@ -233,8 +233,8 @@ export async function POST(request: Request) {
   } catch (err) {
     const message = err instanceof MesocycleGenerationError ? err.message : err instanceof Error ? err.message : "Error inesperado ajustando el plan.";
     await failRun(admin, run.id, message);
-    // El check-in ya se guardo antes de llegar aca -- una falla en el ajuste
-    // no debe verse como un error para quien llamo a esta ruta en background.
+    // El check-in ya se guardó antes de llegar acá -- una falla en el ajuste
+    // no debe verse como un error para quien llamó a esta ruta en background.
     return NextResponse.json({ adjusted: false, reason: "generation_failed" });
   }
 }
@@ -253,8 +253,8 @@ async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], pl
       const dayRow = weekRow.days.find((d) => d.day_of_week === day.day_of_week);
       if (!dayRow) continue;
 
-      // Re-fetch en el momento de escribir: si el atleta edito algo mientras
-      // corria la llamada a Claude, este es el estado que manda.
+      // Re-fetch en el momento de escribir: si el atleta editó algo mientras
+      // corría la llamada a Claude, este es el estado que manda.
       const { data: freshBlocks } = await admin
         .from("blocks")
         .select("id, position, manually_edited")
@@ -286,7 +286,7 @@ async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], pl
           load: b.load,
           rest: b.rest,
           kinesio_notes: b.non_catalog_reason
-            ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catalogo: ${b.non_catalog_reason})`.trim()
+            ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catálogo: ${b.non_catalog_reason})`.trim()
             : b.kinesio_notes,
           position: basePosition + idx,
         }));

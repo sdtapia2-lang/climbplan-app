@@ -63,17 +63,17 @@ function emptyDraft(): Draft {
 }
 
 const HEALTH_QUESTIONS: [string, string][] = [
-  ["heart_condition", "Problema cardiaco diagnosticado"],
-  ["chest_pain", "Dolor de pecho con actividad fisica"],
-  ["dizziness", "Perdida de equilibrio o mareo en el ultimo ano"],
-  ["bp_medication", "Medicacion para presion arterial o corazon"],
-  ["joint_issue", "Problema oseo o articular que empeore con ejercicio"],
-  ["other_medical", "Otra razon medica relevante"],
+  ["heart_condition", "Problema cardíaco diagnosticado"],
+  ["chest_pain", "Dolor de pecho con actividad física"],
+  ["dizziness", "Pérdida de equilibrio o mareo en el último año"],
+  ["bp_medication", "Medicación para presión arterial o corazón"],
+  ["joint_issue", "Problema óseo o articular que empeore con ejercicio"],
+  ["other_medical", "Otra razón médica relevante"],
 ];
 
 const PAIN_ZONES_LIST: [string, string][] = [
   ["fingers", "Dedos / poleas"],
-  ["wrist", "Muneca"],
+  ["wrist", "Muñeca"],
   ["elbow", "Codo"],
   ["shoulder", "Hombro"],
   ["low_back", "Espalda baja"],
@@ -172,8 +172,8 @@ export function EvaluationForm({
         body: JSON.stringify({ athleteId, mode: "initial" }),
       });
     } catch {
-      // Si falla la generacion (red, API caida, etc.) igual dejamos pasar al
-      // atleta -- va a ver el estado vacio de /mesociclo con su opcion manual.
+      // Si falla la generación (red, API caída, etc.) igual dejamos pasar al
+      // atleta -- va a ver el estado vacío de /mesociclo con su opción manual.
     }
     onOnboardingComplete?.();
   }
@@ -195,7 +195,7 @@ export function EvaluationForm({
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">
-          {evaluationId ? "Editar evaluacion" : "Nueva evaluacion"} &mdash; {draft.eval_date}
+          {evaluationId ? "Editar evaluación" : "Nueva evaluación"} &mdash; {draft.eval_date}
         </h2>
       </div>
 
@@ -223,7 +223,7 @@ export function EvaluationForm({
       {tab === "Salud" && (
         <div className="space-y-4">
           <p className="text-sm text-[var(--color-text)]/55">
-            Cualquier &quot;Si&quot; implica consultar con un profesional de salud antes de continuar con tests de maxima intensidad.
+            Cualquier &quot;Sí&quot; implica consultar con un profesional de salud antes de continuar con tests de máxima intensidad.
           </p>
           {HEALTH_QUESTIONS.map(([key, label]) => (
             <label key={key} className="flex items-center gap-2 text-sm">
@@ -256,7 +256,7 @@ export function EvaluationForm({
         <div className="space-y-4">
           <MobilityTestRow
             label="Movilidad interna (hombro)"
-            tooltip="Rotacion interna de hombro con el brazo en abduccion de 90 grados: cuanto rota el hombro hacia adentro. Limitacion tipica en escaladores por el sesgo de traccion."
+            tooltip="Rotación interna de hombro con el brazo en abducción de 90 grados: cuánto rota el hombro hacia adentro. Limitación típica en escaladores por el sesgo de tracción."
             leftValue={draft.shoulder_ir_l ?? ""}
             rightValue={draft.shoulder_ir_r ?? ""}
             onLeftChange={(v) => set("shoulder_ir_l", v)}
@@ -264,7 +264,7 @@ export function EvaluationForm({
           />
           <MobilityTestRow
             label="Apertura de ranita (cadera)"
-            tooltip="Acostado boca arriba, rodillas y caderas flexionadas abriendo hacia los costados (posicion de rana). Evalua movilidad de cadera en rotacion externa."
+            tooltip="Acostado boca arriba, rodillas y caderas flexionadas abriendo hacia los costados (posición de rana). Evalúa movilidad de cadera en rotación externa."
             leftValue={draft.frog_l ?? ""}
             rightValue={draft.frog_r ?? ""}
             onLeftChange={(v) => set("frog_l", v)}
@@ -272,7 +272,7 @@ export function EvaluationForm({
           />
           <MobilityTestRow
             label="Test de Thomas (cadera)"
-            tooltip="Acostado boca arriba al borde de la camilla, una pierna llevada al pecho y la otra colgando extendida. Evalua acortamiento de psoas / recto femoral."
+            tooltip="Acostado boca arriba al borde de la camilla, una pierna llevada al pecho y la otra colgando extendida. Evalúa acortamiento de psoas / recto femoral."
             leftValue={draft.thomas_l ?? ""}
             rightValue={draft.thomas_r ?? ""}
             onLeftChange={(v) => set("thomas_l", v)}
@@ -313,7 +313,7 @@ export function EvaluationForm({
           <HandSection label="Mano derecha" prefix="right" draft={draft} set={set} bwPct={rightMvcBwPct} />
           {asymmetry !== null && (
             <p className="text-sm text-[var(--color-text)]/70">
-              Asimetria MVC calculada: <span className="font-medium">{asymmetry.toFixed(1)}%</span>{" "}
+              Asimetría MVC calculada: <span className="font-medium">{asymmetry.toFixed(1)}%</span>{" "}
               {asymmetry > 15 && (
                 <span className="inline-flex items-center gap-1 text-red-600">
                   <TriangleAlert size={13} strokeWidth={2.75} aria-hidden="true" /> supera 15%
@@ -327,7 +327,7 @@ export function EvaluationForm({
       {tab === "Resistencia" && (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Duracion ARC (min)">
+            <Field label="Duración ARC (min)">
               <Input type="number" value={draft.arc_duration_min ?? ""} onChange={(e) => set("arc_duration_min", numOrNull(e.target.value))} />
             </Field>
             <Field label="RPE percibido">
@@ -373,7 +373,7 @@ export function EvaluationForm({
       <div className="mt-6 flex justify-end gap-2">
         {isOnboardingGate && (
           <Button onClick={generatePlan} disabled={!savedForGate} variant="secondary">
-            Generar planificacion
+            Generar planificación
           </Button>
         )}
         <Button onClick={save} disabled={saving || (isOnboardingGate && savedForGate)}>
@@ -435,7 +435,7 @@ function HandSection({
             onChange={(e) => set(`${prefix}_mvc_kg`, numOrNull(e.target.value))}
           />
         </Field>
-        <Field label="MVC %BW" tooltip="Se calcula solo: MVC (kg) / peso corporal de la evaluacion x 100.">
+        <Field label="MVC %BW" tooltip="Se calcula solo: MVC (kg) / peso corporal de la evaluación x 100.">
           <Input type="number" value={bwPct !== null ? bwPct.toFixed(1) : ""} disabled readOnly className="opacity-70" />
         </Field>
       </div>
@@ -456,7 +456,7 @@ function HandSection({
         </Field>
       </div>
       <div className="grid grid-cols-2 gap-3 mb-3">
-        <Field label="% caida">
+        <Field label="% caída">
           <Input
             type="number"
             value={draft[`${prefix}_cf_drop_pct`] ?? ""}
@@ -472,7 +472,7 @@ function HandSection({
             onChange={(e) => set(`${prefix}_rfd_100`, numOrNull(e.target.value))}
           />
         </Field>
-        <Field label="RFD 20-80% (kg/s)" tooltip="RFD entre el 20% y el 80% de la MVC -- asi lo reporta la app de Tindeq.">
+        <Field label="RFD 20-80% (kg/s)" tooltip="RFD entre el 20% y el 80% de la MVC -- así lo reporta la app de Tindeq.">
           <Input
             type="number"
             value={draft[`${prefix}_rfd_2080`] ?? ""}

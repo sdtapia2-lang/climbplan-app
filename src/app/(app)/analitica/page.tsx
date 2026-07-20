@@ -103,7 +103,7 @@ function AnalyticsPanel() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-6">Analitica &mdash; {athlete?.name}</h1>
+      <h1 className="text-xl font-semibold mb-6">Analítica &mdash; {athlete?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card className="text-center">
           <p className="font-[family-name:var(--font-heading)] text-3xl text-[var(--color-accent-700)]">{stats.adherencePct}%</p>

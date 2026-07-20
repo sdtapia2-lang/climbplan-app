@@ -355,7 +355,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
         <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)] mb-4">
           &larr; Volver
         </button>
-        <p className="text-[var(--color-text)]/55">Solo quien creo esta plantilla puede editarla.</p>
+        <p className="text-[var(--color-text)]/55">Solo quien creó esta plantilla puede editarla.</p>
       </div>
     );
   }
@@ -388,7 +388,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
           </Field>
           <Field label="Fase">
             <Select value={meta.phase} onChange={(e) => setMeta({ ...meta, phase: e.target.value })}>
-              <option>Introduccion</option>
+              <option>Introducción</option>
               <option>Desarrollo</option>
               <option>Pico</option>
               <option>Descarga</option>
@@ -396,7 +396,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
           </Field>
         </div>
         <div className="mb-4">
-          <Field label="Descripcion (para que contexto sirve: nivel, lesion, disciplina...)">
+          <Field label="Descripción (para qué contexto sirve: nivel, lesión, disciplina...)">
             <Textarea
               rows={2}
               value={meta.description}
@@ -415,7 +415,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
               checked={meta.is_published}
               onChange={(e) => setMeta({ ...meta, is_published: e.target.checked })}
             />
-            <span className="text-sm">Publica (la puede usar cualquiera; si no, solo tu y tus escaladores)</span>
+            <span className="text-sm">Pública (la puede usar cualquiera; si no, solo tú y tus escaladores)</span>
           </label>
         </div>
       </Card>
@@ -458,7 +458,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
           <Field label="Foco">
             <Input value={currentWeek.focus} onChange={(e) => updateWeek({ focus: e.target.value })} />
           </Field>
-          <Field label="Distribucion">
+          <Field label="Distribución">
             <Input value={currentWeek.distribution} onChange={(e) => updateWeek({ distribution: e.target.value })} />
           </Field>
         </div>
@@ -470,10 +470,10 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
             <div className="flex items-center justify-between mb-2">
               <span className="font-medium">{day.day_of_week}</span>
               <div className="flex items-center gap-2">
-                <button title="Duplicar a dia siguiente" onClick={() => duplicateDayToNext(dayIdx)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
+                <button title="Duplicar a día siguiente" onClick={() => duplicateDayToNext(dayIdx)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
                   <Files size={14} strokeWidth={2.75} aria-hidden="true" />
                 </button>
-                <button title="Vaciar dia" onClick={() => clearDay(dayIdx)} className="text-[var(--color-text)]/40 hover:text-red-500">
+                <button title="Vaciar día" onClick={() => clearDay(dayIdx)} className="text-[var(--color-text)]/40 hover:text-red-500">
                   <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" />
                 </button>
               </div>
@@ -491,7 +491,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
             ) : (
               <>
                 <Input
-                  placeholder="Foco del dia..."
+                  placeholder="Foco del día..."
                   value={day.day_focus}
                   onChange={(e) => updateDay(dayIdx, { day_focus: e.target.value })}
                   className="mb-3 text-xs"
@@ -538,7 +538,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                                 placeholder="Buscar ejercicio o escribir libre..."
                               />
                             </Field>
-                            <Field label="Categoria">
+                            <Field label="Categoría">
                               <Select value={block.category} onChange={(e) => updateBlock(dayIdx, blockIdx, { category: e.target.value })}>
                                 {EXERCISE_CATEGORIES.map((c) => (
                                   <option key={c}>{c}</option>

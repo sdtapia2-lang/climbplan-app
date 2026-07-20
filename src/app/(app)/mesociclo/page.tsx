@@ -92,7 +92,7 @@ export default function MesocycleListPage() {
 
       {!canOpenDetail && (
         <p className="text-sm text-[var(--color-text)]/55 mb-4">
-          Para ver el detalle dia a dia de tu semana actual y registrar tus series, ve a{" "}
+          Para ver el detalle día a día de tu semana actual y registrar tus series, ve a{" "}
           <Link href="/entrenamiento" className="text-[var(--color-accent-700)] hover:underline">
             Entrenamiento
           </Link>
@@ -104,7 +104,7 @@ export default function MesocycleListPage() {
         <Spinner />
       ) : mesocycles.length === 0 ? (
         <EmptyState
-          text={`Aun no hay mesociclos para ${athlete?.name ?? ""}`}
+          text={`Aún no hay mesociclos para ${athlete?.name ?? ""}`}
           action={
             canCreate && (
               <Link href="/mesociclo/new">

@@ -27,7 +27,7 @@ function InviteForm() {
   async function submit() {
     setError(null);
     setSaving(true);
-    // La sesion viaja como cookie httpOnly en el mismo origen; el Route
+    // La sesión viaja como cookie httpOnly en el mismo origen; el Route
     // Handler la lee con el cliente server-side (@/lib/supabase/server).
     const res = await fetch("/api/create-athlete", {
       method: "POST",
@@ -50,8 +50,8 @@ function InviteForm() {
     <div className="max-w-md">
       <h1 className="text-xl font-semibold mb-2">Invitar escalador</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        Crea una cuenta que tu administras: el escalador solo va a ver los planes y formularios que tu le creas,
-        y no va a poder agregar ni modificar ejercicios de su planificacion (solo registrar lo que hizo).
+        Crea una cuenta que tú administras: el escalador solo va a ver los planes y formularios que le creas,
+        y no va a poder agregar ni modificar ejercicios de su planificación (solo registrar lo que hizo).
       </p>
 
       <Card className="space-y-4">
@@ -61,7 +61,7 @@ function InviteForm() {
         <Field label="Email">
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nombre@ejemplo.com" />
         </Field>
-        <Field label="Contrasena (se la compartes tu, no se envia mail)">
+        <Field label="Contraseña (se la compartes tú, no se envía mail)">
           <div className="flex gap-2">
             <Input value={password} onChange={(e) => setPassword(e.target.value)} />
             <Button variant="secondary" onClick={() => setPassword(randomPassword())}>
@@ -79,11 +79,11 @@ function InviteForm() {
         <Card className="mt-6 border-green-300">
           <p className="font-medium mb-2">Cuenta creada para {result.athleteName}</p>
           <p className="text-sm text-[var(--color-text)]/55 mb-3">
-            Compartile estos datos por el medio que prefieras (no se envio ningun email automatico):
+            Comparte estos datos por el medio que prefieras (no se envió ningún email automático):
           </p>
           <div className="text-sm font-mono bg-[var(--color-neutral-100)] rounded-md p-3 space-y-1">
             <p>Email: {result.email}</p>
-            <p>Contrasena: {result.password}</p>
+            <p>Contraseña: {result.password}</p>
           </div>
         </Card>
       )}

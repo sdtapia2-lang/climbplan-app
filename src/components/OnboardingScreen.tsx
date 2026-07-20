@@ -118,7 +118,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
           <div className="space-y-4">
             <div className="text-center mb-2">
               <p className="font-[family-name:var(--font-heading)] text-2xl">Bienvenido a Ápex</p>
-              <p className="text-sm text-[var(--color-text)]/55 mt-1">Elige como quieres empezar a entrenar.</p>
+              <p className="text-sm text-[var(--color-text)]/55 mt-1">Elige cómo quieres empezar a entrenar.</p>
             </div>
 
             {declinedByCoachName && (
@@ -131,7 +131,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
               <Dumbbell size={20} strokeWidth={2.75} className="text-[var(--color-accent-500)] mb-2" aria-hidden="true" />
               <p className="font-medium mb-1">Entrenamiento libre</p>
               <p className="text-sm text-[var(--color-text)]/55 mb-4">
-                Armas tu propio plan desde el catalogo de ejercicios, sin depender de nadie.
+                Armas tu propio plan desde el catálogo de ejercicios, sin depender de nadie.
               </p>
               <Button onClick={handleFreeTraining} disabled={saving} className="w-full justify-center">
                 {saving ? "Un momento..." : "Empezar"}
@@ -142,7 +142,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
               <Compass size={20} strokeWidth={2.75} className="text-[var(--color-accent-500)] mb-2" aria-hidden="true" />
               <p className="font-medium mb-1">Buscar entrenador</p>
               <p className="text-sm text-[var(--color-text)]/55 mb-4">
-                Elige un entrenador del directorio y pidele una entrevista.
+                Elige un entrenador del directorio y pídele una entrevista.
               </p>
               <Button variant="secondary" onClick={loadDirectory} className="w-full justify-center">
                 Ver entrenadores
@@ -152,7 +152,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
             {error && <p className="text-sm text-red-700 text-center">{error}</p>}
 
             <button onClick={handleLogout} className="w-full text-center text-xs text-[var(--color-text)]/50 hover:underline">
-              Cerrar sesion
+              Cerrar sesión
             </button>
           </div>
         )}
@@ -164,7 +164,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
             </button>
             <p className="font-medium mb-4">Entrenadores disponibles</p>
             {coaches.length === 0 ? (
-              <EmptyState text="Todavia no hay entrenadores con perfil publico." />
+              <EmptyState text="Todavía no hay entrenadores con perfil público." />
             ) : (
               <div className="space-y-2">
                 {coaches.map((c) => (
@@ -190,7 +190,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
             <p className="font-medium mb-1">Solicitar entrevista</p>
             <p className="text-sm text-[var(--color-text)]/55 mb-4">A {selectedCoach.full_name || "este entrenador"}</p>
             <div className="space-y-4">
-              <Field label="Como quieres que te identifique">
+              <Field label="Cómo quieres que te identifique">
                 <Input value={athleteName} onChange={(e) => setAthleteName(e.target.value)} placeholder="Tu nombre" />
               </Field>
               <Field label="Mensaje (opcional)">
@@ -198,7 +198,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Cuentale brevemente tu objetivo o disponibilidad..."
+                  placeholder="Cuéntale brevemente tu objetivo o disponibilidad..."
                 />
               </Field>
               {error && <p className="text-sm text-red-700">{error}</p>}
@@ -217,7 +217,7 @@ export function OnboardingScreen({ profile, onDone }: { profile: Profile; onDone
               cuando la acepte.
             </p>
             <Button variant="secondary" onClick={handleLogout} className="w-full justify-center">
-              Cerrar sesion
+              Cerrar sesión
             </Button>
           </Card>
         )}

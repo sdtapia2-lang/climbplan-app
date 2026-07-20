@@ -33,7 +33,7 @@ export default function EntrenadoresPage() {
       <p className="text-sm text-[var(--color-text)]/55 mb-6">Entrenadores disponibles en la app.</p>
 
       {coaches.length === 0 ? (
-        <EmptyState text="Todavia no hay entrenadores con perfil publico." />
+        <EmptyState text="Todavía no hay entrenadores con perfil público." />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {coaches.map((c) => (

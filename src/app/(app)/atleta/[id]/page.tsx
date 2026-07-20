@@ -102,7 +102,7 @@ export default function AthleteProfilePage() {
       </div>
 
       <Card>
-        <h2 className="font-medium mb-4">Datos basicos</h2>
+        <h2 className="font-medium mb-4">Datos básicos</h2>
         <div className="grid grid-cols-2 gap-4">
           <Field label="Nombre">
             <Input value={athlete.name} onChange={(e) => update("name", e.target.value)} />
@@ -119,7 +119,7 @@ export default function AthleteProfilePage() {
           <Field label="Envergadura (cm)">
             <Input type="number" value={athlete.wingspan_cm ?? ""} onChange={(e) => update("wingspan_cm", e.target.value ? Number(e.target.value) : null)} />
           </Field>
-          <Field label="Anos escalando">
+          <Field label="Años escalando">
             <Input type="number" value={athlete.years_climbing ?? ""} onChange={(e) => update("years_climbing", e.target.value ? Number(e.target.value) : null)} />
           </Field>
           <Field label="Disciplina">
@@ -170,17 +170,17 @@ export default function AthleteProfilePage() {
           <Field label="Limitante actual">
             <Input value={athlete.current_limiter ?? ""} onChange={(e) => update("current_limiter", e.target.value)} />
           </Field>
-          <Field label="Formato de periodizacion">
+          <Field label="Formato de periodización">
             <Input value={athlete.periodization_format ?? ""} onChange={(e) => update("periodization_format", e.target.value)} />
           </Field>
         </div>
       </Card>
 
       <Card>
-        <h2 className="font-medium mb-4">Planificacion</h2>
+        <h2 className="font-medium mb-4">Planificación</h2>
         <div className="space-y-4">
           <div>
-            <p className="text-xs mb-2 text-[var(--color-text)]/70">Dias disponibles para entrenar</p>
+            <p className="text-xs mb-2 text-[var(--color-text)]/70">Días disponibles para entrenar</p>
             <div className="flex flex-wrap gap-2">
               {DAYS_OF_WEEK.map((day) => {
                 const active = athlete.training_days.includes(day);
@@ -200,7 +200,7 @@ export default function AthleteProfilePage() {
               })}
             </div>
           </div>
-          <Field label="Cantidad de dias de descanso por semana">
+          <Field label="Cantidad de días de descanso por semana">
             <Input
               type="number"
               min={0}
@@ -265,14 +265,14 @@ export default function AthleteProfilePage() {
             checked={athlete.has_active_injury}
             onChange={(e) => update("has_active_injury", e.target.checked)}
           />
-          <span className="text-sm">Lesion activa</span>
+          <span className="text-sm">Lesión activa</span>
         </label>
         {athlete.has_active_injury && (
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Ubicacion anatomica">
+            <Field label="Ubicación anatómica">
               <Input value={athlete.injury_location ?? ""} onChange={(e) => update("injury_location", e.target.value)} />
             </Field>
-            <Field label="Diagnostico">
+            <Field label="Diagnóstico">
               <Input value={athlete.injury_diagnosis ?? ""} onChange={(e) => update("injury_diagnosis", e.target.value)} />
             </Field>
             <Field label="Desde">
@@ -282,7 +282,7 @@ export default function AthleteProfilePage() {
               <Input type="number" min={0} max={10} value={athlete.pain_threshold ?? ""} onChange={(e) => update("pain_threshold", e.target.value ? Number(e.target.value) : null)} />
             </Field>
             <div className="col-span-2">
-              <Field label="Descripcion">
+              <Field label="Descripción">
                 <Textarea rows={2} value={athlete.injury_description ?? ""} onChange={(e) => update("injury_description", e.target.value)} />
               </Field>
             </div>
@@ -300,19 +300,19 @@ export default function AthleteProfilePage() {
             {athlete.injury_history.map((entry, i) => (
               <div key={i} className="flex items-start gap-2">
                 <Input
-                  placeholder="Lesion"
+                  placeholder="Lesión"
                   value={entry.injury}
                   onChange={(e) => updateInjuryHistory(i, "injury", e.target.value)}
                   className="flex-[2]"
                 />
                 <Input
-                  placeholder="Ano"
+                  placeholder="Año"
                   value={entry.year}
                   onChange={(e) => updateInjuryHistory(i, "year", e.target.value)}
                   className="flex-1"
                 />
                 <Input
-                  placeholder="Estado (resuelta, cronica...)"
+                  placeholder="Estado (resuelta, crónica...)"
                   value={entry.status}
                   onChange={(e) => updateInjuryHistory(i, "status", e.target.value)}
                   className="flex-1"
@@ -320,7 +320,7 @@ export default function AthleteProfilePage() {
                 <button
                   onClick={() => removeInjuryHistory(i)}
                   className="shrink-0 mt-1.5 text-[var(--color-text)]/40 hover:text-red-600"
-                  aria-label="Eliminar lesion"
+                  aria-label="Eliminar lesión"
                 >
                   <X size={16} strokeWidth={2.5} />
                 </button>
@@ -328,13 +328,13 @@ export default function AthleteProfilePage() {
             ))}
           </div>
           <Button variant="secondary" className="mt-3" onClick={addInjuryHistory}>
-            + Agregar lesion
+            + Agregar lesión
           </Button>
         </div>
       </Card>
 
       <Card>
-        <h2 className="font-medium mb-4">Notas kinesiologicas</h2>
+        <h2 className="font-medium mb-4">Notas kinesiológicas</h2>
         <div className="space-y-4">
           <Field label="Notas generales">
             <Textarea rows={3} value={athlete.general_notes ?? ""} onChange={(e) => update("general_notes", e.target.value)} />
@@ -342,7 +342,7 @@ export default function AthleteProfilePage() {
           <Field label="Reglas transversales">
             <Textarea
               rows={3}
-              placeholder="ej: Progresion de carga en dedos max 5-10%/semana, antagonistas obligatorios cada semana"
+              placeholder="ej: Progresión de carga en dedos máx 5-10%/semana, antagonistas obligatorios cada semana"
               value={athlete.transversal_rules ?? ""}
               onChange={(e) => update("transversal_rules", e.target.value)}
             />

@@ -7,7 +7,7 @@ import { useProfile } from "@/components/ProfileProvider";
 import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
 import type { FormTemplate } from "@/lib/types";
 
-const TYPE_LABELS: Record<string, string> = { evaluation: "Evaluacion", checkin: "Check-in" };
+const TYPE_LABELS: Record<string, string> = { evaluation: "Evaluación", checkin: "Check-in" };
 
 export default function FormTemplatesPage() {
   const { profile } = useProfile();
@@ -40,9 +40,9 @@ export default function FormTemplatesPage() {
         )}
       </div>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        El formulario por defecto de Evaluacion y Check-in (con el protocolo Tindeq, PAR-Q, etc.) sigue siempre
-        disponible. Estas son plantillas adicionales para casos especificos: lesiones, otra disciplina, o cualquier
-        informacion extra que le interese registrar a un entrenador.
+        El formulario por defecto de Evaluación y Check-in (con el protocolo Tindeq, PAR-Q, etc.) sigue siempre
+        disponible. Estas son plantillas adicionales para casos específicos: lesiones, otra disciplina, o cualquier
+        información extra que le interese registrar a un entrenador.
       </p>
 
       {loading ? (

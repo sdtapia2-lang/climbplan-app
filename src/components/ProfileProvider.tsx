@@ -76,7 +76,7 @@ export function canManageOwnMesocycle(profile: Profile | null) {
   return canCreateMesocycles(profile) || isSelfCoached(profile);
 }
 
-/** Redirige si el rol actual no esta en la lista permitida. Usar dentro de una pagina. */
+/** Redirige si el rol actual no está en la lista permitida. Usar dentro de una página. */
 export function RequireRole({
   roles,
   redirectTo = "/",

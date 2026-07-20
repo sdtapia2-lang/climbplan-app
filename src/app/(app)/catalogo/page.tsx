@@ -25,7 +25,7 @@ export default function CatalogPage() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("Todas las categorias");
+  const [categoryFilter, setCategoryFilter] = useState("Todas las categorías");
   const [equipmentFilter, setEquipmentFilter] = useState("Todo equipo");
   const [modalOpen, setModalOpen] = useState(false);
   const [draft, setDraft] = useState<typeof emptyExercise>(emptyExercise);
@@ -47,7 +47,7 @@ export default function CatalogPage() {
   const filtered = useMemo(() => {
     return exercises.filter((ex) => {
       if (search && !ex.name.toLowerCase().includes(search.toLowerCase())) return false;
-      if (categoryFilter !== "Todas las categorias" && ex.category !== categoryFilter) return false;
+      if (categoryFilter !== "Todas las categorías" && ex.category !== categoryFilter) return false;
       if (equipmentFilter !== "Todo equipo" && !ex.equipment_required.includes(equipmentFilter)) return false;
       return true;
     });
@@ -76,7 +76,7 @@ export default function CatalogPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Catalogo de ejercicios</h1>
+        <h1 className="text-xl font-semibold">Catálogo de ejercicios</h1>
         {canEdit && <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>}
       </div>
 
@@ -134,7 +134,7 @@ export default function CatalogPage() {
           <Field label="Nombre">
             <Input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
           </Field>
-          <Field label="Categoria">
+          <Field label="Categoría">
             <Select value={draft.category} onChange={(e) => setDraft({ ...draft, category: e.target.value })}>
               {EXERCISE_CATEGORIES.map((c) => (
                 <option key={c}>{c}</option>
@@ -161,25 +161,25 @@ export default function CatalogPage() {
             </div>
           </Field>
           <div className="grid grid-cols-3 gap-3">
-            <Field label="Series tipicas">
+            <Field label="Series típicas">
               <Input value={draft.typical_sets ?? ""} onChange={(e) => setDraft({ ...draft, typical_sets: e.target.value })} />
             </Field>
-            <Field label="Reps tipicas">
+            <Field label="Reps típicas">
               <Input value={draft.typical_reps ?? ""} onChange={(e) => setDraft({ ...draft, typical_reps: e.target.value })} />
             </Field>
-            <Field label="Tiempo tipico">
+            <Field label="Tiempo típico">
               <Input value={draft.typical_time ?? ""} onChange={(e) => setDraft({ ...draft, typical_time: e.target.value })} />
             </Field>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Esfuerzo tipico">
+            <Field label="Esfuerzo típico">
               <Input value={draft.typical_effort ?? ""} onChange={(e) => setDraft({ ...draft, typical_effort: e.target.value })} />
             </Field>
-            <Field label="Duracion tipica">
+            <Field label="Duración típica">
               <Input value={draft.typical_duration ?? ""} onChange={(e) => setDraft({ ...draft, typical_duration: e.target.value })} />
             </Field>
           </div>
-          <Field label="Descripcion / intencion">
+          <Field label="Descripción / intención">
             <Textarea rows={3} value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
           </Field>
           <label className="flex items-center gap-2">

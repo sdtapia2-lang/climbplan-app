@@ -115,7 +115,7 @@ function CoachDashboard() {
       </div>
 
       {athletes.length === 0 ? (
-        <p className="text-[var(--color-text)]/40">Todavia no tienes atletas asignados.</p>
+        <p className="text-[var(--color-text)]/40">Todavía no tienes atletas asignados.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {athletes.map((a) => {

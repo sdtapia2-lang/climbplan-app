@@ -32,13 +32,13 @@ export default function EvaluationListPage() {
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-semibold">Evaluaciones &mdash; {athlete?.name}</h1>
         <Link href="/evaluacion/new">
-          <Button>+ Nueva evaluacion</Button>
+          <Button>+ Nueva evaluación</Button>
         </Link>
       </div>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        Esta es la evaluacion completa por defecto. Para casos especificos (lesion, otra disciplina) hay{" "}
+        Esta es la evaluación completa por defecto. Para casos específicos (lesión, otra disciplina) hay{" "}
         <Link href="/formularios" className="text-[var(--color-accent-700)] hover:underline">
-          plantillas de evaluacion personalizadas
+          plantillas de evaluación personalizadas
         </Link>
         .
       </p>

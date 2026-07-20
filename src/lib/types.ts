@@ -100,7 +100,7 @@ export const EQUIPMENT_OPTIONS = [
   "Barra dominadas",
   "Pesas",
   "Tindeq Progressor",
-  "Banda elastica",
+  "Banda elástica",
   "Poleas",
   "Spray wall",
   "Barra",
@@ -202,10 +202,10 @@ export type TemplateBlock = {
 export const DAYS_OF_WEEK = [
   "Lunes",
   "Martes",
-  "Miercoles",
+  "Miércoles",
   "Jueves",
   "Viernes",
-  "Sabado",
+  "Sábado",
   "Domingo",
 ] as const;
 
@@ -299,8 +299,8 @@ export const PAIN_ZONES = [
   ["shoulder_r", "Hombro der"],
   ["elbow_l", "Codo izq"],
   ["elbow_r", "Codo der"],
-  ["wrist_l", "Muneca izq"],
-  ["wrist_r", "Muneca der"],
+  ["wrist_l", "Muñeca izq"],
+  ["wrist_r", "Muñeca der"],
   ["fingers_l", "Dedos izq"],
   ["fingers_r", "Dedos der"],
   ["low_back", "Espalda baja"],
@@ -321,7 +321,7 @@ export type CheckIn = {
   created_at: string;
 };
 
-// Fase 3: formularios configurables (evaluacion/check-in personalizados) ----
+// Fase 3: formularios configurables (evaluación/check-in personalizados) ----
 export const FORM_TYPES = ["evaluation", "checkin"] as const;
 export type FormType = (typeof FORM_TYPES)[number];
 

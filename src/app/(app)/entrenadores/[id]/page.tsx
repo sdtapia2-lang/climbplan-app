@@ -38,7 +38,7 @@ export default function EntrenadorDetailPage() {
       </button>
 
       {!coach ? (
-        <EmptyState text="Este entrenador no tiene un perfil publico disponible." />
+        <EmptyState text="Este entrenador no tiene un perfil público disponible." />
       ) : (
         <Card>
           <CardKicker>Entrenador</CardKicker>

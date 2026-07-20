@@ -59,7 +59,7 @@ function PerfilForm() {
     <div className="max-w-2xl">
       <h1 className="text-xl font-semibold mb-1">Mi perfil</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
-        Esta informacion se muestra en el directorio de entrenadores si activas el perfil publico.
+        Esta información se muestra en el directorio de entrenadores si activas el perfil público.
       </p>
 
       <Card className="space-y-4">
@@ -71,7 +71,7 @@ function PerfilForm() {
             rows={4}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="Cuentale a los escaladores quien eres y como entrenas..."
+            placeholder="Cuéntale a los escaladores quién eres y cómo entrenas..."
           />
         </Field>
         <Field label="Certificaciones / logros">
@@ -91,13 +91,13 @@ function PerfilForm() {
               placeholder="nombre@ejemplo.com"
             />
           </Field>
-          <Field label="Telefono de contacto">
+          <Field label="Teléfono de contacto">
             <Input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="+54 9 ..." />
           </Field>
         </div>
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={publicProfile} onChange={(e) => setPublicProfile(e.target.checked)} />
-          Perfil publico (aparece en el directorio de entrenadores)
+          Perfil público (aparece en el directorio de entrenadores)
         </label>
         <Button onClick={save} disabled={saving}>
           {saving ? "Guardando..." : "Guardar cambios"}

@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 /**
- * SOLO se debe importar desde codigo server-side (Route Handlers) -- la API
+ * SOLO se debe importar desde código server-side (Route Handlers) -- la API
  * key vive en ANTHROPIC_API_KEY (sin prefijo NEXT_PUBLIC_) para que Next.js
  * nunca la incluya en el bundle del navegador.
  */

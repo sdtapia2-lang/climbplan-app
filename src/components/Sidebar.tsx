@@ -33,8 +33,8 @@ const NAV_ITEMS = [
   { href: "/plantillas", label: "Planes", icon: Layers },
   { href: "/mesociclo", label: "Mesociclo", icon: Calendar },
   { href: "/entrenamiento", label: "Entrenamiento", icon: Dumbbell },
-  { href: "/catalogo", label: "Catalogo", icon: BookOpen },
-  { href: "/evaluacion", label: "Evaluacion", icon: ClipboardCheck },
+  { href: "/catalogo", label: "Catálogo", icon: BookOpen },
+  { href: "/evaluacion", label: "Evaluación", icon: ClipboardCheck },
   { href: "/checkin", label: "Check-in", icon: Heart },
   { href: "/formularios", label: "Formularios", icon: FileText },
   { href: "/entrenadores", label: "Entrenadores", icon: Compass },
@@ -81,7 +81,7 @@ export function Sidebar() {
 
   const items = [
     ...NAV_ITEMS,
-    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/analitica", label: "Analitica", icon: BarChart3 }] : []),
+    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/analitica", label: "Analítica", icon: BarChart3 }] : []),
     ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
     ...(isCoach(profile) || isAdmin(profile)
       ? [
@@ -115,8 +115,8 @@ export function Sidebar() {
 
       <button
         onClick={toggleCollapsed}
-        title={collapsed ? "Expandir menu" : "Colapsar menu"}
-        aria-label={collapsed ? "Expandir menu" : "Colapsar menu"}
+        title={collapsed ? "Expandir menú" : "Colapsar menú"}
+        aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
         className={`flex items-center gap-2 mx-3 mb-2 px-2 py-1.5 rounded-full text-[var(--color-text)]/50 hover:bg-[var(--color-text)]/[0.07] hover:text-[var(--color-text)] ${
           collapsed ? "justify-center" : ""
         }`}
@@ -196,14 +196,14 @@ export function Sidebar() {
 
         <button
           onClick={handleLogout}
-          title="Cerrar sesion"
-          aria-label="Cerrar sesion"
+          title="Cerrar sesión"
+          aria-label="Cerrar sesión"
           className={`flex items-center gap-2 text-sm text-[var(--color-text)]/50 hover:text-[var(--color-text)] w-full ${
             collapsed ? "justify-center" : ""
           }`}
         >
           <LogOut size={16} strokeWidth={2.75} aria-hidden="true" />
-          {!collapsed && "Cerrar sesion"}
+          {!collapsed && "Cerrar sesión"}
         </button>
       </div>
     </aside>
