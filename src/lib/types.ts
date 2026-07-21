@@ -115,8 +115,21 @@ export const EQUIPMENT_OPTIONS = [
   "Colchoneta",
 ] as const;
 
+/** Prefijo de 2 letras por categoría para el codigo estable del ejercicio (ej. FB0001). */
+export const CATEGORY_CODE_PREFIX: Record<string, string> = {
+  "Aerobic Base": "AB",
+  Conditioning: "CD",
+  "Power Endurance": "PE",
+  "Strength and Power": "SP",
+  Flexibility: "FL",
+  Fingerboard: "FB",
+  Otro: "OT",
+};
+
 export type Exercise = {
   id: string;
+  /** Codigo estable (prefijo de categoria + numero correlativo, ej. FB0001). No cambia aunque cambie el nombre; usado para linkear imagenes. */
+  code: string;
   name: string;
   category: string;
   equipment_required: string[];
@@ -126,6 +139,8 @@ export type Exercise = {
   typical_duration: string | null;
   typical_effort: string | null;
   description: string | null;
+  /** Partes del cuerpo / grupos musculares que trabaja (ver MUSCLE_GROUPS en planner/knowledge/muscleGroups.ts). Ayuda a agrupar ejercicios o excluirlos ante una lesion. */
+  muscle_groups: string[];
   is_benchmark: boolean;
   created_at: string;
 };

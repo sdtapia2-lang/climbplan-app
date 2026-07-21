@@ -6,7 +6,7 @@ import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, Em
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 import { useProfile, canManageCatalog } from "@/components/ProfileProvider";
 
-const emptyExercise: Omit<Exercise, "id" | "created_at"> = {
+const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
   name: "",
   category: "Strength and Power",
   equipment_required: [],
@@ -16,6 +16,7 @@ const emptyExercise: Omit<Exercise, "id" | "created_at"> = {
   typical_duration: "",
   typical_effort: "",
   description: "",
+  muscle_groups: [],
   is_benchmark: false,
 };
 
