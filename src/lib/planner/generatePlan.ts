@@ -124,14 +124,15 @@ function ensureWeeklyGuarantees(
       const meta = metaByName.get(b.exercise_name);
       return meta && tags.some((t) => meta.tags.includes(t as never));
     });
+  const hasCategory = (category: string) => allBlocks.some((b) => b.category === category);
 
   const lastTrainingDay = [...week.days].reverse().find((d) => !d.is_rest);
   if (!lastTrainingDay) return;
 
-  const inject = (requireTags: string[], label: string) => {
+  const inject = (slot: { category: Parameters<typeof candidatesForSlot>[1]["category"]; requireTags?: string[]; preferTags?: string[] }, label: string) => {
     const ranked = candidatesForSlot(
       candidates,
-      { category: "Conditioning", count: 1, requireTags: requireTags as never },
+      { category: slot.category, count: 1, requireTags: slot.requireTags as never, preferTags: slot.preferTags as never },
       profile,
       excluded,
     );
@@ -145,8 +146,16 @@ function ensureWeeklyGuarantees(
     }
   };
 
-  if (!hasTag(ANTAGONIST_TAGS as unknown as string[])) inject(["push"], "antagonistas");
-  if (!hasTag(["core"])) inject(["core"], "core");
+  if (!hasTag(ANTAGONIST_TAGS as unknown as string[])) inject({ category: "Conditioning", requireTags: ["push"] }, "antagonistas");
+  if (!hasTag(["core"])) inject({ category: "Conditioning", requireTags: ["core"] }, "core");
+
+  // Los 3 pilares de escalada (Aerobic Base, Power Endurance, Strength and
+  // Power) son requisito fijo todas las semanas -- red de seguridad para
+  // cuando el atleta entrena solo 2 días (no entran como día dedicado) o
+  // cuando una lesión sustituyó el ejercicio original por otra categoría.
+  if (!hasCategory("Aerobic Base")) inject({ category: "Aerobic Base" }, "base aeróbica");
+  if (!hasCategory("Power Endurance")) inject({ category: "Power Endurance" }, "resistencia");
+  if (!hasCategory("Strength and Power")) inject({ category: "Strength and Power", preferTags: ["climbing"] }, "fuerza de escalada");
 }
 
 export function generateMesocyclePlan(params: {

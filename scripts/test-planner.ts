@@ -147,6 +147,23 @@ for (const [eqLabel, equipment] of equipmentVariants) {
           const count = (w: number) => plan.weeks[w].days.reduce((s, d) => s + d.blocks.length, 0);
           assert(count(3) <= Math.max(1, Math.floor(count(2) * 0.6)), `${label} descarga ${count(3)} > 60% de ${count(2)}`);
 
+          // Los 3 pilares (Aerobic Base, Power Endurance, Strength and Power)
+          // son requisito fijo en toda semana no-descarga (la descarga puede
+          // recortar volumen y perder alguno, es aceptable), EXCEPTO cuando
+          // una lesión real (dolor >=5) excluye la categoría entera por
+          // seguridad -- ahi la sustitución a escalada suave es la conducta
+          // correcta, no un bug.
+          const injuryExcludesCategory = injLabel === "dolor hombro 6" || injLabel === "lesión dedos activa";
+          const noWallEquipment = eqLabel === "solo peso corporal";
+          if (!injuryExcludesCategory && !noWallEquipment) {
+            for (const week of plan.weeks.slice(0, 3)) {
+              const cats = new Set(week.days.flatMap((d) => d.blocks.map((b) => b.category)));
+              for (const required of ["Aerobic Base", "Power Endurance", "Strength and Power"]) {
+                assert(cats.has(required as never), `${label} S${week.week_number} sin ningún bloque de "${required}"`);
+              }
+            }
+          }
+
           // Dolor hombro >=5 ⇒ ningún ejercicio que cargue hombro
           if (injLabel === "dolor hombro 6") {
             for (const week of plan.weeks) {

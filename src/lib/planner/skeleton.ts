@@ -15,19 +15,13 @@ export function focusListFor(profile: PlannerProfile, phase: MesocyclePhase): Da
   const count = Math.min(Math.max(profile.trainingDays.length, 2), 6);
   const layout = [...(WEEK_LAYOUTS[count] ?? WEEK_LAYOUTS[3])];
 
-  // La fase del mesociclo define el énfasis de escalada del primer slot
-  // (Acumulación → capacidad, Transformación → intensidad, Realización → resistencia/rendimiento)
-  layout[0] = phase.climbingEmphasis;
-
-  // Disciplina: Deportiva prioriza resistencia sobre intensidad pura; Boulder lo inverso
-  if (profile.discipline === "Deportiva") {
-    for (let i = 1; i < layout.length; i++) {
-      if (layout[i] === "escalada_intensidad") layout[i] = "escalada_resistencia";
-    }
-  } else if (profile.discipline === "Boulder") {
-    for (let i = 1; i < layout.length; i++) {
-      if (layout[i] === "escalada_resistencia") layout[i] = "escalada_intensidad";
-    }
+  // La fase del mesociclo prioriza cuál de los 3 pilares de escalada (Aerobic
+  // Base / Power Endurance / Strength and Power) va primero en la semana --
+  // pero nunca elimina ninguno, los 3 son un requisito fijo, no una
+  // preferencia (se reordena, no se sobreescribe).
+  const emphasisIdx = layout.indexOf(phase.climbingEmphasis);
+  if (emphasisIdx > 0) {
+    [layout[0], layout[emphasisIdx]] = [layout[emphasisIdx], layout[0]];
   }
 
   // Déficit de dedos con fingerboard: garantizar un día de dedos si no está

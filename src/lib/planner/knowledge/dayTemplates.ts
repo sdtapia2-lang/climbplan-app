@@ -84,22 +84,27 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
   },
 };
 
-// Orden de focos por cantidad de días disponibles. La fase del mesociclo
-// puede reemplazar escalada_capacidad por su énfasis (ver skeleton.ts). La
-// disciplina ajusta: Deportiva prioriza resistencia, Boulder intensidad.
+// Los 3 pilares de escalada son un requisito fijo del entrenamiento (no una
+// preferencia): siempre debe haber 1 día de Aerobic Base (capacidad), 1 de
+// Power Endurance (resistencia) y 1 de Strength and Power (intensidad) por
+// semana. Con 3+ días entran los tres como día dedicado; con solo 2 días no
+// entran los tres como días separados, pero igual quedan garantizados como
+// ejercicio individual via ensureWeeklyGuarantees en generatePlan.ts.
+export const CORE_CLIMBING_FOCI: readonly DayFocus[] = ["escalada_capacidad", "escalada_resistencia", "escalada_intensidad"];
+const EXTRA_FOCI: readonly DayFocus[] = ["fisico_fuerza", "dedos_fuerza", "fisico_core_antagonistas", "movilidad"];
+
+function buildWeekLayout(count: number): DayFocus[] {
+  const twoDay: DayFocus[] = ["escalada_capacidad", "fisico_fuerza"];
+  if (count <= 2) return twoDay.slice(0, count);
+  return [...CORE_CLIMBING_FOCI, ...EXTRA_FOCI].slice(0, count);
+}
+
 export const WEEK_LAYOUTS: Record<number, DayFocus[]> = {
-  2: ["escalada_capacidad", "fisico_fuerza"],
-  3: ["escalada_capacidad", "fisico_fuerza", "escalada_intensidad"],
-  4: ["escalada_capacidad", "fisico_fuerza", "escalada_intensidad", "dedos_fuerza"],
-  5: ["escalada_capacidad", "fisico_fuerza", "escalada_intensidad", "dedos_fuerza", "fisico_core_antagonistas"],
-  6: [
-    "escalada_capacidad",
-    "fisico_fuerza",
-    "escalada_intensidad",
-    "dedos_fuerza",
-    "escalada_resistencia",
-    "fisico_core_antagonistas",
-  ],
+  2: buildWeekLayout(2),
+  3: buildWeekLayout(3),
+  4: buildWeekLayout(4),
+  5: buildWeekLayout(5),
+  6: buildWeekLayout(6),
 };
 
 /** Días de entrenamiento por defecto cuando el atleta no configuró agenda. */
