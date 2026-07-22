@@ -187,6 +187,16 @@ for (const [eqLabel, equipment] of equipmentVariants) {
             }
           }
 
+          // Fingerboard: mismo requisito fijo, pero solo si el atleta tiene
+          // fingerboard (sin eso es literalmente imposible) y no hay una
+          // lesión de dedos activa que lo excluya por seguridad.
+          if (eqLabel === "equipo completo" && injLabel !== "lesión dedos activa") {
+            for (const week of plan.weeks.slice(0, 3)) {
+              const cats = new Set(week.days.flatMap((d) => d.blocks.map((b) => b.category)));
+              assert(cats.has("Fingerboard" as never), `${label} S${week.week_number} sin ningún bloque de "Fingerboard"`);
+            }
+          }
+
           // Dolor hombro >=5 ⇒ ningún ejercicio que cargue hombro
           if (injLabel === "dolor hombro 6") {
             for (const week of plan.weeks) {

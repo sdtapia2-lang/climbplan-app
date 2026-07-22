@@ -24,8 +24,11 @@ export function focusListFor(profile: PlannerProfile, phase: MesocyclePhase): Da
     [layout[0], layout[emphasisIdx]] = [layout[emphasisIdx], layout[0]];
   }
 
-  // Déficit de dedos con fingerboard: garantizar un día de dedos si no está
-  if (profile.deficits.fingerStrength && profile.hasFingerboard && !layout.includes("dedos_fuerza") && layout.length >= 4) {
+  // Fingerboard es un requisito fijo (no depende de déficit): si el atleta
+  // tiene fingerboard, siempre hay 1 día dedicado cuando hay 4+ días de
+  // entrenamiento. Con menos días, ensureWeeklyGuarantees en generatePlan.ts
+  // igual mete un ejercicio de Fingerboard como red de seguridad.
+  if (profile.hasFingerboard && !layout.includes("dedos_fuerza") && layout.length >= 4) {
     layout[layout.length - 1] = "dedos_fuerza";
   }
   // Sin fingerboard: el trabajo de dedos se hace en pared (regla 4, más conservador)

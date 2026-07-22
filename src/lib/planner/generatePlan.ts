@@ -167,6 +167,10 @@ function ensureWeeklyGuarantees(
   if (!hasCategory("Aerobic Base")) inject({ category: "Aerobic Base" }, "base aeróbica");
   if (!hasCategory("Power Endurance")) inject({ category: "Power Endurance" }, "resistencia");
   if (!hasCategory("Strength and Power")) inject({ category: "Strength and Power", preferTags: ["climbing"] }, "fuerza de escalada");
+  // Fingerboard: mismo criterio (requisito fijo, no depende de déficit). Si
+  // el atleta no tiene fingerboard, candidatesForSlot no encuentra
+  // candidatos por equipamiento y esto no-opea solo, sin forzar nada.
+  if (!hasCategory("Fingerboard")) inject({ category: "Fingerboard" }, "dedos");
 }
 
 export function generateMesocyclePlan(params: {
