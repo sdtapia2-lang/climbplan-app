@@ -163,7 +163,7 @@ for (const [eqLabel, equipment] of equipmentVariants) {
               const climbingIdx = day.blocks.findIndex((b) => climbingCats.includes(b.category));
               const conditioningIdx = day.blocks.findIndex((b) => b.category === "Conditioning");
               if (climbingIdx >= 0 && conditioningIdx >= 0) {
-                assert(conditioningIdx > climbingIdx, `${label} S${week.week_number} ${day.day_of_week} tiene Conditioning antes de la rutina de escalada`);
+                assert(conditioningIdx < climbingIdx, `${label} S${week.week_number} ${day.day_of_week} tiene Conditioning después de la rutina de escalada`);
               }
             }
           }

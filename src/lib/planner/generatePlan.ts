@@ -141,11 +141,13 @@ function ensureWeeklyGuarantees(
     if (ranked.length === 0) return;
     const pick = ranked[0];
     const block = prescribeBlock({ exercise: pick.exercise, meta: pick.meta, profile, micro, reduced, excluded });
-    // Un bloque de escalada nunca va después de Conditioning (regla 3): se
-    // inserta antes del primer bloque de Conditioning del día en vez de al final.
-    if (CLIMBING_CATEGORIES.includes(slot.category)) {
-      const conditioningIdx = lastTrainingDay.blocks.findIndex((b) => b.category === "Conditioning");
-      if (conditioningIdx >= 0) lastTrainingDay.blocks.splice(conditioningIdx, 0, block);
+    // Conditioning siempre va antes de la rutina de escalada, nunca después:
+    // un bloque de Conditioning se inserta antes del primer bloque de
+    // escalada del día en vez de al final; un bloque de escalada se agrega
+    // al final (después de cualquier Conditioning ya presente).
+    if (slot.category === "Conditioning") {
+      const climbingIdx = lastTrainingDay.blocks.findIndex((b) => CLIMBING_CATEGORIES.includes(b.category));
+      if (climbingIdx >= 0) lastTrainingDay.blocks.splice(climbingIdx, 0, block);
       else lastTrainingDay.blocks.push(block);
     } else {
       lastTrainingDay.blocks.push(block);
@@ -222,13 +224,26 @@ export function generateMesocyclePlan(params: {
     firstTraining.blocks.splice(insertAt, 0, ...baselineBlocks(profile, candidates, excluded));
   }
 
-  // Garantía: semana 4 (descarga) con como máximo ~60% de los bloques de la 3
+  // Garantía: semana 4 (descarga) con como máximo ~60% de los bloques de la 3.
+  // Al recortar, nunca se toca el bloque 0 (calentamiento general, siempre
+  // primero) y se prioriza sacar Conditioning/cierre antes que el
+  // calentamiento de escalada o el contenido principal -- si no, un recorte
+  // agresivo podía comerse la rutina de escalada y dejar solo el
+  // Conditioning que ahora va antes en el orden del día.
+  const CLIMBING_CATEGORIES_TRIM = ["Aerobic Base", "Power Endurance", "Strength and Power", "Fingerboard"];
   const countBlocks = (w: AiWeek) => w.days.reduce((s, d) => s + d.blocks.length, 0);
   const cap = Math.max(1, Math.floor(countBlocks(weeks[2]) * 0.6));
   while (countBlocks(weeks[3]) > cap) {
     const day = [...weeks[3].days].reverse().find((d) => d.blocks.length > 0);
     if (!day) break;
-    day.blocks.pop();
+    let removeIdx = day.blocks.length - 1;
+    for (let i = day.blocks.length - 1; i >= 1; i--) {
+      if (!CLIMBING_CATEGORIES_TRIM.includes(day.blocks[i].category)) {
+        removeIdx = i;
+        break;
+      }
+    }
+    day.blocks.splice(removeIdx, 1);
     if (day.blocks.length === 0) {
       day.is_rest = true;
       day.day_focus = null;

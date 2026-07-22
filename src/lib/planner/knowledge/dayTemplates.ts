@@ -60,13 +60,15 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
     slots: [WARMUP_SLOT, CLIMBING_WARMUP_SLOT, { category: "Power Endurance", count: 1 }, COOLDOWN_SLOT],
   },
   dedos_fuerza: {
-    // Cata: protocolo de dedos en regleta + antagonistas de antebrazo
+    // Cata: protocolo de dedos en regleta + antagonistas de antebrazo. El
+    // Conditioning va antes del Fingerboard (regla: conditioning siempre
+    // antes de la rutina de escalada, no después).
     label: "Fuerza de dedos y antagonistas",
     slots: [
       WARMUP_SLOT,
-      { category: "Fingerboard", count: 1 },
       { category: "Conditioning", count: 1, requireTags: ["finger_extensors"] },
       { category: "Conditioning", count: 1, requireTags: ["core"] },
+      { category: "Fingerboard", count: 1 },
     ],
   },
   fisico_fuerza: {
