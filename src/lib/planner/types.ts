@@ -18,7 +18,8 @@ export type Tag =
   | "fingers"
   | "mobility"
   | "power"
-  | "test";
+  | "test"
+  | "warmup";
 
 // Foco de un día de entrenamiento (slot del esqueleto semanal).
 export type DayFocus =

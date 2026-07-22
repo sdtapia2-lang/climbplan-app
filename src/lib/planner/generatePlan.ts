@@ -129,6 +129,8 @@ function ensureWeeklyGuarantees(
   const lastTrainingDay = [...week.days].reverse().find((d) => !d.is_rest);
   if (!lastTrainingDay) return;
 
+  const CLIMBING_CATEGORIES = ["Aerobic Base", "Power Endurance", "Strength and Power", "Fingerboard"];
+
   const inject = (slot: { category: Parameters<typeof candidatesForSlot>[1]["category"]; requireTags?: string[]; preferTags?: string[] }, label: string) => {
     const ranked = candidatesForSlot(
       candidates,
@@ -138,9 +140,16 @@ function ensureWeeklyGuarantees(
     );
     if (ranked.length === 0) return;
     const pick = ranked[0];
-    lastTrainingDay.blocks.push(
-      prescribeBlock({ exercise: pick.exercise, meta: pick.meta, profile, micro, reduced, excluded }),
-    );
+    const block = prescribeBlock({ exercise: pick.exercise, meta: pick.meta, profile, micro, reduced, excluded });
+    // Un bloque de escalada nunca va después de Conditioning (regla 3): se
+    // inserta antes del primer bloque de Conditioning del día en vez de al final.
+    if (CLIMBING_CATEGORIES.includes(slot.category)) {
+      const conditioningIdx = lastTrainingDay.blocks.findIndex((b) => b.category === "Conditioning");
+      if (conditioningIdx >= 0) lastTrainingDay.blocks.splice(conditioningIdx, 0, block);
+      else lastTrainingDay.blocks.push(block);
+    } else {
+      lastTrainingDay.blocks.push(block);
+    }
     if (lastTrainingDay.day_focus && !lastTrainingDay.day_focus.includes(label)) {
       lastTrainingDay.day_focus += ` + ${label}`;
     }
@@ -204,10 +213,13 @@ export function generateMesocyclePlan(params: {
     return week;
   });
 
-  // Tests de línea base: primera sesión de la semana 1
+  // Tests de línea base: primera sesión de la semana 1, después del
+  // calentamiento (nunca antes -- un test de fuerza máxima necesita entrar
+  // en calor primero).
   const firstTraining = weeks[0].days.find((d) => !d.is_rest);
   if (firstTraining && MICROCYCLE_TEMPLATE[0].allowTests && !profile.conservative) {
-    firstTraining.blocks.unshift(...baselineBlocks(profile, candidates, excluded));
+    const insertAt = firstTraining.blocks[0]?.category === "Flexibility" ? 1 : 0;
+    firstTraining.blocks.splice(insertAt, 0, ...baselineBlocks(profile, candidates, excluded));
   }
 
   // Garantía: semana 4 (descarga) con como máximo ~60% de los bloques de la 3

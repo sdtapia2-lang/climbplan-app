@@ -35,10 +35,27 @@ export function zoneActions(profile: PlannerProfile): { excluded: Set<PainZoneGr
   return { excluded, reduced };
 }
 
+/** Minutos totales de "typical_duration" (ej. "19 min", "1h 30m"), o null si no se puede parsear. */
+function durationMinutes(exercise: { typical_duration: string | null }): number | null {
+  const s = exercise.typical_duration;
+  if (!s) return null;
+  const h = s.match(/(\d+)\s*h/i);
+  const m = s.match(/(\d+)\s*m/i);
+  if (!h && !m) return null;
+  return (h ? Number(h[1]) * 60 : 0) + (m ? Number(m[1]) : 0);
+}
+
 function score(candidate: CandidateExercise, profile: PlannerProfile, slot: DaySlot): number {
   const { meta, exercise } = candidate;
   let s = 0;
   for (const tag of slot.preferTags ?? []) if (meta.tags.includes(tag)) s += 3;
+  // Calentamiento de escalada: preferir sesiones cortas (~10-20 min), no la
+  // sesión aeróbica principal del día.
+  if (slot.preferShortDuration) {
+    const mins = durationMinutes(exercise);
+    if (mins != null && mins >= 8 && mins <= 22) s += 4;
+    else if (mins != null && mins > 22) s -= 2;
+  }
   // Déficits del atleta suben ejercicios relevantes
   if (profile.deficits.fingerStrength && meta.tags.includes("fingers")) s += 2;
   if (profile.deficits.aerobicBase && exercise.category === "Aerobic Base") s += 2;

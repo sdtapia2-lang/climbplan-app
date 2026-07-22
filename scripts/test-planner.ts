@@ -143,6 +143,29 @@ for (const [eqLabel, equipment] of equipmentVariants) {
             for (const day of week.days) {
               if (!day.is_rest) assert(days.includes(day.day_of_week), `${label} S${week.week_number} entrena ${day.day_of_week} fuera de agenda`);
             }
+
+            // Orden fijo dentro del día: calentamiento (Flexibility) primero,
+            // calentamiento de escalada (Aerobic Base) en días de PE/SP,
+            // Conditioning nunca antes de un bloque de escalada.
+            for (const day of week.days) {
+              if (day.blocks.length === 0) continue;
+              assert(day.blocks[0].category === "Flexibility", `${label} S${week.week_number} ${day.day_of_week} no arranca con calentamiento (Flexibility)`);
+              if (
+                eqLabel !== "solo peso corporal" &&
+                (day.day_focus?.startsWith("Escalada - fuerza e intensidad") || day.day_focus?.startsWith("Escalada - resistencia"))
+              ) {
+                const mainCat = day.day_focus.startsWith("Escalada - fuerza e intensidad") ? "Strength and Power" : "Power Endurance";
+                const warmupIdx = day.blocks.findIndex((b) => b.category === "Aerobic Base");
+                const mainIdx = day.blocks.findIndex((b) => b.category === mainCat);
+                assert(warmupIdx >= 0 && (mainIdx < 0 || warmupIdx < mainIdx), `${label} S${week.week_number} ${day.day_of_week} sin calentamiento de escalada (Aerobic Base) antes del contenido principal`);
+              }
+              const climbingCats = ["Aerobic Base", "Power Endurance", "Strength and Power", "Fingerboard"];
+              const climbingIdx = day.blocks.findIndex((b) => climbingCats.includes(b.category));
+              const conditioningIdx = day.blocks.findIndex((b) => b.category === "Conditioning");
+              if (climbingIdx >= 0 && conditioningIdx >= 0) {
+                assert(conditioningIdx > climbingIdx, `${label} S${week.week_number} ${day.day_of_week} tiene Conditioning antes de la rutina de escalada`);
+              }
+            }
           }
           const count = (w: number) => plan.weeks[w].days.reduce((s, d) => s + d.blocks.length, 0);
           assert(count(3) <= Math.max(1, Math.floor(count(2) * 0.6)), `${label} descarga ${count(3)} > 60% de ${count(2)}`);

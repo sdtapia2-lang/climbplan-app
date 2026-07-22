@@ -51,6 +51,9 @@ const KEYWORD_RULES: KeywordRule[] = [
   { pattern: /un brazo|una pierna|unipodal|arquero/, tags: ["unilateral"] },
   // Tests
   { pattern: /test/, tags: ["test"] },
+  // Calentamiento dinamico (para el primer bloque del dia, no confundir con
+  // los estiramientos estaticos/contrae-y-relaja de cierre)
+  { pattern: /calentamiento|movilidad matutina|dinamico|pulsos y patadas/, tags: ["warmup"] },
 ];
 
 // Base por categoría (siempre presente, las keywords suman encima).
