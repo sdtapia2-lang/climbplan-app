@@ -218,6 +218,14 @@ supabase/
   phase8_free_training_and_requests.sql # onboarding: entrenamiento libre + solicitudes de entrevista
 ```
 
+## App instalable y móvil (PWA + Capacitor)
+
+- **PWA**: la app ya es instalable desde el navegador (Chrome/Safari → "Agregar a inicio"). `src/app/manifest.ts` define el manifest, `public/sw.js` cachea el shell estático para que abra offline. No requiere ninguna cuenta ni configuración extra.
+- **Capacitor** (App Store / Play Store): las carpetas `android/` e `ios/` son proyectos nativos generados con `npx cap add android|ios`, configurados en `capacitor.config.ts` para cargar la app desplegada en vivo (`https://climbplan-app.vercel.app`) dentro de un WebView nativo — así el build en las tiendas siempre muestra la última versión sin re-publicar. Requiere:
+  - **Android**: [Android Studio](https://developer.android.com/studio) instalado + cuenta de Google Play Console (u$s25 único). Correr `npm run cap:android` para abrirlo.
+  - **iOS**: una Mac con Xcode (no se puede compilar ni firmar desde Windows) + cuenta de Apple Developer (u$s99/año). Correr `npm run cap:ios` (desde la Mac) para abrirlo. Alternativa sin Mac propia: un servicio de CI como [Codemagic](https://codemagic.io) o [EAS Build](https://expo.dev/eas) que compila iOS en la nube.
+  - Después de cada cambio relevante de configuración nativa (iconos, permisos), correr `npm run cap:sync`.
+
 ## Notas de diseño
 
 - **Roles**: ver seccion "Roles y permisos" arriba. `ProfileProvider` carga el perfil del usuario logueado; `AthleteProvider` deja que las políticas de seguridad (RLS) filtren automáticamente qué atletas puede ver cada quien — no hay lógica de filtrado duplicada en el cliente.
