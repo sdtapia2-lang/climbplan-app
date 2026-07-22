@@ -9,6 +9,7 @@
 // clasificación conservadora por categoría).
 import type { Exercise } from "@/lib/types";
 import type { PainZoneGroup, Tag } from "../types";
+import { muscleGroupsToPainZones } from "./muscleGroups";
 
 export type ExerciseMeta = {
   /** Zonas con carga PESADA: se excluyen con dolor >= excludeAt. */
@@ -89,7 +90,9 @@ function normalize(s: string): string {
     .replace(/[̀-ͯ]/g, "");
 }
 
-export function classifyExercise(exercise: Pick<Exercise, "name" | "category">): ExerciseMeta {
+export function classifyExercise(
+  exercise: Pick<Exercise, "name" | "category" | "muscle_groups">,
+): ExerciseMeta {
   const base = CATEGORY_BASE[exercise.category] ?? { zones: [], lightZones: [], tags: [] };
   const zones = new Set<PainZoneGroup>(base.zones);
   const lightZones = new Set<PainZoneGroup>(base.lightZones);
@@ -117,6 +120,15 @@ export function classifyExercise(exercise: Pick<Exercise, "name" | "category">):
       tags.clear();
       override.tags.forEach((t) => tags.add(t));
     }
+  }
+
+  // Los grupos musculares curados a mano (columna muscle_groups) son mas
+  // confiables que el adivine por palabras clave -- para ejercicios de
+  // gimnasio/movilidad (no sesiones de escalada, que usan su propia logica
+  // de intensidad liviana/pesada por categoria) mandan ellos.
+  if ((exercise.category === "Conditioning" || exercise.category === "Flexibility") && exercise.muscle_groups?.length) {
+    zones.clear();
+    muscleGroupsToPainZones(exercise.muscle_groups).forEach((z) => zones.add(z));
   }
 
   // Una zona pesada nunca es a la vez liviana

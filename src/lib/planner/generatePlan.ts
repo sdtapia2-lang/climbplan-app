@@ -62,7 +62,7 @@ function baselineBlocks(
   excluded: Set<PainZoneGroup>,
 ): AiBlock[] {
   const blocks: AiBlock[] = [];
-  const names = new Set(candidates.map((c) => c.exercise.name));
+  const byCode = new Map(candidates.map((c) => [c.exercise.code, c.exercise]));
   // Los tests de dedos (MVC/Critical Force) cargan al máximo: no se programan
   // si hay dolor/lesión de dedos que excluye la zona.
   const fingerTestsBlocked = excluded.has("fingers");
@@ -85,12 +85,11 @@ function baselineBlocks(
       });
       continue;
     }
+    const ex = spec.catalogCode ? byCode.get(spec.catalogCode) : undefined;
     if (
-      spec.catalogName &&
-      names.has(spec.catalogName) &&
+      ex &&
       (spec.catalogRequires ?? []).every((eq) => profile.equipment.has(eq))
     ) {
-      const ex = candidates.find((c) => c.exercise.name === spec.catalogName)!.exercise;
       blocks.push({
         exercise_name: ex.name,
         is_catalog_exercise: true,

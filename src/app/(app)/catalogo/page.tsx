@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState } from "@/components/ui";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
+import { MUSCLE_GROUPS } from "@/lib/planner/knowledge/muscleGroups";
 import { useProfile, canManageCatalog } from "@/components/ProfileProvider";
 
 const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
@@ -63,6 +64,15 @@ export default function CatalogPage() {
     }));
   }
 
+  function toggleDraftMuscleGroup(item: string) {
+    setDraft((d) => ({
+      ...d,
+      muscle_groups: d.muscle_groups.includes(item)
+        ? d.muscle_groups.filter((g) => g !== item)
+        : [...d.muscle_groups, item],
+    }));
+  }
+
   async function createExercise() {
     if (!draft.name.trim()) return;
     setSaving(true);
@@ -111,8 +121,16 @@ export default function CatalogPage() {
               </div>
               <div className="flex flex-wrap gap-1 mb-2">
                 <Badge>{ex.category}</Badge>
+                <span className="text-[10px] font-mono text-[var(--color-text)]/40 self-center">{ex.code}</span>
               </div>
               {ex.description && <p className="text-sm text-[var(--color-text)]/55 mb-2">{ex.description}</p>}
+              {ex.muscle_groups.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {ex.muscle_groups.map((g) => (
+                    <Badge key={g}>{g}</Badge>
+                  ))}
+                </div>
+              )}
               <div className="flex flex-wrap gap-1 mb-2">
                 {ex.equipment_required.map((eq) => (
                   <Badge key={eq} tone="green">
@@ -151,6 +169,25 @@ export default function CatalogPage() {
                     key={item}
                     type="button"
                     onClick={() => toggleDraftEquipment(item)}
+                    className={`text-sm px-3 py-1 rounded-full border ${
+                      active ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]" : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+          </Field>
+          <Field label="Grupos musculares / partes del cuerpo">
+            <div className="flex flex-wrap gap-2">
+              {MUSCLE_GROUPS.map((item) => {
+                const active = draft.muscle_groups.includes(item);
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleDraftMuscleGroup(item)}
                     className={`text-sm px-3 py-1 rounded-full border ${
                       active ? "bg-[var(--color-accent-500)] text-white border-[var(--color-accent-500)]" : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
                     }`}

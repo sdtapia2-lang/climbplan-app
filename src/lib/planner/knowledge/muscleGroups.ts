@@ -5,6 +5,7 @@
 // clasificacion AUTOMATICA sugerida -- el criterio final lo define quien
 // edita la planilla.
 import type { Exercise } from "@/lib/types";
+import type { PainZoneGroup } from "../types";
 
 export const MUSCLE_GROUPS = [
   "Dedos",
@@ -21,6 +22,7 @@ export const MUSCLE_GROUPS = [
   "Piernas",
   "Rodilla",
   "Movilidad general",
+  "Escalada general",
 ] as const;
 export type MuscleGroup = (typeof MUSCLE_GROUPS)[number];
 
@@ -77,4 +79,39 @@ export function suggestMuscleGroups(exercise: Pick<Exercise, "name" | "category"
   }
   if (groups.size === 0) groups.add("Movilidad general");
   return [...groups];
+}
+
+/**
+ * Grupo muscular curado (columna muscle_groups) -> zona de dolor de
+ * seguridad (PAIN_ZONE_GROUPS). Usado para que la exclusion por lesion del
+ * generador se base en la clasificacion revisada a mano, no en un adivine
+ * por palabras clave. "Movilidad general" y "Escalada general" no cargan
+ * ninguna zona pesada por si solos.
+ */
+export const MUSCLE_GROUP_TO_PAIN_ZONE: Record<MuscleGroup, PainZoneGroup[]> = {
+  Dedos: ["fingers"],
+  Antebrazo: ["elbow", "wrist"],
+  "Muñeca": ["wrist"],
+  Codo: ["elbow"],
+  Hombro: ["shoulder"],
+  Pecho: ["shoulder"],
+  Espalda: ["shoulder", "elbow"],
+  "Bíceps": ["elbow"],
+  "Tríceps": ["elbow"],
+  Core: ["low_back"],
+  Cadera: ["low_back"],
+  Piernas: ["knee"],
+  Rodilla: ["knee"],
+  "Movilidad general": [],
+  "Escalada general": [],
+};
+
+/** Convierte los grupos musculares curados de un ejercicio a zonas de dolor. */
+export function muscleGroupsToPainZones(groups: readonly string[]): PainZoneGroup[] {
+  const zones = new Set<PainZoneGroup>();
+  for (const g of groups) {
+    const mapped = MUSCLE_GROUP_TO_PAIN_ZONE[g as MuscleGroup];
+    mapped?.forEach((z) => zones.add(z));
+  }
+  return [...zones];
 }

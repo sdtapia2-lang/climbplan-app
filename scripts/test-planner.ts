@@ -218,7 +218,7 @@ function makeFutureWeeks() {
       blocks:
         d === "Lunes"
           ? [
-              { exercise_name_freetext: "Press de Banca - Fuerza", category: "Conditioning", sets: "4", reps_or_time: "6 reps", rpe_target: "8", load: null, rest: "3 min", kinesio_notes: null, manually_edited: false },
+              { exercise_name_freetext: "Press de pecho con mancuernas", category: "Conditioning", sets: "4", reps_or_time: "6 reps", rpe_target: "8", load: null, rest: "3 min", kinesio_notes: null, manually_edited: false },
               { exercise_name_freetext: "Core 7", category: "Conditioning", sets: "3", reps_or_time: "6 reps", rpe_target: "7", load: null, rest: "2 min", kinesio_notes: null, manually_edited: false },
             ]
           : d === "Miércoles"
@@ -249,7 +249,7 @@ const baseCheckin = {
   assert(res.noChanges === false, "dolor 7 hombro ⇒ ajusta");
   if (!res.noChanges) {
     const allBlocks = res.result.weeks.flatMap((w) => w.days.flatMap((d) => d.blocks));
-    assert(!allBlocks.some((b) => b.exercise_name === "Press de Banca - Fuerza"), "press banca sustituido");
+    assert(!allBlocks.some((b) => b.exercise_name === "Press de pecho con mancuernas"), "press banca sustituido");
     assert(!allBlocks.some((b) => b.exercise_name === "Mi bloque propio"), "bloque manual nunca emitido");
     const wed = res.result.weeks[0].days.find((d) => d.day_of_week === "Miércoles");
     assert(wed?.is_rest === false, "día con bloque manual no se marca descanso");

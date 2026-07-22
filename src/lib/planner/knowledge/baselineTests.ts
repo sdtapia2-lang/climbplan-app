@@ -8,8 +8,8 @@ import type { BaselineNeed } from "../types";
 
 export type BaselineTestSpec = {
   need: BaselineNeed;
-  /** Nombre exacto en el catálogo (si el test existe como sesión). */
-  catalogName?: string;
+  /** Codigo estable del ejercicio en el catálogo (si el test existe como sesión). No usar el nombre: puede cambiar. */
+  catalogCode?: string;
   /** Equipamiento normalizado requerido para la variante de catálogo. */
   catalogRequires?: string[];
   /** Variante fuera de catálogo (con Tindeq). */
@@ -28,7 +28,7 @@ export const BASELINE_TESTS: readonly BaselineTestSpec[] = [
       reason: "Protocolo de dinamómetro Tindeq, no es una sesión del catálogo Lattice.",
       requires: ["tindeq progressor"],
     },
-    catalogName: "Half Crimp 4 - Levantamiento - Test Máximo",
+    catalogCode: "FB0010", // Half Crimp 4 - Levantamiento - Test Máximo
     catalogRequires: ["fingerboard"],
     sets: "3",
     repsOrTime: "5 s por mano",
@@ -42,7 +42,7 @@ export const BASELINE_TESTS: readonly BaselineTestSpec[] = [
       reason: "Protocolo de dinamómetro Tindeq, no es una sesión del catálogo Lattice.",
       requires: ["tindeq progressor"],
     },
-    catalogName: "Test de Repeticiones al 60%",
+    catalogCode: "PE0014", // Test de Repeticiones al 60%
     catalogRequires: ["fingerboard"],
     sets: "1",
     repsOrTime: "Hasta el fallo",
@@ -51,7 +51,7 @@ export const BASELINE_TESTS: readonly BaselineTestSpec[] = [
   },
   {
     need: "arc",
-    catalogName: "ARC Medio",
+    catalogCode: "AB0010", // ARC medio
     catalogRequires: [],
     sets: "1",
     repsOrTime: "20 min continuos",
@@ -60,7 +60,7 @@ export const BASELINE_TESTS: readonly BaselineTestSpec[] = [
   },
   {
     need: "pullup_max",
-    catalogName: "Dominadas - Test de Fuerza",
+    catalogCode: "CD0032", // Dominadas - Test de Fuerza
     catalogRequires: [],
     sets: "8",
     repsOrTime: "2 reps",
