@@ -6,9 +6,10 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Input, Button, Badge, Spinner, EmptyState } from "@/components/ui";
+import { SessionPlayer } from "@/components/SessionPlayer";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
 import { computeCurrentWeek } from "@/lib/weeks";
-import { TriangleAlert, Check, Sparkles, X } from "lucide-react";
+import { TriangleAlert, Check, Sparkles, X, Play } from "lucide-react";
 
 type DayWithBlocks = Day & { blocks: Block[] };
 type PendingAdjustmentBanner = { runId: string; completedAt: string | null };
@@ -21,6 +22,7 @@ export default function TrainingPage() {
   const [week, setWeek] = useState<Week | null>(null);
   const [days, setDays] = useState<DayWithBlocks[]>([]);
   const [adjustmentBanner, setAdjustmentBanner] = useState<PendingAdjustmentBanner | null>(null);
+  const [sessionDay, setSessionDay] = useState<DayWithBlocks | null>(null);
   const todayName = DAYS_OF_WEEK[(new Date().getDay() + 6) % 7];
 
   async function load() {
@@ -164,6 +166,17 @@ export default function TrainingPage() {
 
   return (
     <div>
+      {sessionDay && (
+        <SessionPlayer
+          dayLabel={`${sessionDay.day_of_week}${sessionDay.day_focus ? ` — ${sessionDay.day_focus}` : ""}`}
+          blocks={sessionDay.blocks}
+          onClose={() => setSessionDay(null)}
+          onFinished={() => {
+            setSessionDay(null);
+            load();
+          }}
+        />
+      )}
       {banner}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-xl font-semibold">
@@ -181,7 +194,14 @@ export default function TrainingPage() {
                 {day.day_of_week === todayName && <Badge tone="orange">Hoy</Badge>}
                 {day.day_focus && <span className="text-sm text-[var(--color-text)]/55">&mdash; {day.day_focus}</span>}
               </div>
-              {day.is_rest && <Badge>Descanso</Badge>}
+              <div className="flex items-center gap-2">
+                {!day.is_rest && day.blocks.length > 0 && (
+                  <Button onClick={() => setSessionDay(day)}>
+                    <Play size={14} strokeWidth={2.75} aria-hidden="true" /> Empezar sesión
+                  </Button>
+                )}
+                {day.is_rest && <Badge>Descanso</Badge>}
+              </div>
             </div>
 
             {!day.is_rest && day.blocks.length > 0 && (

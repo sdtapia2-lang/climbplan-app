@@ -251,11 +251,19 @@ export type Block = {
   actual_reps_or_time: string | null;
   actual_load: string | null;
   actual_rpe: string | null;
+  /** Detalle real por serie, registrado en la sesión guiada (punto 3). */
+  set_logs: SetLog[];
   pain_during: number | null;
   comment: string | null;
   completed: boolean;
   completed_at: string | null;
   created_at: string;
+};
+
+export type SetLog = {
+  reps: string;
+  load: string;
+  done: boolean;
 };
 
 export type Evaluation = {
