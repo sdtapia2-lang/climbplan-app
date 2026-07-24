@@ -57,13 +57,17 @@ const KEYWORD_RULES: KeywordRule[] = [
 ];
 
 // Base por categoría (siempre presente, las keywords suman encima).
-// La escalada aeróbica carga los dedos de forma LIVIANA: con lesión de dedos
-// se mantiene a intensidad baja (criterio de los planes de referencia), en
-// cambio dedos/board/campus cargan PESADO y se excluyen.
+// La escalada -- aeróbica, resistencia o fuerza -- carga los dedos de forma
+// LIVIANA a nivel de categoría: con lesión de dedos activa se mantiene a
+// intensidad baja en vez de cortarse del todo (relative rest, no reposo
+// absoluto). Lo que sí carga pesado y se excluye es el trabajo específico de
+// dedos/board/campus (Fingerboard, o cualquier ejercicio con esas keywords,
+// ver KEYWORD_RULES más abajo -- esas reglas agregan "fingers" a `zones`
+// encima de esta base, así que quedan excluidas igual).
 const CATEGORY_BASE: Record<string, ExerciseMeta> = {
   "Aerobic Base": { zones: [], lightZones: ["fingers"], tags: ["climbing"] },
-  "Power Endurance": { zones: ["fingers"], lightZones: ["elbow"], tags: ["climbing"] },
-  "Strength and Power": { zones: ["fingers", "shoulder"], lightZones: [], tags: ["climbing", "power"] },
+  "Power Endurance": { zones: [], lightZones: ["fingers", "elbow"], tags: ["climbing"] },
+  "Strength and Power": { zones: ["shoulder"], lightZones: ["fingers"], tags: ["climbing", "power"] },
   Fingerboard: { zones: ["fingers"], lightZones: ["elbow"], tags: ["fingers", "pull"] },
   Conditioning: { zones: [], lightZones: [], tags: [] },
   Flexibility: { zones: [], lightZones: [], tags: ["mobility"] },

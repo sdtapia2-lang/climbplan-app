@@ -56,6 +56,10 @@ export type PlannerProfile = {
   deficits: Deficits;
   missingBaselines: BaselineNeed[];
   restrictions: Restriction[];
+  /** Alguna zona con dolor/lesión a nivel de exclusión dura (>= excludeAt). */
+  activeInjury: boolean;
+  /** La zona excluida a nivel duro incluye "fingers" (lesión de dedos activa). */
+  fingerInjuryHard: boolean;
   conservative: boolean; // health_screening positivo → RPE cap 7, sin tests máximos
   trainingDays: string[]; // subset de DAYS_OF_WEEK, ordenado Lun→Dom
   equipment: Set<string>; // normalizado (lowercase, sin acentos)

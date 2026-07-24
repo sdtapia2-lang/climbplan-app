@@ -28,6 +28,9 @@ function clampRpe(rpe: number, micro: MicrocycleWeek, profile: PlannerProfile): 
   return Math.min(Math.max(rpe, 2), max);
 }
 
+/** Equipo que implica una carga externa numérica (kg) trackeable en el tiempo. */
+const WEIGHTED_EQUIPMENT = new Set(["Pesas", "Mancuernas", "Pesas rusas", "Barra"]);
+
 /** Carga textual concreta cuando hay dato de evaluación relevante. */
 function loadFor(exercise: Exercise, meta: ExerciseMeta, profile: PlannerProfile, micro: MicrocycleWeek): string | null {
   const name = exercise.name.toLowerCase();
@@ -51,7 +54,10 @@ function loadFor(exercise: Exercise, meta: ExerciseMeta, profile: PlannerProfile
     const pct = micro.loadType === "Descarga" ? 0.5 : 0.7;
     return `${Math.round(profile.deadliftKg * pct)} kg (~${Math.round(pct * 100)}% del test)`;
   }
-  if (exercise.category === "Conditioning") return "RPE como guía";
+  if (exercise.category === "Conditioning") {
+    const usesWeight = (exercise.equipment_required ?? []).some((eq) => WEIGHTED_EQUIPMENT.has(eq));
+    return usesWeight ? "Definir carga (kg) según RPE objetivo" : "Peso corporal";
+  }
   return null;
 }
 

@@ -4,7 +4,7 @@
 // actual (tests de línea base, progresión de dedos, lesiones → restricciones).
 import { DAYS_OF_WEEK, type Athlete, type Evaluation } from "@/lib/types";
 import type { BaselineNeed, Deficits, Level, PlannerProfile, Restriction } from "./types";
-import { normalizePainZone, zoneFromFreeText } from "./knowledge/painRules";
+import { normalizePainZone, zoneFromFreeText, PAIN_RULES } from "./knowledge/painRules";
 import { DEFAULT_DAYS_BY_LEVEL } from "./knowledge/dayTemplates";
 
 function normalizeEquip(s: string): string {
@@ -121,6 +121,11 @@ export function deriveProfile(athlete: Athlete, evaluation: Evaluation | null): 
   // lista con equipo "Fingerboard" (dominadas, lock offs, core en barra).
   if (equipment.has("barra dominadas")) equipment.add("fingerboard");
 
+  const restrictions = deriveRestrictions(athlete, evaluation);
+  const hardExcludedZones = new Set(restrictions.filter((r) => r.level >= PAIN_RULES[r.zone].excludeAt).map((r) => r.zone));
+  const activeInjury = hardExcludedZones.size > 0;
+  const fingerInjuryHard = hardExcludedZones.has("fingers");
+
   const configuredDays = (athlete.training_days ?? []).filter((d) => (DAYS_OF_WEEK as readonly string[]).includes(d));
   let trainingDays = configuredDays.length >= 2 ? [...configuredDays] : [...DEFAULT_DAYS_BY_LEVEL[level]];
   // Respetar la cantidad de días de descanso pedida (si deja al menos 2 de entreno)
@@ -129,6 +134,9 @@ export function deriveProfile(athlete: Athlete, evaluation: Evaluation | null): 
     const maxTraining = Math.max(2, 7 - restDays);
     if (trainingDays.length > maxTraining) trainingDays = trainingDays.slice(0, maxTraining);
   }
+  // Lesión activa: más recuperación, tope de 4 días de entrenamiento/semana
+  // (al menos 3 de descanso) aunque el atleta tenga configurados más días.
+  if (activeInjury && trainingDays.length > 4) trainingDays = trainingDays.slice(0, 4);
   // Garantía dura: al menos 1 día de descanso por semana (no negociable)
   if (trainingDays.length > 6) trainingDays = trainingDays.slice(0, 6);
   trainingDays.sort((a, b) => DAYS_OF_WEEK.indexOf(a as (typeof DAYS_OF_WEEK)[number]) - DAYS_OF_WEEK.indexOf(b as (typeof DAYS_OF_WEEK)[number]));
@@ -147,7 +155,9 @@ export function deriveProfile(athlete: Athlete, evaluation: Evaluation | null): 
     discipline,
     deficits: deriveDeficits(level, evaluation),
     missingBaselines: deriveMissingBaselines(evaluation),
-    restrictions: deriveRestrictions(athlete, evaluation),
+    restrictions,
+    activeInjury,
+    fingerInjuryHard,
     conservative,
     trainingDays,
     equipment,

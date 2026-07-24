@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button, Input } from "./ui";
+import { Button, Input, CategoryTag } from "./ui";
 import type { Block, SetLog } from "@/lib/types";
 import { parseRestSeconds, parseSetsCount, formatClock } from "@/lib/parseRest";
+import { estimateBlockMinutes, estimateSessionMinutes } from "@/lib/estimateTime";
 import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert } from "lucide-react";
 
 type Props = {
@@ -164,7 +165,7 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
         <div className="min-w-0">
           <p className="text-sm font-medium truncate">{dayLabel}</p>
           <p className="text-xs text-[var(--color-text)]/50">
-            {completedExercises} / {exercises.length} ejercicios
+            {completedExercises} / {exercises.length} ejercicios &middot; ~{estimateSessionMinutes(exercises)} min
           </p>
         </div>
         <button onClick={onClose} className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] p-1" aria-label="Cerrar">
@@ -243,14 +244,19 @@ function ExerciseScreen({
   onAddSet: () => void;
   onDeleteSet: (setIdx: number) => void;
 }) {
-  const meta = [block.reps_or_time, block.load, block.rpe_target && `RPE ${block.rpe_target}`].filter(Boolean).join(" · ");
+  const meta = [block.reps_or_time, block.load, block.rpe_target && `RPE ${block.rpe_target}`, `~${estimateBlockMinutes(block)} min`]
+    .filter(Boolean)
+    .join(" · ");
   const nextUndone = sets.findIndex((s) => !s.done);
 
   return (
     <div className="px-5 py-6 max-w-lg mx-auto">
-      <p className="text-xs uppercase tracking-wide text-[var(--color-accent-500)] mb-1">
-        Ejercicio {index + 1} de {total}
-      </p>
+      <div className="flex items-center gap-2 mb-1">
+        <p className="text-xs uppercase tracking-wide text-[var(--color-accent-500)]">
+          Ejercicio {index + 1} de {total}
+        </p>
+        <CategoryTag category={block.category} />
+      </div>
       <h2 className="text-2xl font-semibold leading-tight mb-2 whitespace-pre-line">{block.exercise_name_freetext}</h2>
       {meta && <p className="text-sm text-[var(--color-text)]/70 mb-3">{meta}</p>}
 

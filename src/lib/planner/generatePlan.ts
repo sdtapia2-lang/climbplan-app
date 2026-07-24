@@ -164,9 +164,14 @@ function ensureWeeklyGuarantees(
   // Power) son requisito fijo todas las semanas -- red de seguridad para
   // cuando el atleta entrena solo 2 días (no entran como día dedicado) o
   // cuando una lesión sustituyó el ejercicio original por otra categoría.
-  if (!hasCategory("Aerobic Base")) inject({ category: "Aerobic Base" }, "base aeróbica");
-  if (!hasCategory("Power Endurance")) inject({ category: "Power Endurance" }, "resistencia");
-  if (!hasCategory("Strength and Power")) inject({ category: "Strength and Power", preferTags: ["climbing"] }, "fuerza de escalada");
+  // Con una lesión activa esto no aplica: el esqueleto (skeleton.ts) ya
+  // recortó a propósito a máximo 2 días de escalada, y forzar el tercer
+  // pilar acá lo revertiría.
+  if (!profile.activeInjury) {
+    if (!hasCategory("Aerobic Base")) inject({ category: "Aerobic Base" }, "base aeróbica");
+    if (!hasCategory("Power Endurance")) inject({ category: "Power Endurance" }, "resistencia");
+    if (!hasCategory("Strength and Power")) inject({ category: "Strength and Power", preferTags: ["climbing"] }, "fuerza de escalada");
+  }
   // Fingerboard: mismo criterio (requisito fijo, no depende de déficit). Si
   // el atleta no tiene fingerboard, candidatesForSlot no encuentra
   // candidatos por equipamiento y esto no-opea solo, sin forzar nada.

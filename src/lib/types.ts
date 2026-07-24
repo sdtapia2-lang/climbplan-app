@@ -115,6 +115,28 @@ export const EQUIPMENT_OPTIONS = [
   "Colchoneta",
 ] as const;
 
+/** Etiqueta corta por categoría, para mostrar como identificador visual. */
+export const CATEGORY_LABELS: Record<string, string> = {
+  "Aerobic Base": "AB",
+  "Power Endurance": "PE",
+  "Strength and Power": "S&P",
+  Fingerboard: "FB",
+  Conditioning: "Cond",
+  Flexibility: "Flex",
+  Otro: "Otro",
+};
+
+/** Color por categoría (clases Tailwind fijas, no ligadas al tema claro/oscuro de la app). */
+export const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
+  "Aerobic Base": { bg: "bg-blue-100", text: "text-blue-700" },
+  "Power Endurance": { bg: "bg-purple-100", text: "text-purple-700" },
+  "Strength and Power": { bg: "bg-rose-100", text: "text-rose-700" },
+  Fingerboard: { bg: "bg-amber-100", text: "text-amber-700" },
+  Conditioning: { bg: "bg-slate-100", text: "text-slate-700" },
+  Flexibility: { bg: "bg-teal-100", text: "text-teal-700" },
+  Otro: { bg: "bg-neutral-100", text: "text-neutral-700" },
+};
+
 /** Prefijo de 2 letras por categoría para el codigo estable del ejercicio (ej. FB0001). */
 export const CATEGORY_CODE_PREFIX: Record<string, string> = {
   "Aerobic Base": "AB",

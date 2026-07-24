@@ -4,7 +4,7 @@
 import { DAYS_OF_WEEK } from "@/lib/types";
 import type { DayFocus, PlannerProfile, WeekSkeleton, WeekSkeletonDay } from "./types";
 import { MICROCYCLE_TEMPLATE, MESOCYCLE_PHASES, type MesocyclePhase } from "./knowledge/microcycles";
-import { WEEK_LAYOUTS } from "./knowledge/dayTemplates";
+import { CORE_CLIMBING_FOCI, WEEK_LAYOUTS } from "./knowledge/dayTemplates";
 
 export function phaseForMesocycle(previousMesocycles: number): MesocyclePhase {
   return MESOCYCLE_PHASES[previousMesocycles % MESOCYCLE_PHASES.length];
@@ -24,11 +24,31 @@ export function focusListFor(profile: PlannerProfile, phase: MesocyclePhase): Da
     [layout[0], layout[emphasisIdx]] = [layout[emphasisIdx], layout[0]];
   }
 
+  // Lesión activa: máximo 2 días de escalada por semana (en vez de los 3
+  // pilares completos). Se conservan Aerobic Base (el más liviano) y el
+  // pilar de énfasis de la fase; el tercero pasa a movilidad/recuperación.
+  // Si el énfasis de la fase ya es Aerobic Base, se conserva el siguiente
+  // pilar de la lista en vez de colapsar a un solo día de escalada.
+  if (profile.activeInjury) {
+    const secondary =
+      phase.climbingEmphasis !== "escalada_capacidad"
+        ? phase.climbingEmphasis
+        : CORE_CLIMBING_FOCI.find((f) => f !== "escalada_capacidad")!;
+    const keep = new Set<DayFocus>(["escalada_capacidad", secondary]);
+    for (let i = 0; i < layout.length; i++) {
+      if (CORE_CLIMBING_FOCI.includes(layout[i]) && !keep.has(layout[i])) {
+        layout[i] = "movilidad";
+      }
+    }
+  }
+
   // Fingerboard es un requisito fijo (no depende de déficit): si el atleta
   // tiene fingerboard, siempre hay 1 día dedicado cuando hay 4+ días de
   // entrenamiento. Con menos días, ensureWeeklyGuarantees en generatePlan.ts
-  // igual mete un ejercicio de Fingerboard como red de seguridad.
-  if (profile.hasFingerboard && !layout.includes("dedos_fuerza") && layout.length >= 4) {
+  // igual mete un ejercicio de Fingerboard como red de seguridad. Excepción:
+  // con una lesión de dedos activa, el trabajo directo de dedos (fingerboard)
+  // se corta del todo -- no se fuerza este día.
+  if (profile.hasFingerboard && !profile.fingerInjuryHard && !layout.includes("dedos_fuerza") && layout.length >= 4) {
     layout[layout.length - 1] = "dedos_fuerza";
   }
   // Sin fingerboard: el trabajo de dedos se hace en pared (regla 4, más conservador)

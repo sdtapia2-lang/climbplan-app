@@ -5,17 +5,19 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
-import { Card, Input, Button, Badge, Spinner, EmptyState } from "@/components/ui";
+import { Card, Input, Button, Badge, Spinner, EmptyState, CategoryTag } from "@/components/ui";
 import { SessionPlayer } from "@/components/SessionPlayer";
+import { InjuryBanner } from "@/components/InjuryBanner";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
 import { computeCurrentWeek } from "@/lib/weeks";
+import { estimateSessionMinutes } from "@/lib/estimateTime";
 import { TriangleAlert, Check, Sparkles, X, Play } from "lucide-react";
 
 type DayWithBlocks = Day & { blocks: Block[] };
 type PendingAdjustmentBanner = { runId: string; completedAt: string | null };
 
 export default function TrainingPage() {
-  const { athleteId } = useAthlete();
+  const { athlete, athleteId } = useAthlete();
   const { profile } = useProfile();
   const [loading, setLoading] = useState(true);
   const [mesocycle, setMesocycle] = useState<Mesocycle | null>(null);
@@ -151,6 +153,7 @@ export default function TrainingPage() {
   if (!mesocycle) {
     return (
       <div>
+        <InjuryBanner athlete={athlete} />
         {banner}
         <EmptyState
           text="Sin semanas de entrenamiento"
@@ -177,6 +180,7 @@ export default function TrainingPage() {
           }}
         />
       )}
+      <InjuryBanner athlete={athlete} />
       {banner}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-xl font-semibold">
@@ -193,6 +197,11 @@ export default function TrainingPage() {
                 <span className="font-medium">{day.day_of_week}</span>
                 {day.day_of_week === todayName && <Badge tone="orange">Hoy</Badge>}
                 {day.day_focus && <span className="text-sm text-[var(--color-text)]/55">&mdash; {day.day_focus}</span>}
+                {!day.is_rest && day.blocks.length > 0 && (
+                  <span className="text-sm text-[var(--color-text)]/55">
+                    &middot; {estimateSessionMinutes(day.blocks)} min
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 {!day.is_rest && day.blocks.length > 0 && (
@@ -210,7 +219,10 @@ export default function TrainingPage() {
                   <div key={block.id} className="border border-[var(--color-divider)] rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <p className="font-medium">{block.exercise_name_freetext}</p>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <CategoryTag category={block.category} />
+                          <p className="font-medium">{block.exercise_name_freetext}</p>
+                        </div>
                         <p className="text-xs text-[var(--color-text)]/55">
                           {[block.sets && `${block.sets} series`, block.reps_or_time, block.time, block.load && `${block.load}`, block.rpe_target && `RPE ${block.rpe_target}`, block.rest && `descanso ${block.rest}`]
                             .filter(Boolean)

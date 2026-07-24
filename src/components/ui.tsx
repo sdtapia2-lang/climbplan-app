@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { X, Info } from "lucide-react";
+import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/types";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -137,6 +138,18 @@ export function Modal({
         {children}
       </div>
     </div>
+  );
+}
+
+/** Identificador visual de la categoría de un ejercicio (color + sigla). */
+export function CategoryTag({ category }: { category: string | null }) {
+  const key = category ?? "Otro";
+  const colors = CATEGORY_COLORS[key] ?? CATEGORY_COLORS.Otro;
+  const label = CATEGORY_LABELS[key] ?? key;
+  return (
+    <span className={`inline-flex items-center text-[10px] font-medium tracking-wide px-2 py-0.5 rounded-full shrink-0 ${colors.bg} ${colors.text}`}>
+      {label}
+    </span>
   );
 }
 

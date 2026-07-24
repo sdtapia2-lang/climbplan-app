@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
-import { Card, Field, Input, Select, Textarea, Button } from "./ui";
+import { Card, Field, Input, Select, Textarea, Button, Modal, CategoryTag } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -102,6 +102,8 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
   const [loading, setLoading] = useState(!!mesocycleId);
   const [saving, setSaving] = useState(false);
   const [expandedBlocks, setExpandedBlocks] = useState<Set<string>>(new Set());
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   function toggleBlockExpanded(blockId: string) {
     setExpandedBlocks((prev) => {
@@ -341,15 +343,26 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
 
   async function deleteMesocycle() {
     if (!mesocycleId) return;
-    if (!confirm(`¿Eliminar el mesociclo "${meso.name || "sin nombre"}"? Esta acción no se puede deshacer.`)) return;
+    setDeleteError(null);
     setSaving(true);
     const supabase = createClient();
-    const { error } = await supabase.from("mesocycles").delete().eq("id", mesocycleId);
+    const { error, count } = await supabase
+      .from("mesocycles")
+      .delete({ count: "exact" })
+      .eq("id", mesocycleId);
     setSaving(false);
     if (error) {
-      alert("No se pudo eliminar el mesociclo: " + error.message);
+      setDeleteError("No se pudo eliminar el mesociclo: " + error.message);
       return;
     }
+    // RLS puede filtrar el delete sin devolver error (0 filas afectadas) si el
+    // usuario no tiene permiso real sobre este atleta: hay que detectarlo acá,
+    // si no el usuario cree que se borró y sigue apareciendo en la lista.
+    if (!count) {
+      setDeleteError("No tienes permiso para eliminar este mesociclo.");
+      return;
+    }
+    setConfirmDelete(false);
     router.push("/mesociclo");
     router.refresh();
   }
@@ -367,7 +380,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         </div>
         <div className="flex items-center gap-2">
           {mesocycleId && (
-            <Button variant="danger" onClick={deleteMesocycle} disabled={saving}>
+            <Button variant="danger" onClick={() => setConfirmDelete(true)} disabled={saving}>
               <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" /> Eliminar
             </Button>
           )}
@@ -507,8 +520,9 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                           className="flex items-center justify-between w-full text-left gap-1"
                         >
                           <span className="min-w-0">
-                            <span className="block text-xs font-medium truncate">
-                              {block.exercise_name_freetext || "Ejercicio sin nombre"}
+                            <span className="flex items-center gap-1.5 text-xs font-medium">
+                              <CategoryTag category={block.category} />
+                              <span className="truncate">{block.exercise_name_freetext || "Ejercicio sin nombre"}</span>
                             </span>
                             {metaLine && <span className="block text-[11px] text-[var(--color-text)]/55 truncate">{metaLine}</span>}
                           </span>
@@ -584,6 +598,21 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           <option key={n} value={n} />
         ))}
       </datalist>
+
+      <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title="Eliminar mesociclo">
+        <p className="text-sm text-[var(--color-text)]/70 mb-4">
+          ¿Eliminar el mesociclo &quot;{meso.name || "sin nombre"}&quot;? Esta acción no se puede deshacer.
+        </p>
+        {deleteError && <p className="text-sm text-red-600 mb-4">{deleteError}</p>}
+        <div className="flex items-center justify-end gap-2">
+          <Button variant="secondary" onClick={() => setConfirmDelete(false)} disabled={saving}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={deleteMesocycle} disabled={saving}>
+            {saving ? "Eliminando..." : "Eliminar"}
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

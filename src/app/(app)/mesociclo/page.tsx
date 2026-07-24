@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, canManageOwnMesocycle, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
+import { InjuryBanner } from "@/components/InjuryBanner";
 import { Sparkles } from "lucide-react";
 import type { Mesocycle } from "@/lib/types";
 
@@ -89,6 +90,7 @@ export default function MesocycleListPage() {
 
   return (
     <div>
+      <InjuryBanner athlete={athlete} />
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
         <div className="flex items-center gap-2">
