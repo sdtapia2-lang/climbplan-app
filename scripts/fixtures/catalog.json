@@ -252,28 +252,6 @@
     ]
   },
   {
-    "id": "5bbc11ee-c927-4b20-8a62-089fc0d9ffbf",
-    "name": "Aductores de Cadera",
-    "category": "Flexibility",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": "2",
-    "typical_reps": null,
-    "typical_time": "60s",
-    "typical_duration": "18 min",
-    "typical_effort": "Deep Stretch",
-    "description": "Un entrenamiento guiado de mariposa, split lateral ISO, rana y medio split lateral para aumentar la flexibilidad de los aductores de cadera. Objetivo: Mejorar el alcance lateral de la pierna aumentando la flexibilidad de los aductores, ampliando las opciones de presas de pie y la economía de movimiento en la pared. Descanso: 60 s entre series",
-    "is_benchmark": false,
-    "created_at": "2026-07-18T14:30:03.848369+00:00",
-    "code": "FL0001",
-    "muscle_groups": [
-      "Movilidad general",
-      "Cadera",
-      "Piernas"
-    ]
-  },
-  {
     "id": "de13ec8a-13b5-4ee9-a7f8-b04ac711a794",
     "name": "Apertura de pecho",
     "category": "Conditioning",
@@ -1593,6 +1571,24 @@
     ]
   },
   {
+    "id": "01b03327-6c84-4eb9-a798-85b4988182b1",
+    "name": "Estiramiento de Sofá",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0047",
+    "muscle_groups": []
+  },
+  {
     "id": "c60a57c9-e0ab-485d-97e6-a9e3fb607910",
     "name": "Estiramiento Revolver - Estático Pasivo",
     "category": "Flexibility",
@@ -2078,26 +2074,22 @@
     "muscle_groups": []
   },
   {
-    "id": "7982c63c-6566-4815-b89c-0899c0c1f509",
-    "name": "Glúteos e Isquiotibiales",
+    "id": "87ac728d-bf9d-40bc-91d9-d86900475693",
+    "name": "Giro de Sabio",
     "category": "Flexibility",
     "equipment_required": [
       "Peso corporal"
     ],
-    "typical_sets": "2",
+    "typical_sets": null,
     "typical_reps": null,
-    "typical_time": "60s",
-    "typical_duration": "21 min",
-    "typical_effort": "Low Intensity",
-    "description": "Un entrenamiento guiado de estiramiento de sofá, pancake de pie, postura de paloma y split lateral ISO para aumentar la flexibilidad de glúteos e isquiotibiales. Objetivo: Mejorar el rango de cadera, glúteo e isquiotibial para que puedas colocar los pies más alto en la pared manteniendo las caderas cerca, aumentando la economía de movimiento. Descanso: 60 s entre series",
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
     "is_benchmark": false,
-    "created_at": "2026-07-18T14:30:03.848369+00:00",
-    "code": "FL0018",
-    "muscle_groups": [
-      "Movilidad general",
-      "Cadera",
-      "Piernas"
-    ]
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0048",
+    "muscle_groups": []
   },
   {
     "id": "9f8e400f-2ce2-4a56-a3f0-e2ffee77aeef",
@@ -2578,24 +2570,40 @@
     ]
   },
   {
-    "id": "443fea57-6c95-4c7f-9198-06784898e093",
-    "name": "Mantenimiento de Flexibilidad",
+    "id": "559c69e6-db69-4655-9ca5-62a3b5c3950a",
+    "name": "Mariposa",
     "category": "Flexibility",
     "equipment_required": [
       "Peso corporal"
     ],
-    "typical_sets": null,
+    "typical_sets": "3",
     "typical_reps": null,
-    "typical_time": "10s",
-    "typical_duration": "16 min",
+    "typical_time": "60s",
+    "typical_duration": null,
     "typical_effort": "Deep Stretch",
-    "description": "Una rutina guiada de mantenimiento de cuerpo entero con patadas, pancake, rana, paloma, estiramiento de sofá, estiramiento de gemelo, estiramiento de pecho y estiramiento de dorsal a baja intensidad. Objetivo: Mantener las ganancias de flexibilidad durante semanas de descarga y taper, previniendo la regresión del rango de movimiento sin agregar carga de entrenamiento. Descanso: 5 s entre series",
+    "description": null,
     "is_benchmark": false,
-    "created_at": "2026-07-18T14:30:03.848369+00:00",
-    "code": "FL0020",
-    "muscle_groups": [
-      "Movilidad general"
-    ]
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0052",
+    "muscle_groups": []
+  },
+  {
+    "id": "c0b396d0-1abe-42d1-85bd-b5b306c2ab14",
+    "name": "Medio Split Lateral",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0053",
+    "muscle_groups": []
   },
   {
     "id": "2e8b4edc-e3bf-43b5-a4da-49929f4b3d6e",
@@ -2616,26 +2624,6 @@
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ]
-  },
-  {
-    "id": "a0ad2539-fbff-4f77-a51a-dbf0f19bb41e",
-    "name": "Movilidad Matutina",
-    "category": "Flexibility",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": null,
-    "typical_reps": null,
-    "typical_time": "30s",
-    "typical_duration": "10 min",
-    "typical_effort": "Deep Stretch",
-    "description": "Un entrenamiento guiado diario en el piso de giro de sabio, postura de cachorro, estiramiento de gemelo en pared, side runner, postura de paloma y sentadilla yogui para movilidad de cuerpo entero. Objetivo: Construir movilidad mediante la práctica diaria de baja intensidad, reforzando el hábito para apoyar las ganancias de flexibilidad con el tiempo. Descanso: 30 s entre series",
-    "is_benchmark": false,
-    "created_at": "2026-07-18T14:30:03.848369+00:00",
-    "code": "FL0021",
-    "muscle_groups": [
-      "Movilidad general"
     ]
   },
   {
@@ -3101,6 +3089,24 @@
     ]
   },
   {
+    "id": "9614b04b-12d7-4633-bb2b-9d019b06d38d",
+    "name": "Postura de Cachorro",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0049",
+    "muscle_groups": []
+  },
+  {
     "id": "4bc8dc21-b0f4-4b7a-a6d9-9658c5ea4215",
     "name": "Postura de Paloma - Contrae y Relaja",
     "category": "Flexibility",
@@ -3417,26 +3423,6 @@
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ]
-  },
-  {
-    "id": "ab763741-1bd1-48a5-a6f4-42dce6accfb3",
-    "name": "Pulsos y Patadas",
-    "category": "Flexibility",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": "1",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "10 min",
-    "typical_effort": "Easy Effort",
-    "description": "Un entrenamiento guiado diario de patadas laterales, patadas frontales y pulsos de pancake para entrenar la flexibilidad dinámica mediante repetición de alta frecuencia. Objetivo: Desarrollar rango activo dinámico mediante ejercicios diarios de patadas y pulsos, construyendo flexibilidad utilizable para el movimiento de escalada.",
-    "is_benchmark": false,
-    "created_at": "2026-07-18T14:30:03.848369+00:00",
-    "code": "FL0031",
-    "muscle_groups": [
-      "Movilidad general"
     ]
   },
   {
@@ -3982,6 +3968,24 @@
     "muscle_groups": []
   },
   {
+    "id": "ad1dfedf-17fa-4275-a4d6-f7cccb0e5599",
+    "name": "Sentadilla Yogui",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0051",
+    "muscle_groups": []
+  },
+  {
     "id": "f79cb8ac-4107-4d3f-9c9f-0ead98c96963",
     "name": "Sentadillas Cosaco - Estiramiento con Tempo",
     "category": "Flexibility",
@@ -4043,6 +4047,24 @@
       "Dedos",
       "Hombro"
     ]
+  },
+  {
+    "id": "d37a2178-4557-4a28-8bcc-6c8c6a925fc3",
+    "name": "Side Runner",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": null,
+    "typical_time": "10s",
+    "typical_duration": null,
+    "typical_effort": "Deep Stretch",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T17:55:40.022193+00:00",
+    "code": "FL0050",
+    "muscle_groups": []
   },
   {
     "id": "03ec4895-1335-40dc-a8e8-354362c03391",
