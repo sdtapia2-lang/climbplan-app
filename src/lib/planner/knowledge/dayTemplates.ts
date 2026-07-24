@@ -34,7 +34,10 @@ export type DayTemplate = {
 // escalada (Aerobic Base corto) 3) contenido principal -- si hay Conditioning
 // en el mismo día, va después de la rutina de escalada, nunca antes 4)
 // Flexibility de cierre al final.
-const WARMUP_SLOT: DaySlot = { category: "Flexibility", count: 1, requireTags: ["warmup"] };
+// count:2 en vez de 1 -- el "Calentamiento" de 6 movimientos que antes era un
+// solo ejercicio compuesto ahora son movimientos individuales (fase 20); dos
+// slots mantienen algo de la variedad que tenía el combo original.
+const WARMUP_SLOT: DaySlot = { category: "Flexibility", count: 2, requireTags: ["warmup"] };
 const CLIMBING_WARMUP_SLOT: DaySlot = { category: "Aerobic Base", count: 1, preferShortDuration: true };
 const COOLDOWN_SLOT: DaySlot = { category: "Flexibility", count: 1, preferTags: ["mobility"] };
 

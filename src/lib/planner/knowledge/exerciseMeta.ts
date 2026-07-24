@@ -84,6 +84,19 @@ const OVERRIDES: Record<string, Partial<ExerciseMeta>> = {
   "Estiramientos de Dedos - Estático Pasivo": { zones: [], tags: ["mobility", "finger_extensors"] },
   "Flexibilidad de Antebrazo": { zones: [], tags: ["mobility", "finger_extensors"] },
   "Estiramiento de Muñeca - Estático Pasivo": { zones: [], tags: ["mobility"] },
+  // Salidos de dividir el compuesto "Calentamiento" (fase 20): movimientos
+  // dinámicos individuales de la rutina de calentamiento, no matchean ninguna
+  // keyword de warmup por nombre propio.
+  "Rotación interna de rodilla": { tags: ["warmup", "mobility"] },
+  "Pigeon pose": { tags: ["warmup", "mobility"] },
+  "Izquiotibial a ambos lados (sentado)": { tags: ["warmup", "mobility"] },
+  "Posición caballo": { tags: ["warmup", "mobility"] },
+  "Ranita": { tags: ["warmup", "mobility"] },
+  "Elongación gemelos": { tags: ["warmup", "mobility"] },
+  // Salidos de dividir "Curl antebrazo con mancuerna" (fase 20): mismo rol de
+  // antagonista de dedos que el compuesto original, no matchean "antebrazo".
+  "Flexor muñeca (plama arriba)": { zones: ["wrist", "elbow"], tags: ["finger_extensors"] },
+  "Flexor muñeca (palma abajo)": { zones: ["wrist", "elbow"], tags: ["finger_extensors"] },
   // Rutina general de calistenia: empuje + core, apta como antagonista
   "Rutina de Calistenia de 10 Minutos para Escaladores": { zones: [], tags: ["push", "core"] },
   // Kilometraje de boulder muy fácil: carga liviana de dedos, apto en rehab

@@ -167,6 +167,29 @@ export type Exercise = {
   created_at: string;
 };
 
+/** Circuito armado por un entrenador a partir de ejercicios individuales existentes. */
+export type Routine = {
+  id: string;
+  name: string;
+  category: string | null;
+  description: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+/** Ítem de una rutina: referencia a un ejercicio individual, con overrides opcionales (si son null, se usa el typical_* del ejercicio). */
+export type RoutineItem = {
+  id: string;
+  routine_id: string;
+  exercise_id: string;
+  position: number;
+  sets: string | null;
+  reps_or_time: string | null;
+  time: string | null;
+  rest: string | null;
+  created_at: string;
+};
+
 export type Mesocycle = {
   id: string;
   athlete_id: string;

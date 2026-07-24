@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Card, Field, Input, Select, Textarea, Button, Modal, CategoryTag } from "./ui";
-import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
+import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise, type Routine, type RoutineItem } from "@/lib/types";
 import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 
 type BlockDraft = {
@@ -99,6 +99,8 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
   const [weeks, setWeeks] = useState<WeekDraft[]>([emptyWeek(1), emptyWeek(2), emptyWeek(3), emptyWeek(4)]);
   const [activeWeek, setActiveWeek] = useState(0);
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [routines, setRoutines] = useState<Routine[]>([]);
+  const [routinePicker, setRoutinePicker] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(!!mesocycleId);
   const [saving, setSaving] = useState(false);
   const [expandedBlocks, setExpandedBlocks] = useState<Set<string>>(new Set());
@@ -119,6 +121,8 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
       const supabase = createClient();
       const { data } = await supabase.from("exercises").select("*").order("name");
       setExercises((data as Exercise[]) ?? []);
+      const { data: routineRows } = await supabase.from("routines").select("*").order("name");
+      setRoutines((routineRows as Routine[]) ?? []);
     })();
   }, []);
 
@@ -202,6 +206,32 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
 
   function addBlock(dayIdx: number) {
     updateDay(dayIdx, { blocks: [...currentWeek.days[dayIdx].blocks, emptyBlock()] });
+  }
+
+  async function insertRoutine(dayIdx: number) {
+    const routineId = routinePicker[dayIdx];
+    if (!routineId) return;
+    const supabase = createClient();
+    const { data } = await supabase.from("routine_items").select("*").eq("routine_id", routineId).order("position");
+    const items = (data as RoutineItem[]) ?? [];
+    const newBlocks: BlockDraft[] = items.map((it) => {
+      const ex = exercises.find((e) => e.id === it.exercise_id);
+      return {
+        id: uid(),
+        exercise_id: it.exercise_id,
+        exercise_name_freetext: ex?.name ?? "",
+        category: ex?.category ?? "Conditioning",
+        rpe_target: "",
+        sets: it.sets ?? ex?.typical_sets ?? "",
+        reps_or_time: it.reps_or_time ?? ex?.typical_reps ?? ex?.typical_time ?? "",
+        time: it.time ?? ex?.typical_time ?? "",
+        load: "",
+        rest: it.rest ?? "",
+        kinesio_notes: "",
+      };
+    });
+    updateDay(dayIdx, { blocks: [...currentWeek.days[dayIdx].blocks, ...newBlocks] });
+    setRoutinePicker((p) => ({ ...p, [dayIdx]: "" }));
   }
 
   function removeBlock(dayIdx: number, blockIdx: number) {
@@ -587,6 +617,25 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                 <Button variant="secondary" onClick={() => addBlock(dayIdx)} className="w-full justify-center mt-2">
                   + Bloque
                 </Button>
+                {routines.length > 0 && (
+                  <div className="flex gap-2 mt-2">
+                    <Select
+                      value={routinePicker[dayIdx] ?? ""}
+                      onChange={(e) => setRoutinePicker((p) => ({ ...p, [dayIdx]: e.target.value }))}
+                      className="flex-1 text-xs"
+                    >
+                      <option value="">Insertar rutina...</option>
+                      {routines.map((r) => (
+                        <option key={r.id} value={r.id}>
+                          {r.name}
+                        </option>
+                      ))}
+                    </Select>
+                    <Button variant="secondary" onClick={() => insertRoutine(dayIdx)} disabled={!routinePicker[dayIdx]}>
+                      + Rutina
+                    </Button>
+                  </div>
+                )}
               </>
             )}
           </Card>

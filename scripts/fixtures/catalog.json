@@ -1,6 +1,6 @@
 [
   {
-    "code": "AB0001",
+    "id": "3ffab406-0572-43b4-97d3-f4ae301d3dee",
     "name": "1 on / 1 off",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -12,14 +12,16 @@
     "typical_duration": "19 min",
     "typical_effort": "Moderate Effort",
     "description": "Intervalos de intensidad media estructurados con proporción trabajo-descanso 1:1. Escala durante 1 minuto, descansa 1 minuto, y repite durante varias series. Objetivo: Estresar tu sistema de capacidad aeróbica con intervalos que se vuelven progresivamente más difíciles de recuperar hacia el final del entrenamiento. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0001",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0002",
+    "id": "a0cf3bbf-73d5-4ac3-b25f-e8326a45bbdc",
     "name": "1 on / 2 off",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -31,14 +33,16 @@
     "typical_duration": "28 min",
     "typical_effort": "Moderate Effort",
     "description": "Intervalos de intensidad media estructurados con proporción trabajo-descanso 1:2. Escala durante 1 minuto, descansa 2 minutos, y repite durante varias series. Objetivo: Estresar tu sistema de capacidad aeróbica con intervalos que permiten mayor recuperación, construyendo una base sólida de resistencia. Descanso: 2 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0002",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0003",
+    "id": "bb81d30d-d3c9-408b-9b43-bd8dd93d052d",
     "name": "10 on / 10 off",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -50,14 +54,16 @@
     "typical_duration": "50 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 10 minutos a intensidad muy baja, seguido de descanso, repetido durante varias series en rutas o circuitos. Objetivo: Promover la recuperación y el flujo sanguíneo mediante volumen de escalada de baja intensidad, reconstruyendo la base de resistencia sin agregar estrés significativo de entrenamiento. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0003",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0005",
+    "id": "9361997c-807e-40c4-be34-30ac464c386a",
     "name": "15+15 - facil a moderado",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -69,14 +75,16 @@
     "typical_duration": "43 min",
     "typical_effort": "Moderate Effort",
     "description": "Alterna entre 15 movimientos fáciles y 15 movimientos moderados en cada repetición, practicando la habilidad de cambiar de intensidad a mitad de la escalada. Objetivo: Desarrollar la capacidad aeróbica mientras se aprende a adaptar el ritmo y el estilo de escalada entre secciones de distinta intensidad. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0005",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0006",
+    "id": "598c2b18-bceb-4257-aeea-f5b7fdb741e3",
     "name": "15+15 - moderado a facil",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -88,14 +96,16 @@
     "typical_duration": "43 min",
     "typical_effort": "Moderate Effort",
     "description": "Comienza cada repetición en una ruta moderada durante 15 movimientos, luego cambia a escalada más fácil durante los 15 movimientos restantes. Objetivo: Desarrollar la capacidad aeróbica mientras se aprende a manejar el bombeo y a transicionar entre intensidades de escalada. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0006",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0001",
+    "id": "1b82c753-f4cc-4d2b-8dd3-16e95d4acc9b",
     "name": "30 Movimientos Fraccionados",
     "category": "Power Endurance",
     "equipment_required": [
@@ -107,14 +117,16 @@
     "typical_duration": "27 min",
     "typical_effort": "Very Hard Effort",
     "description": "Divide una ruta o circuito de 30 movimientos en 3 secciones de 10 movimientos, descansando 20 segundos entre secciones. Descansa 6 minutos entre vueltas completas. Objetivo: Entrenar el rendimiento en escalada sostenida dividiendo una ruta de nivel límite en secciones completables. Descanso: 6 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0001",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0002",
+    "id": "dc15388b-4dd3-47eb-99c9-82c2000506ec",
     "name": "4x4",
     "category": "Power Endurance",
     "equipment_required": [
@@ -126,14 +138,16 @@
     "typical_duration": "32 min",
     "typical_effort": "Hard Effort",
     "description": "Escala 4 boulders seguidos con poco o ningun descanso entre problemas, luego descansa antes de repetir durante varias series. Objetivo: Desarrollar la potencia aeróbica mediante esfuerzos de alta intensidad con descanso limitado, usando movimiento variado de boulder para impulsar el rendimiento sostenido. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0002",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0004",
+    "id": "2c354254-76be-416a-9536-d6c12dce1ffc",
     "name": "5 on / 3 off",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -145,14 +159,16 @@
     "typical_duration": "21 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 5 minutos a intensidad muy baja, seguido de descanso, repetido durante varias series en rutas o circuitos. Objetivo: Promover la recuperación mediante intervalos de escalada suave, aumentando el flujo sanguíneo para ayudar a la reparación de tejidos mientras se construye la base de resistencia. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0004",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0003",
+    "id": "dd538d18-f752-4aa3-a2cd-7584c810148d",
     "name": "5 Series Más Difíciles",
     "category": "Power Endurance",
     "equipment_required": [
@@ -164,14 +180,16 @@
     "typical_duration": "50 min",
     "typical_effort": "Very Hard Effort",
     "description": "Escala 5 rutas o circuitos difíciles de 30-40 movimientos de más fácil a más difícil. Objetivo: Mejorar la potencia aeróbica mediante esfuerzos de longitud de ruta desafiantes que te preparan para las demandas de la escalada deportiva difícil. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0003",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0004",
+    "id": "a65b183f-82dd-46ff-a7af-f083441c54b5",
     "name": "6 en 6",
     "category": "Power Endurance",
     "equipment_required": [
@@ -183,14 +201,16 @@
     "typical_duration": "28 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa 6 boulders al minuto en varias series. El marco de tiempo comprimido genera fatiga rápida. Objetivo: Desarrollar producción anaeróbica repetida con cada boulder completado al minuto. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0004",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0007",
+    "id": "9dc3e19c-b018-4874-92f8-846268d4561a",
     "name": "8 on / 5 off",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -202,14 +222,16 @@
     "typical_duration": "34 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 8 minutos a intensidad muy baja, seguido de descanso, repetido durante varias series en rutas o circuitos. Objetivo: Apoyar la recuperación y la base de resistencia mediante intervalos de escalada de baja intensidad y duración moderada, aumentando el flujo sanguíneo sin sobrecargar el sistema. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0007",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0005",
+    "id": "48a76b2d-b16e-4df9-b0e3-2c70b41d992e",
     "name": "A Vista",
     "category": "Power Endurance",
     "equipment_required": [
@@ -221,92 +243,16 @@
     "typical_duration": "66 min",
     "typical_effort": "Hard Effort",
     "description": "Intenta 4 rutas en o cerca de tu nivel a vista de punta, dedicando tiempo a leer la ruta y prepararte antes de cada intento unico. Objetivo: Entrenar la potencia aeróbica junto con las habilidades tácticas y psicológicas necesarias para rendir en intentos a vista. Descanso: 20 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0005",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0001",
-    "name": "Acondicionamiento de Core en Piso 1:\r\n- Sit up\r\n- Plancha lateral\r\n- Plancha\r\n- Piernas arriba\r\n- Sit up",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "9 min",
-    "typical_effort": "Hard Effort",
-    "description": "Acondicionamiento de Core en Piso 1: un circuito de 5 ejercicios que cubre core anterior, core lateral y core inferior, completado en 2 rondas con descanso mínimo entre ejercicios. Objetivo: Desarrollar el acondicionamiento del core y la resistencia muscular, mejorando tu capacidad de mantener la tensión corporal durante entrenamientos de escalada más largos. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0002",
-    "name": "Acondicionamiento de Core en Piso 2:\r\n- Sit up\r\n- Plancha lateral\r\n- Plancha\r\n- Piernas arriba\r\n- Sit up",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "20 reps",
-    "typical_time": null,
-    "typical_duration": "14 min",
-    "typical_effort": "Hard Effort",
-    "description": "Acondicionamiento de Core en Piso 2: un circuito de 5 ejercicios que cubre core anterior, core lateral y core inferior, completado en 2 rondas con descanso mínimo entre ejercicios. Objetivo: Desarrollar el acondicionamiento del core y la resistencia muscular, mejorando tu capacidad de mantener la tensión corporal durante entrenamientos de escalada más largos. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0007",
-    "name": "Activación escapular a un brazo: \r\n- Constracción escapular\r\n- Bloqueos 90",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "4",
-    "typical_reps": null,
-    "typical_time": "7s",
-    "typical_duration": "16 min",
-    "typical_effort": "Hard Effort",
-    "description": "Activaciones: un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 2 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Bíceps",
-      "Antebrazo",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0006",
-    "name": "Activación escapular:: \r\n- Constracción escapular\r\n- Bloqueos 90",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "4",
-    "typical_reps": null,
-    "typical_time": "7s",
-    "typical_duration": "13 min",
-    "typical_effort": "Hard Effort",
-    "description": "Activaciones: un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 2 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Bíceps",
-      "Antebrazo",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "FL0001",
+    "id": "5bbc11ee-c927-4b20-8a62-089fc0d9ffbf",
     "name": "Aductores de Cadera",
     "category": "Flexibility",
     "equipment_required": [
@@ -318,15 +264,17 @@
     "typical_duration": "18 min",
     "typical_effort": "Deep Stretch",
     "description": "Un entrenamiento guiado de mariposa, split lateral ISO, rana y medio split lateral para aumentar la flexibilidad de los aductores de cadera. Objetivo: Mejorar el alcance lateral de la pierna aumentando la flexibilidad de los aductores, ampliando las opciones de presas de pie y la economía de movimiento en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0001",
     "muscle_groups": [
       "Movilidad general",
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0009",
+    "id": "de13ec8a-13b5-4ee9-a7f8-b04ac711a794",
     "name": "Apertura de pecho",
     "category": "Conditioning",
     "equipment_required": [
@@ -338,14 +286,16 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en aperturas de pecho dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho y deltoides anteriores, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0009",
     "muscle_groups": [
       "Pecho",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0010",
+    "id": "d5f77b4e-c789-425f-83f0-9aea3194946e",
     "name": "Apertura de pecho - inclinado",
     "category": "Conditioning",
     "equipment_required": [
@@ -357,14 +307,16 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en aperturas inclinado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en deltoides posteriores y espalda alta, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0010",
     "muscle_groups": [
       "Pecho",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0008",
+    "id": "22284c5a-6b85-4221-a651-76574b3c5865",
     "name": "ARC bajo",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -376,14 +328,16 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 10 minutos a intensidad muy baja, manteniendo un movimiento fácil en rutas o circuitos sin acercarte al fallo. Objetivo: Promover la recuperación activa y construir una base aeróbica mediante un periodo sostenido de escalada fácil, apoyando el desarrollo de resistencia a largo plazo.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0008",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0009",
+    "id": "50d02acd-b04c-41ba-a0cf-6e75bed56dd1",
     "name": "ARC largo",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -395,14 +349,16 @@
     "typical_duration": "30 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 30 minutos a intensidad muy baja, manteniendo un movimiento fácil en rutas o circuitos sin acercarte al fallo. Objetivo: Promover la recuperación activa y construir una base aeróbica mediante un bloque extendido de escalada fácil, apoyando el desarrollo de resistencia a largo plazo.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0009",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0010",
+    "id": "976bf2a4-134a-4a36-b734-fbab0477a438",
     "name": "ARC medio",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -414,14 +370,16 @@
     "typical_duration": "20 min",
     "typical_effort": "Very Easy Effort",
     "description": "Escala de forma continua durante 20 minutos a intensidad muy baja, manteniendo un movimiento fácil en rutas o circuitos sin acercarte al fallo. Objetivo: Apoyar la recuperación activa y la construcción de la base aeróbica mediante un bloque de duración media de escalada fácil.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0010",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0084",
+    "id": "e36eb8f9-0f67-466d-b3fa-1f0096f5dfe0",
     "name": "Back squat",
     "category": "Conditioning",
     "equipment_required": [
@@ -433,13 +391,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa la sentadilla trasera dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en cuádriceps, isquiotibiales, glúteos y zona lumbar, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0084",
     "muscle_groups": [
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0003",
+    "id": "b6550ca6-d1ab-4884-963b-67d281f996be",
     "name": "Bloqueo 90",
     "category": "Conditioning",
     "equipment_required": [
@@ -451,16 +411,18 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en el bloqueo a 90° con dos brazos (levantamiento) dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en estabilizadores escapulares y dorsales, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0003",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0050",
+    "id": "56063631-9f29-4bd2-aea2-f3a1b7914e3f",
     "name": "Bloqueo 90 - 10 s",
     "category": "Conditioning",
     "equipment_required": [
@@ -472,15 +434,17 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Múltiples series de lock offs isométricos de 10 s. Objetivo: Construir fuerza isométrica máxima de tracción en dorsales, bíceps y antebrazos, transfiriendose directamente a la capacidad de lock off en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0050",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0005",
+    "id": "fa53a155-e4ab-4948-9453-2bd62f5c8df8",
     "name": "Bloqueo 90 a un brazo",
     "category": "Conditioning",
     "equipment_required": [
@@ -492,16 +456,18 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras bloqueos a 90° con un brazo (levantamientos) dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en estabilizadores escapulares y dorsales, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0005",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0051",
+    "id": "058944c2-8aad-40d5-8c77-9049d7cdeca4",
     "name": "Bloqueo 90 a Un Brazo - 10 s",
     "category": "Conditioning",
     "equipment_required": [
@@ -513,16 +479,18 @@
     "typical_duration": "12 min",
     "typical_effort": "Very Hard Effort",
     "description": "Múltiples series de lock offs isométricos a un brazo de 10 s. Objetivo: Construir fuerza isométrica máxima de tracción en dorsales, bíceps y antebrazos, transfiriendose directamente a la capacidad de lock off en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0051",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0052",
-    "name": "Bloqueo 90 de Densidad: \r\n- Bloqueo 90\r\n- Bloqueo 90 supino",
+    "id": "3476678b-4832-4e48-8f93-9db7203da26b",
+    "name": "Bloqueo 90 supino",
     "category": "Conditioning",
     "equipment_required": [
       "Fingerboard"
@@ -530,18 +498,34 @@
     "typical_sets": "4",
     "typical_reps": null,
     "typical_time": "30s",
-    "typical_duration": "25 min",
+    "typical_duration": null,
     "typical_effort": "Hard Effort",
-    "description": "Lock Offs de Densidad: un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Bíceps",
-      "Antebrazo"
-    ],
-    "is_benchmark": false
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0120",
+    "muscle_groups": []
   },
   {
-    "code": "SP0007",
+    "id": "c45760d8-5b15-46fb-8363-e16e7ef59263",
+    "name": "Bloqueos 90",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": null,
+    "typical_time": "7s",
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0133",
+    "muscle_groups": []
+  },
+  {
+    "id": "f38e99bd-8c83-407e-954c-7b78f60ebb8b",
     "name": "Board send",
     "category": "Strength and Power",
     "equipment_required": [
@@ -553,14 +537,34 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard Effort",
     "description": "Intenta problemas de board justo por debajo de tu límite que puedas completar en pocos intentos. Apunta a encadenes de calidad más que a proyectos de largo plazo. Objetivo: Construir confianza y capacidad de rendimiento en terreno de board pronunciado mediante la ejecución exitosa de problemas difíciles.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0007",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0008",
+    "id": "8c709dee-3eb3-4c4d-9265-c02fc4de4df4",
+    "name": "Bote (pose V)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0097",
+    "muscle_groups": []
+  },
+  {
+    "id": "1962bec6-c0b1-4079-a4a1-de3e397b47a4",
     "name": "Boulder dobles",
     "category": "Power Endurance",
     "equipment_required": [
@@ -572,14 +576,16 @@
     "typical_duration": "27 min",
     "typical_effort": "Very Hard Effort",
     "description": "Escala un boulder difícil, descanso breve, luego repitelo de inmediato. Completa varias series de dobles. Objetivo: Desarrollar la capacidad anaeróbica y la habilidad de mantener la intensidad en esfuerzos repetidos de alta potencia. Descanso: 4 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0008",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0008",
+    "id": "40dfdbd0-db03-445a-baa1-5e688835eb45",
     "name": "Boulder foco",
     "category": "Strength and Power",
     "equipment_required": [
@@ -591,14 +597,16 @@
     "typical_duration": "30 min",
     "typical_effort": "Very Hard Effort",
     "description": "Enfocate en un tema técnico o estilo de movimiento específico durante todo el entrenamiento, según indique tu entrenador. Ejecuta con precisión. Objetivo: Abordar debilidades técnicas individuales mientras se mantiene un estímulo de fuerza. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0008",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0006",
+    "id": "d9a5a09a-b30f-4480-853a-54c4d923d407",
     "name": "Boulder send",
     "category": "Strength and Power",
     "equipment_required": [
@@ -610,14 +618,16 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard Effort",
     "description": "Intenta problemas que sean difíciles pero alcanzables en pocos intentos. Prioriza los encadenes exitosos y la ejecución precisa. Objetivo: Reforzar la consistencia de rendimiento mientras se construye fuerza y potencia submáxima.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0006",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0015",
+    "id": "2a1981cb-8713-4469-b297-d80a63ab5ea8",
     "name": "Boulder volumen",
     "category": "Strength and Power",
     "equipment_required": [
@@ -629,14 +639,16 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard Effort",
     "description": "Completa 20 boulders en una hora a una intensidad desafiante pero manejable, apuntando a encadenar o completar cada uno en dos intentos. Objetivo: Construir capacidad y tolerancia para boulder sostenido de alto volumen a una intensidad media controlada.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0015",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "AB0011",
+    "id": "b2c05bfd-8629-4073-ac0b-9bc9cb36de43",
     "name": "Boulder Volumen",
     "category": "Aerobic Base",
     "equipment_required": [
@@ -648,14 +660,16 @@
     "typical_duration": "20 min",
     "typical_effort": "Easy Effort",
     "description": "Escala 10-20 boulders muy fáciles a baja intensidad, priorizando el ritmo y el movimiento fluido en todo momento. Objetivo: Desarrollar la capacidad aeróbica y la capilarización del antebrazo mediante boulder de alto volumen y muy baja intensidad.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "AB0011",
     "muscle_groups": [
       "Dedos",
       "Escalada general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0010",
+    "id": "8c1d3431-e83e-4908-8915-d4be7fc3cb68",
     "name": "Boulder volumen - Intervalos Forzados",
     "category": "Power Endurance",
     "equipment_required": [
@@ -667,14 +681,16 @@
     "typical_duration": "69 min",
     "typical_effort": "Hard Effort",
     "description": "Completa un número alto de boulders de rango medio en varias series con descansos cortos, asegurando una amplia variedad de movimiento. Objetivo: Impulsar la potencia aeróbica completando un alto volumen de boulders de intensidad media a alta bajo fatiga. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0010",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0006",
+    "id": "0370b765-249c-4415-b6d9-2dbb5bba1142",
     "name": "Boulders Enlazados",
     "category": "Power Endurance",
     "equipment_required": [
@@ -686,14 +702,16 @@
     "typical_duration": "45 min",
     "typical_effort": "Hard Effort",
     "description": "Repite un boulder largo bien ensayado (alrededor de 14 movimientos) en varias series. Objetivo: Mejorar la tolerancia a secuencias sostenidas de alta intensidad que exigen un esfuerzo prolongado. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0006",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0007",
+    "id": "fd510c54-9616-47fd-a67d-8a66908544fa",
     "name": "Boulders Extendidos",
     "category": "Power Endurance",
     "equipment_required": [
@@ -705,32 +723,16 @@
     "typical_duration": "45 min",
     "typical_effort": "Hard Effort",
     "description": "Repite un boulder largo de 16 movimientos en varias series. Espera estar luchando hacia el final. Objetivo: Impulsar la tolerancia a secuencias sostenidas de alta intensidad que conectan el boulder con el esfuerzo de la longitud de una ruta. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0007",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0002",
-    "name": "Calentamiento:\r\n- Rotación interna de rodilla\r\n- Pigeon pose\r\n- Izquiotibial a ambos lados (sentado)\r\n- Posición caballo\r\n- Ranita\r\n- Elongación gemelos",
-    "category": "Flexibility",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": null,
-    "typical_reps": null,
-    "typical_time": "60s",
-    "typical_duration": "16 min",
-    "typical_effort": "Warm Up",
-    "description": "Una rutina guiada rápida de rotación interna acostado, postura de paloma, estiramiento de isquiotibiales, postura de caballo ISO, rana y estiramiento de gemelo para uso de calentamiento o vuelta a la calma. Objetivo: Mantener la flexibilidad del tren inferior y preparar las articulaciones para la escalada, adecuado como calentamiento previo al entrenamiento o vuelta a la calma posterior.",
-    "muscle_groups": [
-      "Movilidad general"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "SP0001",
+    "id": "934080e4-7fd8-42bd-8a46-9168c3328741",
     "name": "Campus - 3 Movimientos",
     "category": "Strength and Power",
     "equipment_required": [
@@ -742,14 +744,16 @@
     "typical_duration": "22 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza 3 movimientos máximos de campus por serie en varias series, enfocandote en velocidad y contacto controlado en cada peldano. Objetivo: Aumentar la potencia de tracción máxima y la fuerza de contacto mediante secuencias de campus máximas extendidas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0001",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0002",
+    "id": "475d9e2b-2586-46f3-84af-ee1933c90963",
     "name": "Circuitos de Boulder",
     "category": "Strength and Power",
     "equipment_required": [
@@ -761,14 +765,16 @@
     "typical_duration": "55 min",
     "typical_effort": "Hard Effort",
     "description": "Sigue un circuito o elige boulders dentro de un rango de grado dado, trabajando problemas justo por encima de tu nivel a vista con series estructuradas. Objetivo: Construir fuerza submáxima y variedad de movimiento mediante un esfuerzo consistente y repetible a través de una gama de problemas. Descanso: 6 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0002",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0008",
+    "id": "3c4ba132-7b10-42be-921e-c085a3b925d0",
     "name": "Constracción escapular",
     "category": "Conditioning",
     "equipment_required": [
@@ -780,16 +786,18 @@
     "typical_duration": "10 min",
     "typical_effort": "Hard Effort",
     "description": "Múltiples series de constracciones isométricas de 20 s. Objetivo: Construir fuerza isométrica máxima de tracción en estabilizadores escapulares y dorsales, transfiriendose directamente a la capacidad de lock off en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0008",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0004",
+    "id": "2577e869-eae9-4fdc-8799-f2dca8608f3c",
     "name": "Contracción escapular a un brazo",
     "category": "Conditioning",
     "equipment_required": [
@@ -801,239 +809,36 @@
     "typical_duration": "12 min",
     "typical_effort": "Hard Effort",
     "description": "Múltiples series de constracciones isométricas a un brazo de 10 s. Objetivo: Construir fuerza isométrica máxima de tracción en estabilizadores escapulares y dorsales, transfiriendose directamente a la capacidad de lock off en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0004",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0013",
-    "name": "Core 3:\r\n- Plancha (pierna arriba)\r\n- Push up\r\n- Bote (pose V)\r\n- Sit up\r\n- Plancha lateral",
+    "id": "ecfe8fa6-be15-4c7b-86d7-8c2e42e6160a",
+    "name": "Contracción escapular en plancha",
     "category": "Conditioning",
     "equipment_required": [
-      "Peso corporal"
+      "Colchoneta"
     ],
     "typical_sets": null,
     "typical_reps": null,
     "typical_time": "30s",
-    "typical_duration": "5 min",
-    "typical_effort": "Hard Effort",
-    "description": "Un circuito de 5 ejercicios que cubre core anterior, core lateral y trabajo de empuje, completado en 2 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0124",
+    "muscle_groups": []
   },
   {
-    "code": "CD0018",
-    "name": "Core 7:\r\n- Pies a la barra\r\n- Sit up con peso\r\n- Piernas arriba\r\n- Twist sit up\r\n- Lumbares",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "3",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "18 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core 7: un circuito de 5 ejercicios que cubre core anterior, core inferior y trabajo de core posterior, completado en 3 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0019",
-    "name": "Core 8:\r\n- Pies a la barra\r\n- Sit up con peso\r\n- Piernas arriba\r\n- Twist sit up\r\n- Lumbares",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "3",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "20 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core 8: un circuito de 5 ejercicios que cubre core anterior, core inferior y trabajo de core posterior, completado en 3 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0020",
-    "name": "Core 9:\r\n- Sit up con peso\r\n- V up\r\n- Hollow body\r\n- Plancha lateral (arriba - abajo)\r\n- Plancha lateral\r\n- Lumbares\r\n- Push up\r\n- Plancha",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": "3",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "31 min",
-    "typical_effort": "Hard Effort",
-    "description": "Un circuito de 9 ejercicios que cubre core anterior, core lateral y trabajo de core posterior, completado en 3 rondas con descanso mínimo entre ejercicios. Objetivo: Prefatigar el core con movimientos dinámicos antes de las sujeciones isométricas, construyendo resistencia muscular profunda y tensión corporal para una escalada sostenida. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0016",
-    "name": "Core Barra 1:\r\n- Front lever (piernas pecho)\r\n- Pies a la barra (lado a lado)\r\n- L-sit\r\n- Pies a la barra (medio)",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "8 reps",
-    "typical_time": null,
-    "typical_duration": "9 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core - Barra Progresión 1: un entrenamiento de 4 ejercicios que combina distintos movimientos de core con varias series de cada uno. Objetivo: Construir fuerza de core equilibrada mediante ejercicios variados, desarrollando la estabilidad y la tensión corporal que sustenta todo movimiento de escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0017",
-    "name": "Core Barra 2:\r\n- Front lever (piernas pecho)\r\n- Pies a la barra (lado a lado)\r\n- L-sit\r\n- Pies a la barra (medio)",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "8 reps",
-    "typical_time": null,
-    "typical_duration": "11 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core - Barra Progresión 2: un entrenamiento de 4 ejercicios que combina distintos movimientos de core con varias series de cada uno. Objetivo: Construir fuerza de core equilibrada mediante ejercicios variados, desarrollando la estabilidad y la tensión corporal que sustenta todo movimiento de escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0014",
-    "name": "Core Barra Fuerza 1:\r\n- Pies a la barra (medio)\r\n- L-sit\r\n- Pies a la barra (lado a lado)\r\n- Front lever (piernas 90)",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "17 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core - Barra Fuerza 1: un entrenamiento de 4 ejercicios que combina distintos movimientos de core con varias series de cada uno. Objetivo: Construir fuerza de core equilibrada mediante ejercicios variados, desarrollando la estabilidad y la tensión corporal que sustenta todo movimiento de escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0015",
-    "name": "Core Barra Fuerza 2:\r\n- Pies a la barra (medio)\r\n- L-sit\r\n- Pies a la barra (lado a lado)\r\n- Front lever (piernas 90)",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "17 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core - Barra Fuerza 2: un entrenamiento de 4 ejercicios que combina distintos movimientos de core con varias series de cada uno. Objetivo: Construir fuerza de core equilibrada mediante ejercicios variados, desarrollando la estabilidad y la tensión corporal que sustenta todo movimiento de escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core",
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0021",
-    "name": "Core Piso 1:\r\n- V sits\r\n- Hollow body\r\n- Sit-up con peso\r\n- Plancha lateral con peso\r\n- Kettlebell twist",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Mancuernas"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "11 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core en Piso 1: un circuito de 5 ejercicios que cubre core anterior, core lateral y trabajo de core rotacional, completado en 2 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0022",
-    "name": "Core Piso 2::\r\n- V sits\r\n- Hollow body\r\n- Sit-up con peso\r\n- Plancha lateral con peso\r\n- Kettlebell twist",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Mancuernas"
-    ],
-    "typical_sets": "2",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "17 min",
-    "typical_effort": "Hard Effort",
-    "description": "Core en Piso 2: un circuito de 5 ejercicios que cubre core anterior, core lateral y trabajo de core rotacional, completado en 2 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada. Descanso: 10 s entre series",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0023",
-    "name": "Core:\r\n- Plancha\r\n- V up\r\n- Lumbares\r\n- Piernas arriba\r\n- Sit up\r\n- Twist sit up",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Peso corporal"
-    ],
-    "typical_sets": null,
-    "typical_reps": null,
-    "typical_time": "60s",
-    "typical_duration": "4 min",
-    "typical_effort": "Hard Effort",
-    "description": "Un circuito de 6 ejercicios que cubre core anterior, core inferior y trabajo de core posterior, completado en 10 rondas con descanso mínimo entre ejercicios. Objetivo: Construir fuerza y estabilidad de core equilibrada mediante patrones de movimiento variados, apoyando directamente la tensión corporal y el control en la escalada.",
-    "muscle_groups": [
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0024",
-    "name": "Curl antebrazo con mancuerna:\r\n- Flexor muñeca (plama arriba)\r\n- Flexor muñeca (palma abajo)",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Mancuernas"
-    ],
-    "typical_sets": "3",
-    "typical_reps": "10 reps",
-    "typical_time": null,
-    "typical_duration": "17 min",
-    "typical_effort": "Very Hard Effort",
-    "description": "Completa curls de flexores y extensores de muñeca con mancuernas en varias series. Objetivo: Construir fuerza equilibrada de flexores y extensores de muñeca para mejorar la estabilidad del agarre y reducir el riesgo de lesión. Descanso: 60 s entre series",
-    "muscle_groups": [
-      "Antebrazo",
-      "Muñeca"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0027",
+    "id": "2924f9a8-fc93-4712-ae32-052a055b5b59",
     "name": "Curl de bicep inverso",
     "category": "Conditioning",
     "equipment_required": [
@@ -1045,13 +850,15 @@
     "typical_duration": "19 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el curl inverso dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en braquiorradial y extensores del antebrazo, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0027",
     "muscle_groups": [
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0028",
+    "id": "e1646a22-36d8-400c-beba-3c605d81d1a5",
     "name": "Curl de bicep martillo",
     "category": "Conditioning",
     "equipment_required": [
@@ -1063,13 +870,15 @@
     "typical_duration": "19 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el curl martillo dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en braquiorradial, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0028",
     "muscle_groups": [
       "Bíceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0025",
+    "id": "590fd166-fba2-4fb1-bedd-52190e0696f7",
     "name": "Curl de biceps",
     "category": "Conditioning",
     "equipment_required": [
@@ -1081,13 +890,15 @@
     "typical_duration": "19 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en el curl de bíceps dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0025",
     "muscle_groups": [
       "Bíceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0026",
+    "id": "5c7ddb88-d921-4ba3-addb-d7ab248c8a71",
     "name": "Curl de isquiotibiales en TRX",
     "category": "Conditioning",
     "equipment_required": [
@@ -1099,14 +910,16 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza el curl de isquiotibiales en TRX dentro de un estímulo de repeticiones moderadas. Objetivo: Desarrollar fuerza del tren inferior en isquiotibiales y glúteos, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0026",
     "muscle_groups": [
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0003",
+    "id": "3fa6df88-c694-4d99-a22c-4fac018024a9",
     "name": "Dislocaciones de Hombro",
     "category": "Flexibility",
     "equipment_required": [
@@ -1118,14 +931,16 @@
     "typical_duration": "3 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza pases circulares de hombro usando un palo o banda, siguiendo un tempo para guiar el movimiento a través del rango completo. Objetivo: Aumentar la movilidad de hombro y el rango por encima de la cabeza mediante trabajo de tempo controlado, mejorando el alcance y la libertad de movimiento en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0003",
     "muscle_groups": [
       "Movilidad general",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0029",
+    "id": "6fec987d-e55c-4655-95de-49808c8c15f5",
     "name": "Dominada a Un Brazo",
     "category": "Conditioning",
     "equipment_required": [
@@ -1137,13 +952,15 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras la dominada a un brazo dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps, antebrazos y core, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0029",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0030",
+    "id": "76fe0357-03b5-44f4-b97f-bf7963e88329",
     "name": "Dominada a Un Brazo - Explosivas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1155,13 +972,51 @@
     "typical_duration": "12 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza la dominada a un brazo dentro de un estímulo de fuerza máxima. Objetivo: Reclutar la fuerza de tracción máxima en dorsales, bíceps, antebrazos y core, construyendo la fuerza de alto nivel necesaria para movimientos potentes en terreno vertical pronunciado. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0030",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0031",
+    "id": "7e90d990-a27d-400a-aafb-4fbff9d8edc0",
+    "name": "Dominada con peso",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "30s x 6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0128",
+    "muscle_groups": []
+  },
+  {
+    "id": "2b437f52-2737-4db6-884c-2c8a3f3bdca7",
+    "name": "Dominada explosiva",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "30s x 6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0129",
+    "muscle_groups": []
+  },
+  {
+    "id": "1451c22c-501e-4458-a0f1-5728f3e93257",
     "name": "Dominadas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1173,13 +1028,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras las dominadas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0031",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0032",
+    "id": "c6a488fa-a18f-4cc3-be2e-c566c531cd51",
     "name": "Dominadas - Test de Fuerza",
     "category": "Conditioning",
     "equipment_required": [
@@ -1191,13 +1048,15 @@
     "typical_duration": "22 min",
     "typical_effort": "Building",
     "description": "En este entrenamiento completaras el máximo de dominadas como prueba de tu fuerza actual. Objetivo: Reclutar la fuerza de tracción máxima en dorsales, bíceps y antebrazos, construyendo la fuerza de alto nivel necesaria para movimientos potentes en terreno vertical pronunciado. Descanso: 3 min entre series",
+    "is_benchmark": true,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0032",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": true
+    ]
   },
   {
-    "code": "CD0087",
+    "id": "ab2393a0-19fa-4afa-b8ab-785079dd4f53",
     "name": "Dominadas anchas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1209,13 +1068,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras las tracciones anchas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0087",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0088",
+    "id": "45bc427f-4467-4452-8a09-ec31ce6fb9b2",
     "name": "Dominadas explosivas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1227,13 +1088,15 @@
     "typical_duration": "16 min",
     "typical_effort": "Speed and Power",
     "description": "Completa tracciones de potencia en varias series. Objetivo: Reclutar la fuerza de tracción máxima en dorsales, bíceps y antebrazos, construyendo la fuerza de alto nivel necesaria para movimientos potentes en terreno vertical pronunciado. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0088",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0053",
+    "id": "8f16b346-7ff5-48d4-9d84-b3726dcd97c4",
     "name": "Dominadas Negativas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1245,15 +1108,17 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza negativas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0053",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0055",
+    "id": "c29c5368-1533-4f36-9519-12b049e212a9",
     "name": "dominadas Negativas a Un Brazo",
     "category": "Conditioning",
     "equipment_required": [
@@ -1265,15 +1130,17 @@
     "typical_duration": "15 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa las negativas a un brazo dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0055",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0056",
+    "id": "c797e1e4-ff2b-46ee-b2e9-ed2486e9727a",
     "name": "Dominadas Negativas a Un Brazo con peso",
     "category": "Conditioning",
     "equipment_required": [
@@ -1285,15 +1152,17 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras las negativas a un brazo dentro de un estímulo de fuerza máxima. Objetivo: Reclutar la fuerza de tracción máxima en dorsales, bíceps y antebrazos, construyendo la fuerza de alto nivel necesaria para movimientos potentes en terreno vertical pronunciado. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0056",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0054",
+    "id": "8a86db9c-9d42-4780-867d-e00d7df96937",
     "name": "Dominadas Negativas con peso",
     "category": "Conditioning",
     "equipment_required": [
@@ -1305,15 +1174,17 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en negativas dentro de un estímulo de fuerza máxima. Objetivo: Reclutar la fuerza de tracción máxima en dorsales, bíceps y antebrazos, construyendo la fuerza de alto nivel necesaria para movimientos potentes en terreno vertical pronunciado. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0054",
     "muscle_groups": [
       "Espalda",
       "Bíceps",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0033",
+    "id": "0a01d399-2721-4162-972e-79890ac6bceb",
     "name": "Dominadas Supinas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1325,13 +1196,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en dominadas supinas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, bíceps y antebrazos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0033",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0003",
+    "id": "e590b9c4-4c08-44c3-bf99-b772d9dc414c",
     "name": "Eficiencia en Board",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1343,14 +1216,16 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard Effort",
     "description": "Refina la beta y elimina movimientos innecesarios en problemas de board que ya conoces. Enfocate en escalar de la manera más limpia y eficiente posible. Objetivo: Aumentar la eficiencia técnica y la economía energética en terreno vertical pronunciado sin necesidad de ganar fuerza.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0003",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0004",
+    "id": "4cffeb0d-bbc0-4337-bdc0-d1b2fc870b39",
     "name": "Elevación de pierna en Barra - ISO",
     "category": "Flexibility",
     "equipment_required": [
@@ -1362,13 +1237,15 @@
     "typical_duration": "3 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza elevaciones laterales de pierna controladas para fortalecer los abductores de cadera cerca de su rango final de movimiento. Objetivo: Construir fuerza del abductor de cadera en el rango final, mejorando la elevación lateral activa de la pierna para colocaciones de pie amplias mientras escalas. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0004",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0004",
+    "id": "56572cb3-0615-4fab-ad45-b9965fdfc9d1",
     "name": "Eliminados",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1380,14 +1257,34 @@
     "typical_duration": "19 min",
     "typical_effort": "Hard Effort",
     "description": "Escala problemas con presas eliminadas para forzar soluciones creativas y dinámicas. Adopta la resolución de problemas y el movimiento poco familiar. Objetivo: Desarrollar coordinación, precisión y adaptabilidad mediante escalada restringida. Descanso: 2 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0004",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0005",
+    "id": "66b029ce-ca6d-4793-9fcf-b6328165148f",
+    "name": "Elongación gemelos",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0046",
+    "muscle_groups": []
+  },
+  {
+    "id": "29c0ff3e-327f-4a96-8475-33f5579f1135",
     "name": "Encadenando a Vista (Flash)",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1399,14 +1296,34 @@
     "typical_duration": "95 min",
     "typical_effort": "Hard Effort",
     "description": "Comprometete por completo con esfuerzos de un solo intento a vista (flash) en problemas de tu grado de flash a través de una variedad de estilos. Lee la ruta con cuidado, luego da el 100%. Objetivo: Mejorar la capacidad de flash, la toma de decisiones y la ejecución bajo alta presión. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0005",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0035",
+    "id": "f13dd6d4-f477-466a-a4cc-663ab18a3477",
+    "name": "Encogimiento de hombro inclinado",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0118",
+    "muscle_groups": []
+  },
+  {
+    "id": "f64afb85-433c-4bdf-8494-b6f61b4a87c6",
     "name": "Encogimiento de Hombros Inclinado",
     "category": "Conditioning",
     "equipment_required": [
@@ -1418,14 +1335,16 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el encogimiento de hombros inclinado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en trapecio superior y estabilizadores escapulares, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0035",
     "muscle_groups": [
       "Espalda",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0036",
+    "id": "94a53748-3215-4f68-93f5-300494fa3eae",
     "name": "Enhebrar la Aguja",
     "category": "Conditioning",
     "equipment_required": [
@@ -1437,13 +1356,15 @@
     "typical_duration": "14 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza enhebrar la aguja dentro de un estímulo de repeticiones moderadas. Objetivo: Desarrollar fuerza de empuje en columna torácica y hombros, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0036",
     "muscle_groups": [
       "Core"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0009",
+    "id": "a34b1d8f-379f-4cdc-9494-2fbe4b89f946",
     "name": "Esfuerzos Máximos de Boulder",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1455,14 +1376,16 @@
     "typical_duration": "60 min",
     "typical_effort": "Very Hard Effort",
     "description": "Intenta problemas de boulder en el límite de tu capacidad con recuperación completa entre intentos. Los problemas pueden tomar varios entrenamientos completar. Objetivo: Aumentar la fuerza máxima y la producción de potencia.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0009",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0010",
+    "id": "8189f8c9-032a-4a79-9bbd-c5ca8422e394",
     "name": "Esfuerzos Máximos de Boulder Sin Pies",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1474,14 +1397,16 @@
     "typical_duration": "31 min",
     "typical_effort": "Very Hard Effort",
     "description": "Campusea los problemas de boulder de 4 movimientos más difíciles posibles en presas grandes sin usar los pies. Usa movimientos potentes y evita los lock offs estáticos. Objetivo: Aumentar la fuerza de tracción, la tensión y la precisión a intensidad máxima sin asistencia del tren inferior. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0010",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0011",
+    "id": "554c7a99-3371-4b97-9d05-251a4b6b7979",
     "name": "Esfuerzos Máximos en Board",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1493,14 +1418,16 @@
     "typical_duration": "60 min",
     "typical_effort": "Very Hard Effort",
     "description": "Trabaja a verdadera intensidad de alto nivel en un training board, intentando problemas que tomaran varios entrenamientos completar. Objetivo: Aumentar la fuerza máxima y la producción de potencia en terreno de board pronunciado.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0011",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0012",
+    "id": "34a10211-fbf8-4065-8415-9fe27ba7789c",
     "name": "Esfuerzos Máximos en Board - Extendido",
     "category": "Strength and Power",
     "equipment_required": [
@@ -1512,14 +1439,16 @@
     "typical_duration": "120 min",
     "typical_effort": "Very Hard Effort",
     "description": "Un entrenamiento extendido de board a verdadera intensidad de alto nivel, con más tiempo para trabajar problemas límite y acumular intentos de calidad. Objetivo: Aumentar la fuerza máxima y la producción de potencia con un mayor volumen de esfuerzo de alto nivel.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0012",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0005",
+    "id": "1bf9d317-ac76-4279-8db7-03a46cf353e3",
     "name": "Estiramiento de Bíceps - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1531,14 +1460,16 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento estático de bíceps usando la posición de tu cuerpo para sostener el estiramiento durante sujeciones cronometradas. Objetivo: Mejorar la flexibilidad de bíceps y codo, reduciendo la rigidez de la escalada y apoyando la extensión completa del brazo en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0005",
     "muscle_groups": [
       "Movilidad general",
       "Bíceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0006",
+    "id": "ea3c84ac-5c1e-4cd4-ac85-65d20a062559",
     "name": "Estiramiento de Cuádriceps - Sentado - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1550,13 +1481,15 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento pasivo de cuádriceps en posición sentada, reclinandote hacia atrás para aumentar y sostener el estiramiento durante sujeciones cronometradas. Objetivo: Alargar los cuádriceps y flexores de cadera mediante sujeciones pasivas, mejorando el rango de flexión de rodilla y extensión de cadera para heel hooks y pasos altos. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0006",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0007",
+    "id": "ee798fe4-f898-4f7c-ba34-d2a9903a56c0",
     "name": "Estiramiento de Flexor de Cadera en Pared - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1568,15 +1501,17 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento pasivo de flexor de cadera y cuádriceps usando una pared para profundizar el estiramiento durante sujeciones cronometradas. Objetivo: Alargar los flexores de cadera y cuádriceps, mejorando el rango de extensión de cadera para pasos altos, mantle y escalada en pared pronunciada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0007",
     "muscle_groups": [
       "Movilidad general",
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0008",
+    "id": "0a93ce33-823d-4ffc-b5b3-c2b2059434fb",
     "name": "Estiramiento de Gemelo en Pared - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1588,13 +1523,15 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento pasivo de gemelo usando una pared para sostener la posición de estiramiento durante sujeciones cronometradas. Objetivo: Mejorar la flexibilidad de gemelo y tobillo, permitiendo bajadas de talón más profundas y mejor contacto de pie en las presas de pie. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0008",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0009",
+    "id": "4a5c2499-758f-4114-acbd-becea0df720f",
     "name": "Estiramiento de Isquiotibiales - Sentado - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1606,15 +1543,17 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento de isquiotibiales sentado usando la posición del cuerpo y la gravedad para sostener el estiramiento durante sujeciones cronometradas. Objetivo: Aumentar la flexibilidad de isquiotibiales mediante sujeciones pasivas sostenidas, mejorando el rango de flexión de tronco para heel hooks y colocaciones de pie alto. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0009",
     "muscle_groups": [
       "Movilidad general",
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0010",
+    "id": "b4a20728-7a97-478a-9609-887b467b42b4",
     "name": "Estiramiento de Muñeca - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [],
@@ -1624,14 +1563,16 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Múltiples series de estiramiento de muñeca pasivo de 60 s. Objetivo: Mejorar la flexibilidad de flexores y extensores de muñeca, apoyando la salud de los dedos y reduciendo el riesgo de lesión por las altas demandas de carga de la escalada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0010",
     "muscle_groups": [
       "Movilidad general",
       "Muñeca"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0011",
+    "id": "6d4abe1c-f9d7-480b-9705-33f6f7155b21",
     "name": "Estiramiento de Pecho - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1643,14 +1584,16 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento pasivo de pecho usando la gravedad o una superficie externa para sostener la posición de apertura del pecho durante sujeciones cronometradas. Objetivo: Mejorar la flexibilidad de pecho y hombro anterior, reduciendo la rigidez de la escalada y apoyando posiciones de cuerpo abierto en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0011",
     "muscle_groups": [
       "Movilidad general",
       "Pecho"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0012",
+    "id": "c60a57c9-e0ab-485d-97e6-a9e3fb607910",
     "name": "Estiramiento Revolver - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1662,13 +1605,15 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento revolver pasivo en medio split para estirar los dorsales y el costado del torso durante sujeciones cronometradas. Objetivo: Aumentar la flexibilidad de dorsales y tronco lateral, mejorando el alcance lateral y el movimiento por encima de la cabeza en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0012",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0013",
+    "id": "07764350-e14d-4f82-9551-0948a27d6248",
     "name": "Estiramiento Sleeper - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1680,13 +1625,15 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento sleeper acostado de lado, usando la gravedad y el otro brazo para sostener un estiramiento posterior del hombro durante sujeciones cronometradas. Objetivo: Mejorar la flexibilidad posterior del hombro y el rango de rotación interna, reduciendo la rigidez del hombro por la escalada y apoyando una mecanica articular saludable. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0013",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0014",
+    "id": "70c7fd28-6d7f-426b-90b2-36bdd6175c81",
     "name": "Estiramientos de Dedos - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1698,13 +1645,15 @@
     "typical_duration": "28 min",
     "typical_effort": "Deep Stretch",
     "description": "Múltiples series de estiramientos de dedos pasivos de 60 s. Objetivo: Mejorar la flexibilidad de flexores y extensores de los dedos, apoyando la salud de los dedos y reduciendo el riesgo de lesión por las altas demandas de carga de la escalada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0014",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0089",
+    "id": "64f64ae6-489e-49d0-9665-08d149f926d4",
     "name": "Estocada con mancuernas",
     "category": "Conditioning",
     "equipment_required": [
@@ -1716,13 +1665,33 @@
     "typical_duration": "21 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa la zancada caminando con mancuernas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en cuádriceps, glúteos e isquiotibiales, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0089",
     "muscle_groups": [
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0038",
+    "id": "0f408a98-a5be-436e-85f3-bf455f3bb749",
+    "name": "Estocada profunda con rotación",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0122",
+    "muscle_groups": []
+  },
+  {
+    "id": "c219969a-c195-44e6-97ac-104a8460bbe5",
     "name": "Extensión de Tríceps",
     "category": "Conditioning",
     "equipment_required": [
@@ -1734,13 +1703,15 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras la extensión de tríceps dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en tríceps, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0038",
     "muscle_groups": [
       "Tríceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0039",
+    "id": "68baf6ec-dec9-4c37-be9a-4aa229dfa29f",
     "name": "Extensión de Tríceps en Supino",
     "category": "Conditioning",
     "equipment_required": [
@@ -1752,13 +1723,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza extensión de tríceps en supino dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en tríceps, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0039",
     "muscle_groups": [
       "Tríceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0001",
+    "id": "579f57b6-1f99-4049-8551-4d7072424bf1",
     "name": "F2 Open - Levantamiento - Fácil",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1770,14 +1743,16 @@
     "typical_duration": "14 min",
     "typical_effort": "Easy Effort",
     "description": "Realiza levantamientos de 7 s en agarre F2 open (front two open hand), a baja intensidad para mantener la salud del tejido en varias series. Objetivo: Mantener la carga en F2 open a baja intensidad para promover la salud del tejido y el confort sin acumular fatiga. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0001",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0002",
+    "id": "d6427ee9-6c17-4db2-936d-75fb969f1b5b",
     "name": "F2 Open - Levantamiento - Fuerza",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1789,14 +1764,16 @@
     "typical_duration": "26 min",
     "typical_effort": "Hard Effort",
     "description": "Realizaras levantamientos de 10 s en agarre F2 open en varias series. Objetivo: Aumentar la fuerza de dedos en F2 open mediante carga isométrica de alta intensidad a una duración desafiante pero sostenible. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0002",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0003",
+    "id": "5a27be58-3514-4267-af71-f982371a747b",
     "name": "F2 Open - Levantamiento - Máximo",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1808,14 +1785,16 @@
     "typical_duration": "25 min",
     "typical_effort": "Hard Effort",
     "description": "Realizaras levantamientos de 7 s en agarre F2 open, a intensidad casi máxima para fuerza de peak en varias series. Objetivo: Desarrollar la fuerza máxima de dedos en F2 open mediante carga isométrica corta de alta intensidad con recuperación completa. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0003",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0004",
+    "id": "df0de0c7-c263-4f00-a1d2-04d3a590becf",
     "name": "F2 Open - Levantamiento - Peak",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1827,14 +1806,16 @@
     "typical_duration": "24 min",
     "typical_effort": "Hard Effort",
     "description": "Completa levantamientos de 5 s en agarre F2 open en varias series. Objetivo: Aumentar la fuerza de peak de dedos en F2 open y el reclutamiento de unidades motoras mediante esfuerzos muy cortos de intensidad máxima. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0004",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0005",
+    "id": "727e4b19-6f11-48fc-b7a9-40a5b5431a45",
     "name": "F3 Half Crimp - Levantamiento - Fuerza",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1846,14 +1827,16 @@
     "typical_duration": "26 min",
     "typical_effort": "Hard Effort",
     "description": "Este entrenamiento se centra en levantamientos de 10 s en agarre F3 Half crimp. Objetivo: Aumentar la fuerza de dedos en F3 Half crimp mediante carga isométrica de alta intensidad a una duración desafiante pero sostenible. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0005",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0006",
+    "id": "7f4c5c01-10dc-421e-a5e3-3e22876737e3",
     "name": "F3 Half Crimp - Levantamiento - Máximo",
     "category": "Fingerboard",
     "equipment_required": [
@@ -1865,14 +1848,16 @@
     "typical_duration": "25 min",
     "typical_effort": "Hard Effort",
     "description": "Este entrenamiento se centra en levantamientos de 7 s en agarre F3 Half crimp (front three half crimp), a intensidad casi máxima para fuerza de peak. Objetivo: Desarrollar la fuerza máxima de dedos en F3 Half crimp mediante carga isométrica corta de alta intensidad con recuperación completa. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0006",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0040",
+    "id": "393716dd-22b4-41b4-a273-5c1689f39f51",
     "name": "Face Pulls",
     "category": "Conditioning",
     "equipment_required": [
@@ -1884,13 +1869,15 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza face pulls dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en deltoides posteriores, romboides y rotadores externos, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0040",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0015",
+    "id": "d7d0e380-d1f6-4c91-90b9-27efe2c90f49",
     "name": "Fire Hydrant - Pierna Flexionada - Desarrollo de Fuerza",
     "category": "Flexibility",
     "equipment_required": [
@@ -1902,16 +1889,18 @@
     "typical_duration": "3 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza repeticiones de fire hydrant con pierna flexionada para fortalecer los glúteos y los rotadores externos de cadera cerca del rango final de movimiento. Objetivo: Construir fuerza de glúteos y rotadores de cadera en el rango final, mejorando la estabilidad y el control en posiciones de escalada con rotación externa. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0015",
     "muscle_groups": [
       "Movilidad general",
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0016",
+    "id": "393a8883-13aa-44d2-955d-997a4d037791",
     "name": "Flexibilidad de Antebrazo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1923,14 +1912,16 @@
     "typical_duration": "6 min",
     "typical_effort": "Deep Stretch",
     "description": "Un entrenamiento guiado de estiramientos de extensores y flexores de muñeca para aumentar la flexibilidad de antebrazo y muñeca. Objetivo: Mejorar el rango de movimiento de muñeca y antebrazo, apoyando una mayor variedad de posiciones de presa incluyendo undercuts, gastones y regletas planas. Descanso: 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0016",
     "muscle_groups": [
       "Movilidad general",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0017",
+    "id": "9254e9cb-020f-48ea-89c0-ab2f11ec945d",
     "name": "Flexibilidad de Tobillo",
     "category": "Flexibility",
     "equipment_required": [
@@ -1942,13 +1933,15 @@
     "typical_duration": "29 min",
     "typical_effort": "Very Easy Effort",
     "description": "Un entrenamiento guiado de estiramientos de gemelos, elevaciones de talón tipo burro y estiramientos de pescador para aumentar el rango de movimiento del tobillo. Objetivo: Mejorar la dorsiflexión del tobillo para que puedas bajar más el talón en las presas de pie, aumentando el área de contacto y la fricción para escalada en placa y vertical. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0017",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0044",
+    "id": "d05a12fc-b161-42a2-aaa3-d043e7499144",
     "name": "Flexiones Escapulares",
     "category": "Conditioning",
     "equipment_required": [
@@ -1960,16 +1953,54 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras las flexiones escapulares dentro de un estímulo de repeticiones moderadas. Objetivo: Desarrollar fuerza de empuje en pecho, tríceps y hombros, mejorando tu capacidad de empujar y estabilizar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0044",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro",
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0045",
+    "id": "24ccf2c1-729d-475a-8256-1bce10eed203",
+    "name": "Flexor muñeca (palma abajo)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Very Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0115",
+    "muscle_groups": []
+  },
+  {
+    "id": "1b66c15d-25d4-47f3-8789-6443110806ff",
+    "name": "Flexor muñeca (plama arriba)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Very Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0114",
+    "muscle_groups": []
+  },
+  {
+    "id": "74f625eb-f4df-4f59-a1b4-d595835727bf",
     "name": "Fondos de Tríceps",
     "category": "Conditioning",
     "equipment_required": [
@@ -1981,15 +2012,17 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa fondos de tríceps dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho, tríceps y deltoides anteriores, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0045",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0046",
+    "id": "96c0204b-b562-40cd-8693-9172f6f24afa",
     "name": "Fondos en Barra",
     "category": "Conditioning",
     "equipment_required": [],
@@ -1999,54 +2032,53 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa fondos en barra dentro de un estímulo de fuerza. Objetivo: Este rango perfecciona una fuerza de empuje confiable. Con los tríceps, el pecho inferior y los deltoides anteriores impulsando el movimiento, desarrollas la musculatura necesaria para rematar y empujar sobre regletas inclinadas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0046",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0011",
-    "name": "Fuerza compresión:\r\n- Press banca\r\n- Press pecho inclinado con mancuernas\r\n- Bloqueos 90",
+    "id": "3abafa3b-5a42-461b-874b-a779744fb93f",
+    "name": "Front lever (piernas 90)",
     "category": "Conditioning",
     "equipment_required": [
       "Fingerboard"
     ],
-    "typical_sets": "4",
+    "typical_sets": "2",
     "typical_reps": "6 reps",
     "typical_time": null,
-    "typical_duration": "31 min",
+    "typical_duration": null,
     "typical_effort": "Hard Effort",
-    "description": "Este entrenamiento se centra en la compresión dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje equilibrada, manteniendo el equilibrio muscular alrededor de los hombros y reduciendo el riesgo de lesión por la naturaleza dominante de tracción de la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Pecho",
-      "Hombro"
-    ],
-    "is_benchmark": false
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0101",
+    "muscle_groups": []
   },
   {
-    "code": "CD0047",
-    "name": "Generación de Potencia:\r\n- Dominadas explosivas\r\n- Push up explosivas\r\n- Jumpin jacks",
+    "id": "3b760047-3f96-47d3-a7c4-7a672b34f813",
+    "name": "Front lever (piernas pecho)",
     "category": "Conditioning",
     "equipment_required": [
-      "Barra dominadas"
+      "Fingerboard"
     ],
-    "typical_sets": "4",
-    "typical_reps": "3 reps",
+    "typical_sets": "2",
+    "typical_reps": "8 reps",
     "typical_time": null,
-    "typical_duration": "29 min",
-    "typical_effort": "Moderate Effort",
-    "description": "Generación de Potencia: un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Bíceps",
-      "Antebrazo"
-    ],
-    "is_benchmark": false
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0102",
+    "muscle_groups": []
   },
   {
-    "code": "FL0018",
+    "id": "7982c63c-6566-4815-b89c-0899c0c1f509",
     "name": "Glúteos e Isquiotibiales",
     "category": "Flexibility",
     "equipment_required": [
@@ -2058,15 +2090,17 @@
     "typical_duration": "21 min",
     "typical_effort": "Low Intensity",
     "description": "Un entrenamiento guiado de estiramiento de sofá, pancake de pie, postura de paloma y split lateral ISO para aumentar la flexibilidad de glúteos e isquiotibiales. Objetivo: Mejorar el rango de cadera, glúteo e isquiotibial para que puedas colocar los pies más alto en la pared manteniendo las caderas cerca, aumentando la economía de movimiento. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0018",
     "muscle_groups": [
       "Movilidad general",
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0019",
+    "id": "9f8e400f-2ce2-4a56-a3f0-e2ffee77aeef",
     "name": "Good Morning Sentado - Estiramiento con Tempo",
     "category": "Flexibility",
     "equipment_required": [
@@ -2078,13 +2112,15 @@
     "typical_duration": "6 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza good mornings sentado siguiendo un temporizador de tempo a través de las fases de bajada, pausa y subida para estirar los isquiotibiales. Objetivo: Mejorar la flexibilidad de isquiotibiales y el rango de flexión de tronco mediante trabajo de tempo controlado, apoyando los heel hooks y las colocaciones de pie alto. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0019",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0007",
+    "id": "436d6269-5740-43c6-b4d0-6d32258c8a03",
     "name": "Half Crimp 4 - Levantamiento - Base",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2096,14 +2132,16 @@
     "typical_duration": "23 min",
     "typical_effort": "Moderate Effort",
     "description": "Realiza levantamientos de 30 s en Half crimp, a intensidad moderada para construir fuerza base en varias series. Objetivo: Construir fuerza base de dedos en Half crimp mediante carga isométrica de mayor duración a intensidad moderada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0007",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0008",
+    "id": "1cd55718-746c-49ca-a476-c1474416adbc",
     "name": "Half Crimp 4 - Levantamiento - Fuerza",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2115,14 +2153,16 @@
     "typical_duration": "26 min",
     "typical_effort": "Hard Effort",
     "description": "Este entrenamiento se centra en levantamientos de 10 s en Half crimp, dentro de un estímulo de fuerza. Objetivo: Aumentar la fuerza de dedos en Half crimp mediante carga isométrica de alta intensidad a una duración desafiante pero sostenible. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0008",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0009",
+    "id": "95e74054-ac33-4ef4-897d-776dd3958eac",
     "name": "Half Crimp 4 - Levantamiento - Máximo",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2134,14 +2174,16 @@
     "typical_duration": "25 min",
     "typical_effort": "Hard Effort",
     "description": "Este entrenamiento se centra en levantamientos de 7 s en Half crimp, a intensidad casi máxima para fuerza de peak. Objetivo: Desarrollar la fuerza máxima de dedos en Half crimp mediante carga isométrica corta de alta intensidad con recuperación completa. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0009",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0010",
+    "id": "11a8ac6a-edd7-49d7-8dc7-40b344f30c01",
     "name": "Half Crimp 4 - Levantamiento - Test Máximo",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2153,14 +2195,16 @@
     "typical_duration": "25 min",
     "typical_effort": "Build to very hard",
     "description": "Testea tus límites aumentando progresivamente hasta tu máximo de 7 s en varios levantamientos de Half crimp (intensidad máxima). Objetivo: Establecer tu máximo actual para la duración de sujeción prescrita, guiando la intensidad de entrenamiento futura. Descanso: 3 min entre series",
+    "is_benchmark": true,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0010",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": true
+    ]
   },
   {
-    "code": "FB0011",
+    "id": "36054e47-f889-4707-81f9-3c92d41bde4a",
     "name": "Half Crimp 4 - Repeticiones - Fuerza",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2172,14 +2216,34 @@
     "typical_duration": "28 min",
     "typical_effort": "Hard Effort",
     "description": "Completa repeticiones de contrae y relaja en Half crimp, dentro de un estímulo de fuerza usando un protocolo de repeticiones más corto. Objetivo: Aumentar la fuerza de dedos en Half crimp mediante contracciones repetidas de alta intensidad en lugar de sujeciones sostenidas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0011",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0048",
+    "id": "f6597a9a-b636-4644-8670-03af627b653e",
+    "name": "Hollow body",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0108",
+    "muscle_groups": []
+  },
+  {
+    "id": "e6f2b642-08f0-4519-8e0c-429b28999f88",
     "name": "Hollow Body Hold 30 s",
     "category": "Conditioning",
     "equipment_required": [
@@ -2191,13 +2255,33 @@
     "typical_duration": "11 min",
     "typical_effort": "Hard Effort",
     "description": "Múltiples series de hollow body hold isométrico de 30 s. Objetivo: Construir fuerza isométrica del tren inferior en abdominales y flexores de cadera, apoyando un trabajo de pies potente y posiciones estables en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0048",
     "muscle_groups": [
       "Core"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0013",
+    "id": "3875b957-7842-4a71-a310-2018f17a5695",
+    "name": "I a W boca abajo",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0123",
+    "muscle_groups": []
+  },
+  {
+    "id": "8ecdfaa8-39be-4989-b57b-32cba0d8a08e",
     "name": "Intervalos de Fuerza",
     "category": "Strength and Power",
     "equipment_required": [
@@ -2209,14 +2293,34 @@
     "typical_duration": "45 min",
     "typical_effort": "Very Hard Effort",
     "description": "Repite boulders difíciles pero submaximos en series estructuradas con recuperación completa. Opera cerca de tu umbral de fuerza superior en todas las series. Objetivo: Aumentar la resistencia de fuerza y la producción de fuerza repetible. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0013",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0034",
+    "id": "36addf2c-4253-4d9b-bdd8-bf0df9895cfe",
+    "name": "Izquiotibial a ambos lados (sentado)",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0043",
+    "muscle_groups": []
+  },
+  {
+    "id": "bcf9917f-52b9-42bb-9795-798cf794574a",
     "name": "Jalón pecho (brazos estirados)",
     "category": "Conditioning",
     "equipment_required": [
@@ -2228,13 +2332,15 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa la elevación lateral dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en deltoides laterales, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0034",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0014",
+    "id": "ffcb7433-552b-4265-aaf6-311c4161eea0",
     "name": "Juego de Boulder",
     "category": "Strength and Power",
     "equipment_required": [
@@ -2246,14 +2352,34 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard but playful",
     "description": "Experimenta con el movimiento en un estímulo de baja presión creando o modificando problemas. Prueba estilos, betas y posiciones corporales poco familiares. Objetivo: Expandir el vocabulario de movimiento, la coordinación y la resolución creativa de problemas.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0014",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0086",
+    "id": "849851a6-2a4d-4062-9cb0-26dfaa7bef55",
+    "name": "Jumpin jacks",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Barra dominadas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "3 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Moderate Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0116",
+    "muscle_groups": []
+  },
+  {
+    "id": "a80d576d-c4f0-4adc-944b-31181f665681",
     "name": "Kettlebell swing",
     "category": "Conditioning",
     "equipment_required": [
@@ -2265,15 +2391,71 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en swings con pesa rusa dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en glúteos, isquiotibiales y core, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0086",
     "muscle_groups": [
       "Cadera",
       "Piernas",
       "Core"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0012",
+    "id": "732ef8a6-1b00-4678-b25e-e0a5a82b2369",
+    "name": "Kettlebell twist",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0113",
+    "muscle_groups": []
+  },
+  {
+    "id": "30e9b270-6cd4-4086-a194-e94d63fcaa39",
+    "name": "L sit sentado",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0126",
+    "muscle_groups": []
+  },
+  {
+    "id": "8893d9c8-cac2-441b-a66a-a9081503a192",
+    "name": "L-sit",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0099",
+    "muscle_groups": []
+  },
+  {
+    "id": "6ad9bd5f-bffb-401c-b054-eaea4765b8f4",
     "name": "Levantamientos de Reclutamiento de Flexores de Dedos",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2285,14 +2467,34 @@
     "typical_duration": "13 min",
     "typical_effort": "Moderate Effort",
     "description": "Completaras múltiples series de levantamientos, aumentando progresivamente la intensidad de muy fácil a desafiante. Objetivo: Calentar y reclutar los flexores de dedos antes de un entrenamiento de escalada aumentando gradualmente la carga. Descanso: 2 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0012",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0013",
+    "id": "0a957d96-d01b-4a6b-a2f6-0fb8c7372023",
+    "name": "Lumbares",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0106",
+    "muscle_groups": []
+  },
+  {
+    "id": "d38c43d3-d9af-46aa-8273-9c06e7d1855e",
     "name": "M2 Open - Levantamiento - Fácil",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2304,14 +2506,16 @@
     "typical_duration": "14 min",
     "typical_effort": "Easy Effort",
     "description": "Completa levantamientos de 7 s en agarre M2 open (middle two open hand), a baja intensidad para mantener la salud del tejido en varias series. Objetivo: Mantener la carga en M2 open a baja intensidad para promover la salud del tejido y el confort sin acumular fatiga. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0013",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0014",
+    "id": "a4c6ab9d-2953-4deb-a007-a1f17bf430a3",
     "name": "M2 Open - Levantamiento - Fuerza",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2323,14 +2527,16 @@
     "typical_duration": "26 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza levantamientos de 10 s en agarre M2 open en varias series. Objetivo: Aumentar la fuerza de dedos en M2 open mediante carga isométrica de alta intensidad a una duración desafiante pero sostenible. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0014",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0015",
+    "id": "9dbd8fa8-054f-4a77-8288-99e5107108a1",
     "name": "M2 Open - Levantamiento - Máximo",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2342,14 +2548,16 @@
     "typical_duration": "25 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza levantamientos de 7 s en agarre M2 open, a intensidad casi máxima para fuerza de peak en varias series. Objetivo: Desarrollar la fuerza máxima de dedos en M2 open mediante carga isométrica corta de alta intensidad con recuperación completa. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0015",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FB0016",
+    "id": "15dea622-c693-43af-9401-baba68268972",
     "name": "M2 Open - Levantamiento - Peak",
     "category": "Fingerboard",
     "equipment_required": [
@@ -2361,14 +2569,16 @@
     "typical_duration": "24 min",
     "typical_effort": "Hard Effort",
     "description": "Este entrenamiento se centra en levantamientos de 5 s en agarre M2 open. Objetivo: Aumentar la fuerza de peak de dedos en M2 open y el reclutamiento de unidades motoras mediante esfuerzos muy cortos de intensidad máxima. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FB0016",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0020",
+    "id": "443fea57-6c95-4c7f-9198-06784898e093",
     "name": "Mantenimiento de Flexibilidad",
     "category": "Flexibility",
     "equipment_required": [
@@ -2380,13 +2590,15 @@
     "typical_duration": "16 min",
     "typical_effort": "Deep Stretch",
     "description": "Una rutina guiada de mantenimiento de cuerpo entero con patadas, pancake, rana, paloma, estiramiento de sofá, estiramiento de gemelo, estiramiento de pecho y estiramiento de dorsal a baja intensidad. Objetivo: Mantener las ganancias de flexibilidad durante semanas de descarga y taper, previniendo la regresión del rango de movimiento sin agregar carga de entrenamiento. Descanso: 5 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0020",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0018",
+    "id": "2e8b4edc-e3bf-43b5-a4da-49929f4b3d6e",
     "name": "MoonBoard",
     "category": "Strength and Power",
     "equipment_required": [
@@ -2398,14 +2610,16 @@
     "typical_duration": "69 min",
     "typical_effort": "Very Hard Effort",
     "description": "Intenta problemas de referencia desafiantes de MoonBoard con 3 intentos por problema y recuperación completa entre series. Objetivo: Mejorar la fuerza de tracción máxima y la resolución rápida de problemas en terreno pronunciado y estandarizado. Descanso: 6 min entre series",
+    "is_benchmark": true,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0018",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": true
+    ]
   },
   {
-    "code": "FL0021",
+    "id": "a0ad2539-fbff-4f77-a51a-dbf0f19bb41e",
     "name": "Movilidad Matutina",
     "category": "Flexibility",
     "equipment_required": [
@@ -2417,13 +2631,33 @@
     "typical_duration": "10 min",
     "typical_effort": "Deep Stretch",
     "description": "Un entrenamiento guiado diario en el piso de giro de sabio, postura de cachorro, estiramiento de gemelo en pared, side runner, postura de paloma y sentadilla yogui para movilidad de cuerpo entero. Objetivo: Construir movilidad mediante la práctica diaria de baja intensidad, reforzando el hábito para apoyar las ganancias de flexibilidad con el tiempo. Descanso: 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0021",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0022",
+    "id": "7cd009de-6949-4b4b-88ea-a1844c267fbd",
+    "name": "Overhead Squat",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0094",
+    "muscle_groups": []
+  },
+  {
+    "id": "c4fd88a2-b142-4616-8911-6742c81eda6c",
     "name": "Pancake - De Pie - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -2435,13 +2669,15 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento de pancake de pie con las piernas bien separadas, usando la gravedad para asistir el pliegue hacia adelante durante sujeciones cronometradas. Objetivo: Aumentar la flexibilidad de isquiotibiales y aductores en una posición de piernas opens de pie, apoyando el movimiento de piernas amplias y los pasos altos mientras escalas. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0022",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0023",
+    "id": "a1227ab4-2646-4201-b8ad-dedb8a37244f",
     "name": "Pancake - Pulsos",
     "category": "Flexibility",
     "equipment_required": [
@@ -2453,13 +2689,15 @@
     "typical_duration": "5 min",
     "typical_effort": "Hard Effort",
     "description": "Pulsa hacia un estiramiento profundo de pancake, moviendote a través del arco de tu posición de piernas opens por repeticiones. Objetivo: Aumentar la flexibilidad de isquiotibiales y aductores mediante pulsos dinámicos, mejorando el rango de piernas opens para colocaciones de pie amplias. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0023",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0057",
+    "id": "ee28bab1-7552-4f78-9eb3-8b7924eadb73",
     "name": "Patada de Tríceps",
     "category": "Conditioning",
     "equipment_required": [
@@ -2471,13 +2709,15 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza patada de tríceps dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en tríceps, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0057",
     "muscle_groups": [
       "Tríceps"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0024",
+    "id": "168f2ba1-7361-4cb9-91d4-e21d621f4e0d",
     "name": "Patadas Frontales - Dinámico",
     "category": "Flexibility",
     "equipment_required": [
@@ -2489,13 +2729,15 @@
     "typical_duration": "6 min",
     "typical_effort": "Moderate Effort",
     "description": "Realiza patadas frontales controladas para estirar activamente los isquiotibiales y flexores de cadera. Objetivo: Construir flexibilidad dinámica de isquiotibiales y potencia de flexores de cadera, mejorando la capacidad de levantar los pies alto frente al cuerpo mientras escalas. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0024",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0025",
+    "id": "24486743-ccc2-4f64-883d-2d2941e845ef",
     "name": "Patadas Laterales - Dinámico",
     "category": "Flexibility",
     "equipment_required": [
@@ -2507,13 +2749,15 @@
     "typical_duration": "6 min",
     "typical_effort": "Moderate Effort",
     "description": "Realiza patadas laterales controladas para estirar activamente los aductores de cadera a través de su rango completo. Objetivo: Desarrollar rango de movimiento lateral dinámico de cadera, mejorando la capacidad de colocar los pies amplios con control mientras escalas. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0025",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0016",
+    "id": "6950d47e-2397-412c-83a0-8a35d1b80441",
     "name": "Pausas en Board",
     "category": "Strength and Power",
     "equipment_required": [
@@ -2525,14 +2769,16 @@
     "typical_duration": "45 min",
     "typical_effort": "Hard Effort",
     "description": "En cada movimiento de un problema de board pronunciado, suelta los pies y manten 3 segundos antes de volver a colocarlos. Manten el control en todo momento. Objetivo: Desarrollar fuerza de contacto, estabilidad de hombro y control posicional bajo carga. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0016",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0058",
+    "id": "38f39dbe-99a1-4b2c-b137-2ecd79452d9c",
     "name": "Peso Muerto",
     "category": "Conditioning",
     "equipment_required": [
@@ -2544,14 +2790,16 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza peso muerto dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en isquiotibiales, glúteos, zona lumbar y cuádriceps, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0058",
     "muscle_groups": [
       "Espalda",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0026",
+    "id": "4db17d7e-ea32-4347-b02a-414223e003e9",
     "name": "Peso Muerto Rumano a Una Pierna - Estiramiento con Tempo",
     "category": "Flexibility",
     "equipment_required": [
@@ -2563,15 +2811,107 @@
     "typical_duration": "9 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza peso muerto rumano a una pierna siguiendo un temporizador de tempo a través de las fases de bajada, pausa y subida para estirar los isquiotibiales. Objetivo: Aumentar la flexibilidad de isquiotibiales a una pierna mediante trabajo de tempo controlado, mejorando el rango de pliegue hacia adelante y la capacidad de heel hook. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0026",
     "muscle_groups": [
       "Movilidad general",
       "Espalda",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0017",
+    "id": "1c0df146-388f-4bf0-8237-838965028688",
+    "name": "Piernas arriba",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0093",
+    "muscle_groups": []
+  },
+  {
+    "id": "a53905f1-1248-444f-92ad-e845871fb901",
+    "name": "Pies a la barra",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0103",
+    "muscle_groups": []
+  },
+  {
+    "id": "6145ae85-1d3d-4bc5-81d2-2e385a4165fb",
+    "name": "Pies a la barra (lado a lado)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0100",
+    "muscle_groups": []
+  },
+  {
+    "id": "35a509e6-8bf8-4a80-946f-3a579fcbb7fa",
+    "name": "Pies a la barra (medio)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0098",
+    "muscle_groups": []
+  },
+  {
+    "id": "5537f839-3827-467c-99db-e2d0b684310b",
+    "name": "Pigeon pose",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0042",
+    "muscle_groups": []
+  },
+  {
+    "id": "923d8d9c-4a79-467d-abc4-75b0c13f8f9e",
     "name": "Pirámide de Boulder",
     "category": "Strength and Power",
     "equipment_required": [
@@ -2583,14 +2923,16 @@
     "typical_duration": "50 min",
     "typical_effort": "Moderate to Max",
     "description": "Escala problemas progresivamente más difíciles hasta tu máximo, luego trabaja de vuelta hacia grados más fáciles. Si tienes menos series, detente en la cima. Objetivo: Desarrollar la fuerza y el manejo de la fatiga mediante variación de intensidad controlada a través de una pirámide estructurada. Descanso: 2 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0017",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0011",
+    "id": "0a859958-3109-491c-9d3a-7ad77045c9b3",
     "name": "Pirámide de Rutas",
     "category": "Power Endurance",
     "equipment_required": [
@@ -2602,14 +2944,52 @@
     "typical_duration": "102 min",
     "typical_effort": "Hard Effort",
     "description": "Escala 8 rutas en pirámide, empezando fácil, subiendo hasta tu nivel más difícil, y luego bajando de nuevo. Si tienes menos series, detente en la cima. Objetivo: Entrenar la potencia aeróbica completando escalada de rutas de alto volumen a través de intensidades ascendentes y descendentes. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0011",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0059",
+    "id": "3dbb804e-8870-4bf0-8a31-08e5e95e0bcc",
+    "name": "Plancha",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0092",
+    "muscle_groups": []
+  },
+  {
+    "id": "ce46c4ed-6971-4e36-9510-c19362309e51",
+    "name": "Plancha (pierna arriba)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0096",
+    "muscle_groups": []
+  },
+  {
+    "id": "2b06519c-bd0b-458d-846d-52c3131cb0d8",
     "name": "Plancha Copenhague 30 s",
     "category": "Conditioning",
     "equipment_required": [
@@ -2621,13 +3001,87 @@
     "typical_duration": "14 min",
     "typical_effort": "Hard Effort",
     "description": "Múltiples series de plancha Copenhague isométrica de 30 s. Objetivo: Construir fuerza isométrica del tren inferior en abdominales y estabilizadores profundos del core, apoyando un trabajo de pies potente y posiciones estables en la pared. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0059",
     "muscle_groups": [
       "Core"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0027",
+    "id": "34212224-3d4e-4370-ab57-c682121ef9d0",
+    "name": "Plancha lateral",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0091",
+    "muscle_groups": []
+  },
+  {
+    "id": "5dffda54-4453-4ead-a613-6f75b2d199d5",
+    "name": "Plancha lateral (arriba - abajo)",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0109",
+    "muscle_groups": []
+  },
+  {
+    "id": "e9e9ae43-4c4e-49cc-b9a9-0e24466f4a33",
+    "name": "Plancha lateral con peso",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0112",
+    "muscle_groups": []
+  },
+  {
+    "id": "f38e2a7d-e5dd-45fb-b578-20a89acc1d55",
+    "name": "Posición caballo",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0044",
+    "muscle_groups": []
+  },
+  {
+    "id": "3e34bd66-a084-48a4-9e7f-4459ca480060",
     "name": "Postura de Caballo - ISO - Estático Activo",
     "category": "Flexibility",
     "equipment_required": [
@@ -2639,13 +3093,15 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten una posición de sentadilla de caballo en profundidad mientras usas activamente tus músculos para mantener la postura durante sujeciones cronometradas. Objetivo: Construir flexibilidad de aductores y estabilidad de cadera mediante sujeciones activas, mejorando la capacidad de mantener posturas amplias en la pared. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0027",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0028",
+    "id": "4bc8dc21-b0f4-4b7a-a6d9-9658c5ea4215",
     "name": "Postura de Paloma - Contrae y Relaja",
     "category": "Flexibility",
     "equipment_required": [
@@ -2657,32 +3113,15 @@
     "typical_duration": "6 min",
     "typical_effort": "Hard Effort",
     "description": "Alterna entre contraer y relajar los músculos de la cadera en una postura de paloma para facilitar un estiramiento más profundo con cada ciclo. Objetivo: Mejorar la flexibilidad de glúteo y rotador de cadera usando técnicas FNP, acelerando las ganancias en la rotación externa de cadera para la técnica de escalada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0028",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0060",
-    "name": "Powerlifting:\r\n- Peso muerto\r\n- Back squat\r\n- Press banca",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Barra"
-    ],
-    "typical_sets": "4",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "36 min",
-    "typical_effort": "Hard Effort",
-    "description": "Powerlifting: un entrenamiento de tren inferior con varios ejercicios y múltiples series de cada uno. Objetivo: Construir fuerza y potencia del tren inferior de forma completa, apoyando un trabajo de pies fuerte, movimiento dinámico y prevención de lesiones para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Piernas"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0062",
+    "id": "3eb2c2a9-9a9e-4184-808e-d0b41a7f4bfa",
     "name": "Press Banca",
     "category": "Conditioning",
     "equipment_required": [
@@ -2694,13 +3133,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza press de banca dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho, tríceps y deltoides anteriores, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0062",
     "muscle_groups": [
       "Pecho"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0063",
+    "id": "2364e961-71ba-4caa-b858-0ad3fb8910d1",
     "name": "Press de Hombro con Mancuernas - Fuerza",
     "category": "Conditioning",
     "equipment_required": [
@@ -2712,13 +3153,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el press de hombro con mancuernas dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en deltoides, tríceps y pecho superior, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0063",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0064",
+    "id": "a32101ab-5774-4bba-836b-d29efbc5cca9",
     "name": "Press de pecho con mancuernas",
     "category": "Conditioning",
     "equipment_required": [
@@ -2730,13 +3173,15 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza press de pecho dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho, tríceps y deltoides anteriores, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0064",
     "muscle_groups": [
       "Pecho"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0061",
+    "id": "22e577ce-9e3e-4fd1-a12e-c2051274dedd",
     "name": "Press hombro",
     "category": "Conditioning",
     "equipment_required": [
@@ -2748,13 +3193,51 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en el press Arnold dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en deltoides anterior, lateral y posterior, tríceps y pecho superior, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0061",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0012",
+    "id": "db5498ec-1179-49d0-8235-faae35ec8b6b",
+    "name": "Press hombros con mancuernas",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0117",
+    "muscle_groups": []
+  },
+  {
+    "id": "0e3637a0-ba64-4222-b5f6-482f422de846",
+    "name": "Press pecho inclinado con mancuernas",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0134",
+    "muscle_groups": []
+  },
+  {
+    "id": "1b9b9591-e88a-46bc-a1d3-8eb72cda479d",
     "name": "Proyectando Rutas",
     "category": "Power Endurance",
     "equipment_required": [
@@ -2766,14 +3249,16 @@
     "typical_duration": "100 min",
     "typical_effort": "Very Hard Effort",
     "description": "Dedica el entrenamiento a intentar rutas en el límite de tu capacidad, ya sean proyectos o escaladas nuevas difíciles. Apunta a 150-250 movimientos en total. Objetivo: Desarrollar la resistencia de potencia de alto nivel intentando rutas difíciles, construyendo la capacidad de rendir a este nivel.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0012",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0013",
+    "id": "3fb8b693-2715-4104-89bd-c7e0dfe4cd84",
     "name": "Proyecto de Capacidad Anaeróbica",
     "category": "Power Endurance",
     "equipment_required": [
@@ -2785,14 +3270,16 @@
     "typical_duration": "30 min",
     "typical_effort": "Very Hard Effort",
     "description": "Repite un boulder específico de proyecto o replica en varias series, escalando con enfoque de rendimiento. Objetivo: Transferir las ganancias de capacidad anaeróbica a las demandas reales o específicas del proyecto. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0013",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0067",
+    "id": "cd5f4a56-f207-4ed3-9da9-c8a57554abe1",
     "name": "Pseudo push up",
     "category": "Conditioning",
     "equipment_required": [
@@ -2804,15 +3291,17 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa flexiones dentro de un estímulo de fuerza. Objetivo: La fuerza de empuje repetible y exigente proviene de entrenar en este rango. Con los hombros y el serrato involucrados en el movimiento por la inclinación hacia adelante, desarrollas la fuerza detras del press en placa, los tirones de gastón y el empuje dominado por el hombro en terreno técnico. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0067",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0068",
+    "id": "dd2ba5d2-2652-41a5-aa17-724d6cd15945",
     "name": "Puente de Glúteos",
     "category": "Conditioning",
     "equipment_required": [
@@ -2824,14 +3313,52 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el puente de glúteos dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en glúteos e isquiotibiales, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0068",
     "muscle_groups": [
       "Cadera",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0069",
+    "id": "e6951b7a-3fad-4f47-9bc0-d7c44b11f148",
+    "name": "Puente gluteo",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0125",
+    "muscle_groups": []
+  },
+  {
+    "id": "b6b329cf-095a-47fe-8dfe-efae1f6ceb7f",
+    "name": "Pull up ancho",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "30s x 6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0131",
+    "muscle_groups": []
+  },
+  {
+    "id": "b65a5bde-9ba0-4f89-89c5-b9021f101295",
     "name": "Pullover de Dorsales",
     "category": "Conditioning",
     "equipment_required": [
@@ -2843,13 +3370,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el pullover de dorsales dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales y pecho, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0069",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0029",
+    "id": "430db4cd-e80d-459f-9691-e0e35e36ed1a",
     "name": "Pullover de Dorsales con Mancuerna - Estiramiento con Tempo",
     "category": "Flexibility",
     "equipment_required": [
@@ -2861,14 +3390,16 @@
     "typical_duration": "6 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza pullovers de dorsales con mancuerna siguiendo un temporizador a través de las fases de bajada, pausa y subida para estirar los dorsales y los hombros. Objetivo: Aumentar la flexibilidad por encima de la cabeza de dorsales y hombros mediante trabajo de tempo cargado, mejorando el alcance y el movimiento por encima de la cabeza en la pared. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0029",
     "muscle_groups": [
       "Movilidad general",
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0030",
+    "id": "b97b763c-078b-4d99-a9d3-02ce082eab51",
     "name": "Pulsos de Split Frontal - Dinámico",
     "category": "Flexibility",
     "equipment_required": [
@@ -2880,14 +3411,16 @@
     "typical_duration": "4 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza repeticiones de pulso controladas manteniendo una profundidad exigente de split frontal para fortalecer los músculos en el rango final. Objetivo: Desarrollar fuerza activa y resistencia muscular a una profundidad de split casi máxima, construyendo rango utilizable para posiciones de escalada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0030",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0031",
+    "id": "ab763741-1bd1-48a5-a6f4-42dce6accfb3",
     "name": "Pulsos y Patadas",
     "category": "Flexibility",
     "equipment_required": [
@@ -2899,13 +3432,15 @@
     "typical_duration": "10 min",
     "typical_effort": "Easy Effort",
     "description": "Un entrenamiento guiado diario de patadas laterales, patadas frontales y pulsos de pancake para entrenar la flexibilidad dinámica mediante repetición de alta frecuencia. Objetivo: Desarrollar rango activo dinámico mediante ejercicios diarios de patadas y pulsos, construyendo flexibilidad utilizable para el movimiento de escalada.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0031",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0070",
+    "id": "9cc18e55-4f7b-4234-9ddb-0a27798ad57e",
     "name": "Push Press con Barra",
     "category": "Conditioning",
     "equipment_required": [
@@ -2917,15 +3452,17 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa el push press con barra dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en cuádriceps, glúteos, deltoides, tríceps y core, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0070",
     "muscle_groups": [
       "Hombro",
       "Tríceps",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0066",
+    "id": "24de659f-c68f-4a9a-babf-301c2a73ff07",
     "name": "Push press con kettlebell",
     "category": "Conditioning",
     "equipment_required": [
@@ -2937,15 +3474,17 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en el press de pesa rusa invertida dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en deltoides, tríceps, antebrazos y core, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0066",
     "muscle_groups": [
       "Hombro",
       "Tríceps",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0041",
+    "id": "557f569b-0461-4c39-9b53-f7a194fb36c6",
     "name": "Push up",
     "category": "Conditioning",
     "equipment_required": [
@@ -2957,15 +3496,17 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa flexiones dentro de un estímulo de fuerza. Objetivo: Empujar hacia arriba a través del pecho, tríceps y hombros anteriores desarrolla la fuerza detras de los mantle y los movimientos de compresión, manteniendo el equilibrio muscular. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0041",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0042",
+    "id": "a2fd501c-be97-4a2f-b1cc-149ac851bc96",
     "name": "Push up a Un Brazo",
     "category": "Conditioning",
     "equipment_required": [],
@@ -2975,15 +3516,17 @@
     "typical_duration": "18 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras las flexiones a un brazo dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho, tríceps y hombros, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0042",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0043",
+    "id": "2131e35c-d65d-4fd3-8c57-e62a29dc2fde",
     "name": "Push up explosivas",
     "category": "Conditioning",
     "equipment_required": [
@@ -2995,15 +3538,17 @@
     "typical_duration": "16 min",
     "typical_effort": "Speed and Power",
     "description": "Este entrenamiento se centra en flexiones de potencia. Objetivo: Construir fuerza de empuje máxima en pecho, tríceps y hombros, manteniendo el equilibrio muscular alrededor de la articulación del hombro y reduciendo el riesgo de lesión. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0043",
     "muscle_groups": [
       "Pecho",
       "Tríceps",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0065",
+    "id": "92c18057-d1fe-432d-bab0-b4f144d9e1d9",
     "name": "Push up Inclinado",
     "category": "Conditioning",
     "equipment_required": [
@@ -3015,13 +3560,15 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el press de pecho inclinado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en pecho superior, tríceps y deltoides anteriores, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0065",
     "muscle_groups": [
       "Pecho"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0076",
+    "id": "2dac1ebf-d86f-4ccf-92fd-bfdb5b51d3d0",
     "name": "Pussh press con mancuerna",
     "category": "Conditioning",
     "equipment_required": [
@@ -3033,14 +3580,16 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras la retracción escapular con mancuerna dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de empuje en romboides y trapecio medio, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0076",
     "muscle_groups": [
       "Espalda",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0071",
+    "id": "081c1d1d-b7f0-4df0-a8a8-e2a6b89992d5",
     "name": "Rack Pull",
     "category": "Conditioning",
     "equipment_required": [
@@ -3052,14 +3601,16 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en el rack pull dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en espalda alta, trapecios y antebrazos, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0071",
     "muscle_groups": [
       "Espalda",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0032",
+    "id": "7ca7d0e2-3e8b-484e-9bba-d657fb7ef47e",
     "name": "Rana Supina - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3071,13 +3622,33 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten un estiramiento de rana acostado boca arriba, usando la gravedad para asistir la apertura de cadera durante sujeciones cronometradas. Objetivo: Aumentar la flexibilidad de aductores de cadera en una posición asistida, construyendo rango de ingle para posiciones de escalada con piernas opens. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0032",
     "muscle_groups": [
       "Movilidad general"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0074",
+    "id": "9a3b1731-87c1-4293-8467-b5a55d07b04c",
+    "name": "Ranita",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0045",
+    "muscle_groups": []
+  },
+  {
+    "id": "c99a564a-a4e3-41e8-88c1-da46108ac8e9",
     "name": "Remo Colgado en barra (horizontal)",
     "category": "Conditioning",
     "equipment_required": [
@@ -3089,13 +3660,33 @@
     "typical_duration": "10 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el remo colgado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, romboides y bíceps, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0074",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0073",
+    "id": "44eb4ec7-0a8b-436e-b247-2cd0da4efad9",
+    "name": "Remo con barra",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "30s x 6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0130",
+    "muscle_groups": []
+  },
+  {
+    "id": "4a9cb73f-2c4a-4138-9b83-3f836fdd5dea",
     "name": "Remo con mancuerna",
     "category": "Conditioning",
     "equipment_required": [
@@ -3107,13 +3698,33 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras el remo bajo dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, romboides y trapecio inferior, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0073",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0075",
+    "id": "fb254c6e-5e67-4e62-bb1b-06d1aa4f35e6",
+    "name": "Remo con mancuernas",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0095",
+    "muscle_groups": []
+  },
+  {
+    "id": "b4208ec7-876c-454a-83b0-b86d3d868b67",
     "name": "Remo Inclinado con barra",
     "category": "Conditioning",
     "equipment_required": [
@@ -3125,13 +3736,15 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en remo inclinado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, romboides y bíceps, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0075",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0072",
+    "id": "ad698a34-5017-4725-844a-8dab227f12b1",
     "name": "Remo TRX",
     "category": "Conditioning",
     "equipment_required": [
@@ -3143,13 +3756,15 @@
     "typical_duration": "19 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras remo arquero dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en dorsales, romboides y bíceps, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0072",
     "muscle_groups": [
       "Espalda"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0033",
+    "id": "656c4a08-839f-4e11-9e77-ae028d9aecc6",
     "name": "Rotación Externa con Banda - Contrae y Relaja",
     "category": "Flexibility",
     "equipment_required": [
@@ -3161,14 +3776,52 @@
     "typical_duration": "7 min",
     "typical_effort": "Hard Effort",
     "description": "Múltiples series de ciclos de contrae y relaja. Objetivo: Usar técnicas de contrae y relaja para mejorar el rango de movimiento en el manguito rotador y el hombro posterior, mejorando la calidad del movimiento y la salud del hombro para la escalada. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0033",
     "muscle_groups": [
       "Movilidad general",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0077",
+    "id": "6585e8b8-8304-4b35-b608-ef7d0094a3ba",
+    "name": "Rotación hombro",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0119",
+    "muscle_groups": []
+  },
+  {
+    "id": "a095ab83-799f-4ed7-abd2-27130a8bc9b5",
+    "name": "Rotación interna de rodilla",
+    "category": "Flexibility",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "60s",
+    "typical_duration": null,
+    "typical_effort": "Warm Up",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "FL0041",
+    "muscle_groups": []
+  },
+  {
+    "id": "df465fa5-f68e-4e43-919e-7e5c2ef24db5",
     "name": "Rotaciones de Hombro con Banda",
     "category": "Conditioning",
     "equipment_required": [
@@ -3180,13 +3833,15 @@
     "typical_duration": "13 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza rotaciones de hombro con banda dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en el manguito rotador y estabilizadores del hombro, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0077",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0078",
+    "id": "eef522a6-a006-4607-9c64-dcfadf3d2a73",
     "name": "Rotaciones de Hombro en Prono",
     "category": "Conditioning",
     "equipment_required": [
@@ -3198,13 +3853,15 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completa rotaciones de hombro en prono dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en el manguito rotador y deltoides posteriores, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0078",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0079",
+    "id": "f8cce1f2-2ddd-40c1-9e23-adeb0eb89663",
     "name": "Rotaciones de Hombro Sentado",
     "category": "Conditioning",
     "equipment_required": [
@@ -3216,13 +3873,15 @@
     "typical_duration": "14 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza rotaciones de hombro sentado dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en el manguito rotador y estabilizadores del hombro, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0079",
     "muscle_groups": [
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "PE0009",
+    "id": "50836ec1-0039-4147-b596-dfd7699e1a3a",
     "name": "Ruta doble",
     "category": "Power Endurance",
     "equipment_required": [
@@ -3234,89 +3893,16 @@
     "typical_duration": "65 min",
     "typical_effort": "Hard Effort",
     "description": "Escala una ruta difícil, descansa brevemente en la pared o baja, luego repitela de inmediato. Completa 5 vueltas dobles con descanso completo entre series. Objetivo: Construir potencia aeróbica sostenida replicando esfuerzos más largos, asegurando un alto volumen de escalada fatigante. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0009",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0080",
-    "name": "Rutina de Calistenia:\r\n- Sentadilla sumo \r\n- Estocada profunda con rotación\r\n- I a W boca abajo\r\n- Contracción escapular en plancha\r\n- Lumbares\r\n- Puente gluteo\r\n- Push up\r\n- L sit sentado\r\n- Superman en plancha",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Colchoneta"
-    ],
-    "typical_sets": null,
-    "typical_reps": null,
-    "typical_time": "30s",
-    "typical_duration": "11 min",
-    "typical_effort": "Easy Effort",
-    "description": "Completa un circuito de calistenia de 10 minutos trabajando cada ejercicio con un tempo de 30 segundos activo, 30 segundos de descanso. Objetivo: Esta rutina guiada de calistenia de 10 minutos para escaladores cubre todas las bases. Funciona como un calentamiento completo de cuerpo entero antes de una sesión de escalada exigente, o como entrenamiento minimalista independiente cuando estas en movimiento. El circuito esta diseñado específicamente para mejorar la tensión corporal, la movilidad de cadera y la estabilidad del hombro, sin necesidad de gimnasio. Descanso: 30 segundos",
-    "muscle_groups": [
-      "Pecho",
-      "Core"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0037",
-    "name": "Rutina de espalda:\r\n- Remo con barra\r\n- Pull up ancho\r\n- Vuelos con mancuerna",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "4",
-    "typical_reps": "30s x 6 reps",
-    "typical_time": null,
-    "typical_duration": "52 min",
-    "typical_effort": "Hard Effort",
-    "description": "Un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Espalda",
-      "Bíceps",
-      "Antebrazo"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0049",
-    "name": "Rutina de hombros:\r\n- Press hombros con mancuernas\r\n- Encogimiento de hombro inclinado\r\n- Rotación hombro",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Mancuernas"
-    ],
-    "typical_sets": "4",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "35 min",
-    "typical_effort": "Hard Effort",
-    "description": "Hombros a Prueba de Balas: un entrenamiento de empuje con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de empuje equilibrada, manteniendo el equilibrio muscular alrededor de los hombros y reduciendo el riesgo de lesión por la naturaleza dominante de tracción de la escalada. Descanso: 2 min entre series",
-    "muscle_groups": [
-      "Hombro"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0085",
-    "name": "Rutina potencia de tracción:\r\n- Dominada con peso\r\n- Dominada explosiva",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Fingerboard"
-    ],
-    "typical_sets": "4",
-    "typical_reps": "30s x 6 reps",
-    "typical_time": null,
-    "typical_duration": "39 min",
-    "typical_effort": "Hard Effort",
-    "description": "Superserie de Potencia de Tracción: un entrenamiento de tracción con varios ejercicios y múltiples series de cada uno. Objetivo: Desarrollar fuerza de tracción equilibrada en múltiples patrones de movimiento, construyendo la fuerza del tren superior esencial para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Espalda"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "CD0081",
+    "id": "06bbd8a8-80ff-4e03-a6ff-c05627f62476",
     "name": "Secuencia TRX IYT en Prono",
     "category": "Conditioning",
     "equipment_required": [
@@ -3328,14 +3914,16 @@
     "typical_duration": "15 min",
     "typical_effort": "Very Hard Effort",
     "description": "Completaras la secuencia TRX IYT en prono dentro de un estímulo de repeticiones moderadas. Objetivo: Desarrollar fuerza de empuje en deltoides posteriores, trapecio inferior y manguito rotador, equilibrando las demandas dominantes de tracción de la escalada y protegiendo la salud del hombro. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0081",
     "muscle_groups": [
       "Espalda",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0082",
+    "id": "32ea8742-57fe-42cd-99a9-a7872042b5a0",
     "name": "Secuencia TRX IYT en Supino",
     "category": "Conditioning",
     "equipment_required": [
@@ -3347,14 +3935,16 @@
     "typical_duration": "15 min",
     "typical_effort": "Very Hard Effort",
     "description": "Este entrenamiento se centra en la secuencia TRX IYT en supino dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza de tracción en deltoides posteriores, trapecio inferior y manguito rotador, mejorando tu capacidad de traccionar y controlar los movimientos de escalada. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0082",
     "muscle_groups": [
       "Espalda",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0083",
+    "id": "2ed7e7a1-f3bd-4d66-90a1-d64308a1f56c",
     "name": "Sentadilla Goblet",
     "category": "Conditioning",
     "equipment_required": [
@@ -3366,13 +3956,33 @@
     "typical_duration": "11 min",
     "typical_effort": "Very Hard Effort",
     "description": "Realiza sentadilla goblet dentro de un estímulo de fuerza. Objetivo: Desarrollar fuerza del tren inferior en cuádriceps, glúteos y core, mejorando tu capacidad de generar fuerza a través de pies y piernas mientras escalas. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "CD0083",
     "muscle_groups": [
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0034",
+    "id": "aef02b81-956a-467b-890b-b34c00e23cde",
+    "name": "Sentadilla sumo",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0121",
+    "muscle_groups": []
+  },
+  {
+    "id": "f79cb8ac-4107-4d3f-9c9f-0ead98c96963",
     "name": "Sentadillas Cosaco - Estiramiento con Tempo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3384,14 +3994,16 @@
     "typical_duration": "12 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza sentadillas cosaco siguiendo un temporizador de tempo a través de las fases de bajada, pausa y subida para estirar los aductores y las caderas. Objetivo: Desarrollar movilidad lateral de cadera y flexibilidad de aductores bajo control, mejorando la capacidad de alcanzar presas de pie amplias. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0034",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0035",
+    "id": "4f8645f0-aa8d-41ef-9a9f-9ffd2d19ebc5",
     "name": "Sentadillas Split - Estiramiento con Tempo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3403,14 +4015,16 @@
     "typical_duration": "9 min",
     "typical_effort": "Hard Effort",
     "description": "Realiza sentadillas split siguiendo un temporizador de tempo a través de las fases de bajada, pausa y subida para estirar los flexores de cadera y cuádriceps. Objetivo: Desarrollar la longitud del flexor de cadera y la flexibilidad de cuádriceps bajo carga, mejorando la zancada profunda y la capacidad de paso alto en la pared. Descanso: 1 min 30 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0035",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0019",
+    "id": "ac32e1e4-4c91-4a09-afbe-d1873ebddb1f",
     "name": "Sesión de Board",
     "category": "Strength and Power",
     "equipment_required": [
@@ -3422,14 +4036,16 @@
     "typical_duration": "66 min",
     "typical_effort": "Very Hard Effort",
     "description": "Escala problemas difíciles en un training board con 3 intentos por problema y recuperación completa entre series. Objetivo: Construir fuerza y potencia de alto nivel mientras mejoras tu capacidad de ejecutar movimientos difíciles en terreno de board pronunciado. Descanso: 6 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0019",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0020",
+    "id": "03ec4895-1335-40dc-a8e8-354362c03391",
     "name": "Simulación de Competencia - Final",
     "category": "Strength and Power",
     "equipment_required": [
@@ -3441,14 +4057,16 @@
     "typical_duration": "46 min",
     "typical_effort": "Very Hard Effort",
     "description": "Simula una competencia estilo final con 4 minutos por problema y recuperación completa entre boulders. Maximiza la calidad por intento. Objetivo: Desarrollar el rendimiento máximo bajo demanda psicológica máxima y presión de tiempo. Descanso: 10 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0020",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0021",
+    "id": "7f5e6c0d-61af-4194-be9c-a849a702a69f",
     "name": "Simulación de Competencia - Semifinal",
     "category": "Strength and Power",
     "equipment_required": [
@@ -3460,14 +4078,70 @@
     "typical_duration": "45 min",
     "typical_effort": "Very Hard Effort",
     "description": "Replica las demandas de una competencia de semifinal con 5 minutos por problema y descanso estructurado. Escala bajo presión. Objetivo: Mejorar la compostura, la precisión y la ejecución a alta intensidad bajo restricciones estilo competencia. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0021",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0036",
+    "id": "ffa03a29-a450-48e6-b8a8-19a680ddae71",
+    "name": "Sit up",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0090",
+    "muscle_groups": []
+  },
+  {
+    "id": "09af2aa7-8cd7-4f9e-a2b5-55cc6728717f",
+    "name": "Sit up con peso",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0104",
+    "muscle_groups": []
+  },
+  {
+    "id": "bf1e9604-395f-4884-9fbc-c106deb60289",
+    "name": "Sit-up con peso",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0111",
+    "muscle_groups": []
+  },
+  {
+    "id": "18ca8ccd-50f3-43bd-a792-ec745bdd761a",
     "name": "Split Frontal - Nivel 1",
     "category": "Flexibility",
     "equipment_required": [
@@ -3479,14 +4153,16 @@
     "typical_duration": "14 min",
     "typical_effort": "Moderate Effort",
     "description": "Un entrenamiento de split frontal con varios ejercicios usando peso muerto rumano a una pierna y sujeciones isométricas de zancada larga para desarrollar fuerza y rango mediante estiramientos activo-estáticos. Objetivo: Construir flexibilidad de isquiotibiales y flexores de cadera con fuerza en el rango final, creando una base para la progresión del split frontal y la capacidad de paso alto.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0036",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0037",
+    "id": "8ecd903e-078a-46fd-9c23-f43477aa6fb9",
     "name": "Split Lateral - Nivel 1",
     "category": "Flexibility",
     "equipment_required": [
@@ -3498,14 +4174,16 @@
     "typical_duration": "8 min",
     "typical_effort": "Deep Stretch",
     "description": "Un entrenamiento guiado de split lateral usando sujeciones ISO de postura de caballo y estiramientos de pancake de pie para desarrollar fuerza y rango de aductores de cadera mediante trabajo activo y estático. Objetivo: Construir rango de split lateral fundamental y fuerza de aductores sin carga externa, creando una base para una mayor progresión de flexibilidad. Descanso: 10 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0037",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0038",
+    "id": "88a0261f-1b8d-4c2a-a4d0-bc9cd9168a7c",
     "name": "Split Lateral ISO - Estático Activo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3517,14 +4195,34 @@
     "typical_duration": "5 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten una posición de split lateral mientras involucras activamente tus músculos para sostener el estiramiento durante sujeciones cronometradas. Objetivo: Construir fuerza activa y control a la profundidad del split lateral, desarrollando rango de movimiento utilizable para posiciones de escalada amplias. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0038",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0022",
+    "id": "51f92004-02da-4627-9956-556bd78824b2",
+    "name": "Superman en plancha",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Colchoneta"
+    ],
+    "typical_sets": null,
+    "typical_reps": null,
+    "typical_time": "30s",
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0127",
+    "muscle_groups": []
+  },
+  {
+    "id": "2ce1a573-c78b-4164-8438-996be725ab4c",
     "name": "Tensión - Manos Fijas",
     "category": "Strength and Power",
     "equipment_required": [
@@ -3536,34 +4234,16 @@
     "typical_duration": "17 min",
     "typical_effort": "Very Hard Effort",
     "description": "Manten las manos fijas en dos presas mientras trasladas los pies a través de la pared en terreno pronunciado, generando el movimiento desde el tren inferior y el core. Objetivo: Desarrollar el manejo de la tensión, la fuerza posicional y la transferencia eficiente de fuerza a través de los pies en terreno pronunciado. Descanso: 3 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0022",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "CD0012",
-    "name": "Tension corporal: \r\n- Rack pull\r\n- Overhead Squat\r\n- Remo con mancuernas",
-    "category": "Conditioning",
-    "equipment_required": [
-      "Mancuernas"
-    ],
-    "typical_sets": "4",
-    "typical_reps": "6 reps",
-    "typical_time": null,
-    "typical_duration": "36 min",
-    "typical_effort": "Hard Effort",
-    "description": "Constructor de Tensión: un entrenamiento de tren inferior con varios ejercicios y múltiples series de cada uno. Objetivo: Construir fuerza y potencia del tren inferior de forma completa, apoyando un trabajo de pies fuerte, movimiento dinámico y prevención de lesiones para la escalada. Descanso: 3 min entre series",
-    "muscle_groups": [
-      "Piernas",
-      "Cadera",
-      "Espalda"
-    ],
-    "is_benchmark": false
-  },
-  {
-    "code": "PE0014",
+    "id": "7c3bb1e4-7a74-4389-a0ab-0ab9cc69cd8d",
     "name": "Test de Repeticiones al 60%",
     "category": "Power Endurance",
     "equipment_required": [
@@ -3575,14 +4255,16 @@
     "typical_duration": "15 min",
     "typical_effort": "Very Hard Effort",
     "description": "Cuelgate al 60% de tu máximo a dos brazos con un ciclo de 7 segundos activo, 3 segundos de descanso, y continua hasta el fallo. Registra tu tiempo total hasta el agotamiento. Objetivo: Testear y establecer una referencia de tu capacidad de resistencia del antebrazo a una intensidad submáxima estandarizada.",
+    "is_benchmark": true,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0014",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": true
+    ]
   },
   {
-    "code": "FL0039",
+    "id": "326001cc-dfd1-4aa1-8b58-18a3f17102f1",
     "name": "Test de Split Lateral - Sin Apoyo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3594,14 +4276,16 @@
     "typical_duration": "1 min",
     "typical_effort": "Deep Stretch",
     "description": "Realiza una sujeción ISO de split lateral sin apoyo para registrar tu rendimiento actual de split lateral, con notas y medidas registradas en el tiempo. Objetivo: Establecer una referencia de tu progreso en split lateral mediante un test estandarizado, permitiendote a ti y a tu entrenador seguir las ganancias de flexibilidad en el tiempo.",
+    "is_benchmark": true,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0039",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": true
+    ]
   },
   {
-    "code": "PE0015",
+    "id": "df24422c-0f52-440e-a8ea-ac86f5af7859",
     "name": "Triples de Boulder",
     "category": "Power Endurance",
     "equipment_required": [
@@ -3613,14 +4297,70 @@
     "typical_duration": "41 min",
     "typical_effort": "Very Hard Effort",
     "description": "Escala un boulder difícil 3 veces por serie con descanso corto entre repeticiones, completando varias series. Objetivo: Desarrollar la capacidad anaeróbica mediante esfuerzos repetidos de alta intensidad que acumulan fatiga a través de las repeticiones y del transcurso de la sesión. Descanso: 5 min entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "PE0015",
     "muscle_groups": [
       "Dedos",
       "Antebrazo"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "SP0023",
+    "id": "bc3d0de3-0200-4f20-b1be-48f4e347c87d",
+    "name": "Twist sit up",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0105",
+    "muscle_groups": []
+  },
+  {
+    "id": "1e6c657c-1a81-4033-a793-2bc49354fa77",
+    "name": "V sits",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Mancuernas"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0110",
+    "muscle_groups": []
+  },
+  {
+    "id": "693dd1bd-d64e-43ec-b069-2e0767032bdd",
+    "name": "V up",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "3",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0107",
+    "muscle_groups": []
+  },
+  {
+    "id": "0816cf7e-c4f6-4848-8d75-ff630be45835",
     "name": "Volumen de Board",
     "category": "Strength and Power",
     "equipment_required": [
@@ -3632,14 +4372,34 @@
     "typical_duration": "60 min",
     "typical_effort": "Hard Effort",
     "description": "Acumula un número alto de problemas de board desafiantes a intensidad submáxima, completando cada uno en 1-3 intentos antes de continuar. Objetivo: Construir capacidad de trabajo y resistencia de fuerza en terreno pronunciado mediante un esfuerzo constante y de alto volumen.",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "SP0023",
     "muscle_groups": [
       "Dedos",
       "Hombro"
-    ],
-    "is_benchmark": false
+    ]
   },
   {
-    "code": "FL0040",
+    "id": "366e0bea-b88b-48d3-8205-dae9c68705b1",
+    "name": "Vuelos con mancuerna",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Fingerboard"
+    ],
+    "typical_sets": "4",
+    "typical_reps": "30s x 6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Hard Effort",
+    "description": null,
+    "is_benchmark": false,
+    "created_at": "2026-07-24T14:54:01.99207+00:00",
+    "code": "CD0132",
+    "muscle_groups": []
+  },
+  {
+    "id": "bcfa2d38-8df5-4f0c-8467-5cfb9f1ecfd8",
     "name": "Zancada Larga ISO - Estático Pasivo",
     "category": "Flexibility",
     "equipment_required": [
@@ -3651,10 +4411,12 @@
     "typical_duration": "9 min",
     "typical_effort": "Deep Stretch",
     "description": "Manten una posición de zancada larga de forma pasiva, usando la posición del cuerpo y la gravedad para sostener el estiramiento del flexor de cadera durante sujeciones cronometradas. Objetivo: Alargar los flexores de cadera mediante sujeciones pasivas sostenidas, mejorando el rango de extensión de cadera para pasos altos y posiciones de pared pronunciada. Descanso: 60 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-18T14:30:03.848369+00:00",
+    "code": "FL0040",
     "muscle_groups": [
       "Movilidad general",
       "Piernas"
-    ],
-    "is_benchmark": false
+    ]
   }
 ]

@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState } from "@/components/ui";
+import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState, Segmented } from "@/components/ui";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 import { MUSCLE_GROUPS } from "@/lib/planner/knowledge/muscleGroups";
 import { useProfile, canManageCatalog } from "@/components/ProfileProvider";
+import { RoutinesPanel } from "@/components/RoutinesPanel";
 
 const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
   name: "",
@@ -32,6 +33,7 @@ export default function CatalogPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [draft, setDraft] = useState<typeof emptyExercise>(emptyExercise);
   const [saving, setSaving] = useState(false);
+  const [tab, setTab] = useState<"ejercicios" | "rutinas">("ejercicios");
 
   async function load() {
     setLoading(true);
@@ -88,9 +90,23 @@ export default function CatalogPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">Catálogo de ejercicios</h1>
-        {canEdit && <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>}
+        {tab === "ejercicios" && canEdit && <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>}
       </div>
 
+      <Segmented
+        value={tab}
+        onChange={setTab}
+        options={[
+          { value: "ejercicios", label: "Ejercicios" },
+          { value: "rutinas", label: "Rutinas" },
+        ]}
+      />
+      <div className="h-4" />
+
+      {tab === "rutinas" ? (
+        <RoutinesPanel canEdit={canEdit} exercises={exercises} />
+      ) : (
+        <>
       <div className="flex flex-col md:flex-row gap-3 mb-6">
         <Input placeholder="Buscar..." value={search} onChange={(e) => setSearch(e.target.value)} className="flex-1" />
         <Select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
@@ -233,6 +249,8 @@ export default function CatalogPage() {
           </Button>
         </div>
       </Modal>
+        </>
+      )}
     </div>
   );
 }
