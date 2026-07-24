@@ -100,7 +100,13 @@ function serializeEvaluation(ev: Evaluation): string {
     ev.mobility_notes ? `Notas de movilidad: ${ev.mobility_notes}` : null,
     ev.weighted_pullup_kg ? `Dominadas lastradas: +${ev.weighted_pullup_kg}kg` : null,
     ev.bench_press_kg ? `Press banca: ${ev.bench_press_kg}kg` : null,
+    !ev.bench_press_kg && ev.pushup_max_reps
+      ? `Sin test de press banca; push-ups máximos: ${ev.pushup_max_reps} reps (estimar press banca como 0.64 x peso corporal x (1 + reps/30), y aclarar en notas que es una estimación, no un test real)`
+      : null,
     ev.deadlift_kg ? `Peso muerto: ${ev.deadlift_kg}kg` : null,
+    !ev.deadlift_kg && ev.goblet_squat_kg
+      ? `Sin test de peso muerto; sentadilla goblet: ${ev.goblet_squat_kg}kg (estimar peso muerto como x2 de este valor, y aclarar en notas que es una estimación, no un test real)`
+      : null,
     ev.plank_seconds ? `Plancha: ${ev.plank_seconds}s` : null,
     `Tindeq mano izq -- MVC:${ev.left_mvc_kg ?? "?"}kg (${ev.left_mvc_bw_pct != null ? ev.left_mvc_bw_pct.toFixed(1) : "?"}%BW), CF reps:${ev.left_cf_reps ?? "?"}, CF caida:${ev.left_cf_drop_pct ?? "?"}%, RFD100:${ev.left_rfd_100 ?? "?"}kg/s, RFD20-80:${ev.left_rfd_2080 ?? "?"}kg/s`,
     `Tindeq mano der -- MVC:${ev.right_mvc_kg ?? "?"}kg (${ev.right_mvc_bw_pct != null ? ev.right_mvc_bw_pct.toFixed(1) : "?"}%BW), CF reps:${ev.right_cf_reps ?? "?"}, CF caida:${ev.right_cf_drop_pct ?? "?"}%, RFD100:${ev.right_rfd_100 ?? "?"}kg/s, RFD20-80:${ev.right_rfd_2080 ?? "?"}kg/s`,

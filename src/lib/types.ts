@@ -307,6 +307,10 @@ export type Evaluation = {
   weighted_pullup_kg: number | null;
   bench_press_kg: number | null;
   deadlift_kg: number | null;
+  /** Carga de sentadilla goblet (kg): proxy para estimar peso muerto (x2) cuando no hay test real. */
+  goblet_squat_kg: number | null;
+  /** Push-ups máximos (reps a fallo): proxy para estimar press banca cuando no hay test real. */
+  pushup_max_reps: number | null;
   plank_seconds: number | null;
   lsit_seconds: number | null;
   vertical_jump_cm: number | null;

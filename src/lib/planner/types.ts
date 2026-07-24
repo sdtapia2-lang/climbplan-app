@@ -69,7 +69,11 @@ export type PlannerProfile = {
   weightKg: number | null;
   weightedPullupKg: number | null;
   benchPressKg: number | null;
+  /** benchPressKg viene estimado desde push-ups máximos, no de un test real. */
+  benchPressEstimated: boolean;
   deadliftKg: number | null;
+  /** deadliftKg viene estimado desde sentadilla goblet (x2), no de un test real. */
+  deadliftEstimated: boolean;
   maxMvcKg: number | null; // mayor MVC de ambas manos
 };
 

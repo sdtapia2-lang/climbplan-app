@@ -70,6 +70,7 @@ export function prescribeBlock(params: {
   excluded?: Set<PainZoneGroup>;
 }): AiBlock {
   const { exercise, meta, profile, micro, reduced, excluded } = params;
+  const name = exercise.name.toLowerCase();
 
   const baseSets = parseSets(exercise.typical_sets);
   let sets = baseSets != null ? Math.max(1, Math.round(baseSets * micro.volumeMult)) : null;
@@ -109,6 +110,16 @@ export function prescribeBlock(params: {
   }
   if (micro.loadType === "Descarga") {
     notes.push("Semana de descarga: prioridad recuperación, no buscar máximos.");
+  }
+  if (/peso muerto|rack pull/.test(name) && profile.deadliftEstimated) {
+    notes.push(
+      "Carga estimada a partir de la sentadilla goblet (x2), no de un test real de peso muerto: prioriza técnica y RPE, ajusta si se siente muy pesada o muy liviana.",
+    );
+  }
+  if (/press de banca|press de pecho/.test(name) && profile.benchPressEstimated) {
+    notes.push(
+      "Carga estimada a partir de push-ups máximos (no de un test real de press banca): prioriza técnica y RPE, ajusta si se siente muy pesada o muy liviana.",
+    );
   }
 
   return {

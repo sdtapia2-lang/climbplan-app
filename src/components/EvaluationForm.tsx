@@ -30,6 +30,8 @@ function emptyDraft(): Draft {
     weighted_pullup_kg: null,
     bench_press_kg: null,
     deadlift_kg: null,
+    goblet_squat_kg: null,
+    pushup_max_reps: null,
     plank_seconds: null,
     lsit_seconds: null,
     vertical_jump_cm: null,
@@ -292,8 +294,20 @@ export function EvaluationForm({
           <Field label="Press banca (kg)">
             <Input type="number" value={draft.bench_press_kg ?? ""} onChange={(e) => set("bench_press_kg", numOrNull(e.target.value))} />
           </Field>
+          <Field
+            label="Push-ups máximos (reps)"
+            tooltip="Si no hay test de press banca, se estima desde estas reps a fallo (64% del peso corporal x fórmula de Epley) como respaldo de baja confianza."
+          >
+            <Input type="number" value={draft.pushup_max_reps ?? ""} onChange={(e) => set("pushup_max_reps", numOrNull(e.target.value))} />
+          </Field>
           <Field label="Peso muerto (kg)">
             <Input type="number" value={draft.deadlift_kg ?? ""} onChange={(e) => set("deadlift_kg", numOrNull(e.target.value))} />
+          </Field>
+          <Field
+            label="Sentadilla goblet (kg)"
+            tooltip="Si no hay test de peso muerto, se usa esta carga x2 como estimación de baja confianza."
+          >
+            <Input type="number" value={draft.goblet_squat_kg ?? ""} onChange={(e) => set("goblet_squat_kg", numOrNull(e.target.value))} />
           </Field>
           <Field label="Plancha (segundos)">
             <Input type="number" value={draft.plank_seconds ?? ""} onChange={(e) => set("plank_seconds", numOrNull(e.target.value))} />

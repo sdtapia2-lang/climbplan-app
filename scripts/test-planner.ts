@@ -48,7 +48,7 @@ function makeEvaluation(overrides: Partial<Evaluation>): Evaluation {
     id: "e1", athlete_id: "a1", eval_date: "2026-07-20", weight_kg: 70, height_cm: 175, wingspan_cm: 178,
     health_screening: {}, pain_by_zone: {},
     shoulder_ir_l: "", shoulder_ir_r: "", frog_l: "", frog_r: "", thomas_l: "", thomas_r: "",
-    mobility_notes: null, weighted_pullup_kg: 20, bench_press_kg: 60, deadlift_kg: 100,
+    mobility_notes: null, weighted_pullup_kg: 20, bench_press_kg: 60, deadlift_kg: 100, goblet_squat_kg: null, pushup_max_reps: null,
     plank_seconds: 90, lsit_seconds: 15, vertical_jump_cm: null,
     left_mvc_kg: 40, left_mvc_bw_pct: 57, left_cf_reps: 20, left_cf_avg_force_kg: 25, left_cf_drop_pct: 40,
     left_rfd_100: 1.2, left_rfd_2080: 150,

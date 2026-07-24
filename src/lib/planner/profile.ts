@@ -150,6 +150,32 @@ export function deriveProfile(athlete: Athlete, evaluation: Evaluation | null): 
 
   const mvcs = [evaluation?.left_mvc_kg, evaluation?.right_mvc_kg].filter((v): v is number => v != null);
 
+  // Sin test real de peso muerto: estimar desde sentadilla goblet (x2). Es
+  // una heurística de coaching, no una fórmula validada -- se marca
+  // `deadliftEstimated` para que prescription.ts agregue una nota de baja
+  // confianza en vez de tratarlo como un dato de test real.
+  const deadliftReal = evaluation?.deadlift_kg ?? null;
+  const gobletKg = evaluation?.goblet_squat_kg ?? null;
+  const deadliftKg = deadliftReal ?? (gobletKg != null ? gobletKg * 2 : null);
+  const deadliftEstimated = deadliftReal == null && gobletKg != null;
+
+  // Sin test real de press banca: estimar desde push-ups máximos a fallo.
+  // Carga por rep ~64% del peso corporal (soportado por las manos en una
+  // flexión estándar) + Epley para reps->1RM + k=1 (mismo patrón de empuje
+  // horizontal). Heurística de coaching, no una fórmula validada -- se marca
+  // `benchPressEstimated` para la nota de baja confianza en prescription.ts.
+  const PUSHUP_BODYWEIGHT_FRACTION = 0.64;
+  const PUSHUP_TO_BENCH_K = 1.0;
+  const benchReal = evaluation?.bench_press_kg ?? null;
+  const pushupReps = evaluation?.pushup_max_reps ?? null;
+  const bodyweightForPushup = evaluation?.weight_kg ?? athlete.weight_kg ?? null;
+  const pushupEstimate =
+    pushupReps != null && bodyweightForPushup != null
+      ? PUSHUP_BODYWEIGHT_FRACTION * bodyweightForPushup * (1 + pushupReps / 30) * PUSHUP_TO_BENCH_K
+      : null;
+  const benchPressKg = benchReal ?? (pushupEstimate != null ? Math.round(pushupEstimate) : null);
+  const benchPressEstimated = benchReal == null && pushupEstimate != null;
+
   return {
     level,
     discipline,
@@ -166,8 +192,10 @@ export function deriveProfile(athlete: Athlete, evaluation: Evaluation | null): 
     transversalRules: athlete.transversal_rules,
     weightKg: evaluation?.weight_kg ?? athlete.weight_kg,
     weightedPullupKg: evaluation?.weighted_pullup_kg ?? null,
-    benchPressKg: evaluation?.bench_press_kg ?? null,
-    deadliftKg: evaluation?.deadlift_kg ?? null,
+    benchPressKg,
+    benchPressEstimated,
+    deadliftKg,
+    deadliftEstimated,
     maxMvcKg: mvcs.length ? Math.max(...mvcs) : null,
   };
 }
