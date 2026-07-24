@@ -2255,6 +2255,24 @@
     ]
   },
   {
+    "id": "676757c8-aff3-456d-b1e8-d2ce6cabfeb2",
+    "name": "Horse Stance Reps",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": "Descanso: 15 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-24T23:20:21.574679+00:00",
+    "code": "CD0137",
+    "muscle_groups": []
+  },
+  {
     "id": "3875b957-7842-4a71-a310-2018f17a5695",
     "name": "I a W boca abajo",
     "category": "Conditioning",
@@ -2444,6 +2462,24 @@
     "is_benchmark": false,
     "created_at": "2026-07-24T14:54:01.99207+00:00",
     "code": "CD0099",
+    "muscle_groups": []
+  },
+  {
+    "id": "8db73bc2-f31b-46c7-9fca-cec351ab6c31",
+    "name": "Leg Swings",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": "Descanso: 15 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-24T23:20:21.574679+00:00",
+    "code": "CD0135",
     "muscle_groups": []
   },
   {
@@ -3888,6 +3924,24 @@
     ]
   },
   {
+    "id": "bcac4c9c-4990-4932-b171-bee24bfb6dc1",
+    "name": "Scapular Press Ups",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "10 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": "Descanso: 15 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-24T23:20:21.574679+00:00",
+    "code": "CD0138",
+    "muscle_groups": []
+  },
+  {
     "id": "06bbd8a8-80ff-4e03-a6ff-c05627f62476",
     "name": "Secuencia TRX IYT en Prono",
     "category": "Conditioning",
@@ -4224,6 +4278,24 @@
       "Movilidad general",
       "Piernas"
     ]
+  },
+  {
+    "id": "347918f3-89c9-4b78-8a90-bb4712f20fd2",
+    "name": "Split Squat Warm Up",
+    "category": "Conditioning",
+    "equipment_required": [
+      "Peso corporal"
+    ],
+    "typical_sets": "2",
+    "typical_reps": "6 reps",
+    "typical_time": null,
+    "typical_duration": null,
+    "typical_effort": "Easy Effort",
+    "description": "Descanso: 15 s entre series",
+    "is_benchmark": false,
+    "created_at": "2026-07-24T23:20:21.574679+00:00",
+    "code": "CD0136",
+    "muscle_groups": []
   },
   {
     "id": "51f92004-02da-4627-9956-556bd78824b2",

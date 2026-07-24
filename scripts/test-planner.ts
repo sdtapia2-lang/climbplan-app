@@ -10,6 +10,15 @@ import { classifyExercise } from "@/lib/planner/knowledge/exerciseMeta";
 
 const catalog: Exercise[] = JSON.parse(readFileSync("scripts/fixtures/catalog.json", "utf8"));
 
+// "General Warm Up" (fase 24): calentamiento general fijo que reemplaza al
+// calentamiento de Flexibility elegido por tag. Debe ser siempre el prefijo
+// de cada día no-descanso, en este orden.
+const GENERAL_WARMUP_NAMES = ["Leg Swings", "Split Squat Warm Up", "Horse Stance Reps", "Scapular Press Ups", "Face Pulls"];
+// En orden, solo los que existan en el fixture (igual que generalWarmupBlocks
+// en generatePlan.ts: busca por code y filtra los que no encuentra).
+const presentGeneralWarmupNames = GENERAL_WARMUP_NAMES.filter((n) => catalog.some((e) => e.name === n));
+const generalWarmupCount = presentGeneralWarmupNames.length;
+
 let failures = 0;
 let checks = 0;
 function assert(cond: boolean, label: string) {
@@ -144,12 +153,23 @@ for (const [eqLabel, equipment] of equipmentVariants) {
               if (!day.is_rest) assert(days.includes(day.day_of_week), `${label} S${week.week_number} entrena ${day.day_of_week} fuera de agenda`);
             }
 
-            // Orden fijo dentro del día: calentamiento (Flexibility) primero,
-            // calentamiento de escalada (Aerobic Base) en días de PE/SP,
-            // Conditioning nunca antes de un bloque de escalada.
+            // Orden fijo dentro del día: calentamiento general fijo (General
+            // Warm Up) primero, calentamiento de escalada (Aerobic Base) en
+            // días de PE/SP, Conditioning nunca antes de un bloque de escalada.
             for (const day of week.days) {
               if (day.blocks.length === 0) continue;
-              assert(day.blocks[0].category === "Flexibility", `${label} S${week.week_number} ${day.day_of_week} no arranca con calentamiento (Flexibility)`);
+              // "dolor hombro 6" saltea Face Pulls del calentamiento general
+              // (carga hombro) y "solo peso corporal" lo saltea por falta de
+              // Banda elástica -- no forzar el orden exacto en esos
+              // escenarios, la exclusión en sí ya se verifica por su cuenta.
+              if (injLabel !== "dolor hombro 6" && eqLabel !== "solo peso corporal") {
+                for (let i = 0; i < generalWarmupCount; i++) {
+                  assert(
+                    day.blocks[i]?.exercise_name === presentGeneralWarmupNames[i],
+                    `${label} S${week.week_number} ${day.day_of_week} no arranca con General Warm Up en la posición ${i} (esperaba "${presentGeneralWarmupNames[i]}", vino "${day.blocks[i]?.exercise_name}")`,
+                  );
+                }
+              }
               if (
                 eqLabel !== "solo peso corporal" &&
                 (day.day_focus?.startsWith("Escalada - fuerza e intensidad") || day.day_focus?.startsWith("Escalada - resistencia"))

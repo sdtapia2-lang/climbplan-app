@@ -29,15 +29,12 @@ export type DayTemplate = {
   slots: DaySlot[];
 };
 
-// Orden fijo dentro de cada día: 1) calentamiento general (Flexibility
-// dinámico) 2) en días de escalada de potencia/resistencia, calentamiento de
+// Orden fijo dentro de cada día: 1) calentamiento general fijo (rutina
+// "General Warm Up", prependeada en generatePlan.ts, no es un slot de estos
+// templates) 2) en días de escalada de potencia/resistencia, calentamiento de
 // escalada (Aerobic Base corto) 3) contenido principal -- si hay Conditioning
 // en el mismo día, va después de la rutina de escalada, nunca antes 4)
 // Flexibility de cierre al final.
-// count:2 en vez de 1 -- el "Calentamiento" de 6 movimientos que antes era un
-// solo ejercicio compuesto ahora son movimientos individuales (fase 20); dos
-// slots mantienen algo de la variedad que tenía el combo original.
-const WARMUP_SLOT: DaySlot = { category: "Flexibility", count: 2, requireTags: ["warmup"] };
 const CLIMBING_WARMUP_SLOT: DaySlot = { category: "Aerobic Base", count: 1, preferShortDuration: true };
 const COOLDOWN_SLOT: DaySlot = { category: "Flexibility", count: 1, preferTags: ["mobility"] };
 
@@ -45,13 +42,12 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
   escalada_capacidad: {
     // Noceti "Capacidad Boulder" / ARC: volumen de escalada a intensidad media
     label: "Escalada - capacidad y técnica",
-    slots: [WARMUP_SLOT, { category: "Aerobic Base", count: 1 }, COOLDOWN_SLOT],
+    slots: [{ category: "Aerobic Base", count: 1 }, COOLDOWN_SLOT],
   },
   escalada_intensidad: {
     // Noceti "Boulder Corto"/"Limit" + Fobital "boulder duro": fuerza/potencia
     label: "Escalada - fuerza e intensidad",
     slots: [
-      WARMUP_SLOT,
       CLIMBING_WARMUP_SLOT,
       { category: "Strength and Power", count: 1, preferTags: ["climbing"] },
       COOLDOWN_SLOT,
@@ -60,7 +56,7 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
   escalada_resistencia: {
     // Noceti "Boulder Largo" / Cata "Resistencia": fuerza-resistencia
     label: "Escalada - resistencia",
-    slots: [WARMUP_SLOT, CLIMBING_WARMUP_SLOT, { category: "Power Endurance", count: 1 }, COOLDOWN_SLOT],
+    slots: [CLIMBING_WARMUP_SLOT, { category: "Power Endurance", count: 1 }, COOLDOWN_SLOT],
   },
   dedos_fuerza: {
     // Cata: protocolo de dedos en regleta + antagonistas de antebrazo. El
@@ -68,7 +64,6 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
     // antes de la rutina de escalada, no después).
     label: "Fuerza de dedos y antagonistas",
     slots: [
-      WARMUP_SLOT,
       { category: "Conditioning", count: 1, requireTags: ["finger_extensors"] },
       { category: "Conditioning", count: 1, requireTags: ["core"] },
       { category: "Fingerboard", count: 1 },
@@ -78,7 +73,6 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
     // Noceti circuitos 1-2 + Fobital físico: tracción + piernas + empuje
     label: "Físico - fuerza general",
     slots: [
-      WARMUP_SLOT,
       { category: "Conditioning", count: 1, requireTags: ["pull"] },
       { category: "Conditioning", count: 1, requireTags: ["legs"] },
       { category: "Conditioning", count: 1, requireTags: ["push"] },
@@ -88,7 +82,6 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
     // Noceti circuito 3 + regla de antagonistas obligatorios
     label: "Core, hombro y antagonistas",
     slots: [
-      WARMUP_SLOT,
       { category: "Conditioning", count: 1, requireTags: ["core"] },
       { category: "Conditioning", count: 1, preferTags: ["shoulder_stability"], requireTags: ["push"] },
       COOLDOWN_SLOT,
@@ -96,7 +89,7 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
   },
   movilidad: {
     label: "Movilidad y recuperación",
-    slots: [WARMUP_SLOT, COOLDOWN_SLOT],
+    slots: [COOLDOWN_SLOT],
   },
 };
 

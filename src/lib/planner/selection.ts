@@ -18,7 +18,7 @@ export function buildCandidates(exercises: Exercise[]): CandidateExercise[] {
   return exercises.map((exercise) => ({ exercise, meta: classifyExercise(exercise) }));
 }
 
-function equipmentOk(exercise: Exercise, profile: PlannerProfile): boolean {
+export function equipmentOk(exercise: Exercise, profile: PlannerProfile): boolean {
   const required = Array.isArray(exercise.equipment_required) ? exercise.equipment_required : [];
   return required.every((eq) => profile.equipment.has(normalizeEquip(eq)));
 }
