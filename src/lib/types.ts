@@ -393,6 +393,40 @@ export type CheckIn = {
   created_at: string;
 };
 
+// Fase 27: hitos (milestones) -----------------------------------------------
+export const MILESTONE_CATEGORIES = ["Escalada", "Fuerza", "Resistencia", "Movilidad", "Otro"] as const;
+export type MilestoneCategory = (typeof MILESTONE_CATEGORIES)[number];
+
+export type Milestone = {
+  id: string;
+  athlete_id: string;
+  milestone_date: string;
+  title: string;
+  category: string | null;
+  description: string | null;
+  created_by: string | null;
+  created_at: string;
+};
+
+// Fase 28: métricas custom -------------------------------------------------
+export type MetricDefinition = {
+  id: string;
+  athlete_id: string;
+  name: string;
+  unit: string | null;
+  created_at: string;
+};
+
+export type MetricLog = {
+  id: string;
+  metric_id: string;
+  athlete_id: string;
+  log_date: string;
+  value: number;
+  note: string | null;
+  created_at: string;
+};
+
 // Fase 3: formularios configurables (evaluación/check-in personalizados) ----
 export const FORM_TYPES = ["evaluation", "checkin"] as const;
 export type FormType = (typeof FORM_TYPES)[number];

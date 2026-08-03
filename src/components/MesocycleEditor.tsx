@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Card, Field, Input, Select, Textarea, Button, Modal, CategoryTag } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise, type Routine, type RoutineItem } from "@/lib/types";
-import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp, CopyPlus, GripVertical } from "lucide-react";
+import { DndContext, PointerSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, arrayMove, rectSortingStrategy, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type BlockDraft = {
   id: string;
@@ -107,6 +110,9 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
   const [expandedBlocks, setExpandedBlocks] = useState<Set<string>>(new Set());
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [bulkModalOpen, setBulkModalOpen] = useState(false);
+  const [bulkRoutineId, setBulkRoutineId] = useState("");
+  const [bulkDayIdxs, setBulkDayIdxs] = useState<Set<number>>(new Set());
 
   function toggleBlockExpanded(blockId: string) {
     setExpandedBlocks((prev) => {
@@ -209,13 +215,11 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     updateDay(dayIdx, { blocks: [...currentWeek.days[dayIdx].blocks, emptyBlock()] });
   }
 
-  async function insertRoutine(dayIdx: number) {
-    const routineId = routinePicker[dayIdx];
-    if (!routineId) return;
+  async function blocksFromRoutine(routineId: string): Promise<BlockDraft[]> {
     const supabase = createClient();
     const { data } = await supabase.from("routine_items").select("*").eq("routine_id", routineId).order("position");
     const items = (data as RoutineItem[]) ?? [];
-    const newBlocks: BlockDraft[] = items.map((it) => {
+    return items.map((it) => {
       const ex = exercises.find((e) => e.id === it.exercise_id);
       return {
         id: uid(),
@@ -231,8 +235,56 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         kinesio_notes: "",
       };
     });
+  }
+
+  async function insertRoutine(dayIdx: number) {
+    const routineId = routinePicker[dayIdx];
+    if (!routineId) return;
+    const newBlocks = await blocksFromRoutine(routineId);
     updateDay(dayIdx, { blocks: [...currentWeek.days[dayIdx].blocks, ...newBlocks] });
     setRoutinePicker((p) => ({ ...p, [dayIdx]: "" }));
+  }
+
+  function toggleBulkDay(idx: number) {
+    setBulkDayIdxs((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  }
+
+  async function applyRoutineToBulkDays() {
+    if (!bulkRoutineId || bulkDayIdxs.size === 0) return;
+    const newBlocksTemplate = await blocksFromRoutine(bulkRoutineId);
+    setWeeks((ws) =>
+      ws.map((w, i) => {
+        if (i !== activeWeek) return w;
+        return {
+          ...w,
+          days: w.days.map((d, j) =>
+            bulkDayIdxs.has(j) && !d.is_rest
+              ? { ...d, blocks: [...d.blocks, ...newBlocksTemplate.map((b) => ({ ...b, id: uid() }))] }
+              : d,
+          ),
+        };
+      }),
+    );
+    setBulkModalOpen(false);
+    setBulkRoutineId("");
+    setBulkDayIdxs(new Set());
+  }
+
+  const dndSensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+  function reorderBlocks(dayIdx: number, event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const blocks = currentWeek.days[dayIdx].blocks;
+    const oldIndex = blocks.findIndex((b) => b.id === active.id);
+    const newIndex = blocks.findIndex((b) => b.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    updateDay(dayIdx, { blocks: arrayMove(blocks, oldIndex, newIndex) });
   }
 
   function removeBlock(dayIdx: number, blockIdx: number) {
@@ -473,6 +525,11 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           ))}
         </div>
         <div className="flex gap-2">
+          {routines.length > 0 && (
+            <Button variant="secondary" onClick={() => setBulkModalOpen(true)} title="Aplicar una rutina a varios días de esta semana">
+              <CopyPlus size={13} strokeWidth={2.75} aria-hidden="true" /> Rutina a varios días
+            </Button>
+          )}
           {weeks.map((w, i) =>
             i === activeWeek ? null : (
               <Button key={w.id} variant="secondary" onClick={() => copyWeekTo(i)} title={`Copiar S${currentWeek.week_number} a S${w.week_number}`}>
@@ -559,6 +616,12 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                   onChange={(e) => updateDay(dayIdx, { day_focus: e.target.value })}
                   className="mb-4 max-w-md"
                 />
+                <DndContext
+                  sensors={dndSensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={(event) => reorderBlocks(dayIdx, event)}
+                >
+                <SortableContext items={day.blocks.map((b) => b.id)} strategy={rectSortingStrategy}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {day.blocks.map((block, blockIdx) => {
                     const isOpen = expandedBlocks.has(block.id);
@@ -566,7 +629,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                       .filter(Boolean)
                       .join(" · ");
                     return (
-                      <div key={block.id} className={`border border-[var(--color-divider)] rounded-lg p-3 ${isOpen ? "md:col-span-2" : ""}`}>
+                      <SortableBlock key={block.id} id={block.id} className={isOpen ? "md:col-span-2" : ""}>
                         <button
                           onClick={() => toggleBlockExpanded(block.id)}
                           className="flex items-center justify-between w-full text-left gap-1"
@@ -634,10 +697,12 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                             </Field>
                           </div>
                         )}
-                      </div>
+                      </SortableBlock>
                     );
                   })}
                 </div>
+                </SortableContext>
+                </DndContext>
                 <Button variant="secondary" onClick={() => addBlock(dayIdx)} className="w-full justify-center mt-3">
                   + Bloque
                 </Button>
@@ -672,6 +737,49 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         ))}
       </datalist>
 
+      <Modal open={bulkModalOpen} onClose={() => setBulkModalOpen(false)} title="Aplicar rutina a varios días">
+        <div className="space-y-5">
+          <Field label="Rutina">
+            <Select value={bulkRoutineId} onChange={(e) => setBulkRoutineId(e.target.value)}>
+              <option value="">Elegir rutina...</option>
+              {routines.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
+            </Select>
+          </Field>
+          <div>
+            <p className="text-sm font-medium mb-2">Días (semana {currentWeek.week_number})</p>
+            <div className="grid grid-cols-2 gap-2">
+              {currentWeek.days.map((d, i) => (
+                <label
+                  key={d.id}
+                  className={`flex items-center gap-2 text-sm px-3 py-2 rounded-lg border cursor-pointer ${
+                    d.is_rest ? "opacity-40 cursor-not-allowed" : "border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)]"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    disabled={d.is_rest}
+                    checked={bulkDayIdxs.has(i)}
+                    onChange={() => toggleBulkDay(i)}
+                  />
+                  {d.day_of_week}
+                </label>
+              ))}
+            </div>
+          </div>
+          <Button
+            onClick={applyRoutineToBulkDays}
+            disabled={!bulkRoutineId || bulkDayIdxs.size === 0}
+            className="w-full justify-center"
+          >
+            Aplicar a {bulkDayIdxs.size || 0} día{bulkDayIdxs.size === 1 ? "" : "s"}
+          </Button>
+        </div>
+      </Modal>
+
       <Modal open={confirmDelete} onClose={() => setConfirmDelete(false)} title="Eliminar mesociclo">
         <p className="text-sm text-[var(--color-text)]/70 mb-4">
           ¿Eliminar el mesociclo &quot;{meso.name || "sin nombre"}&quot;? Esta acción no se puede deshacer.
@@ -686,6 +794,32 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           </Button>
         </div>
       </Modal>
+    </div>
+  );
+}
+
+function SortableBlock({ id, className, children }: { id: string; className?: string; children: ReactNode }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`relative border border-[var(--color-divider)] rounded-lg p-3 pl-7 ${className ?? ""}`}
+    >
+      <button
+        {...attributes}
+        {...listeners}
+        title="Arrastrar para reordenar"
+        className="absolute left-1.5 top-3 text-[var(--color-text)]/25 hover:text-[var(--color-text)]/60 cursor-grab active:cursor-grabbing touch-none"
+      >
+        <GripVertical size={14} strokeWidth={2.5} aria-hidden="true" />
+      </button>
+      {children}
     </div>
   );
 }
