@@ -31,10 +31,11 @@ export type DayTemplate = {
 
 // Orden fijo dentro de cada día: 1) calentamiento general fijo (rutina
 // "General Warm Up", prependeada en generatePlan.ts, no es un slot de estos
-// templates) 2) en días de escalada de potencia/resistencia, calentamiento de
-// escalada (Aerobic Base corto) 3) contenido principal -- si hay Conditioning
-// en el mismo día, va después de la rutina de escalada, nunca antes 4)
-// Flexibility de cierre al final.
+// templates) 2) si hay Conditioning en el día, va primero (activación con
+// fuerza general antes del trabajo de escalada, nunca después -- regla
+// verificada en test-planner.ts) 3) en días de escalada de potencia/
+// resistencia, calentamiento de escalada (Aerobic Base corto) 4) contenido
+// principal 5) Flexibility de cierre al final.
 const CLIMBING_WARMUP_SLOT: DaySlot = { category: "Aerobic Base", count: 1, preferShortDuration: true };
 const COOLDOWN_SLOT: DaySlot = { category: "Flexibility", count: 1, preferTags: ["mobility"] };
 
@@ -45,9 +46,20 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
     slots: [{ category: "Aerobic Base", count: 1 }, COOLDOWN_SLOT],
   },
   escalada_intensidad: {
-    // Noceti "Boulder Corto"/"Limit" + Fobital "boulder duro": fuerza/potencia
+    // Noceti "Boulder Corto"/"Limit" + Fobital "boulder duro": fuerza/potencia.
+    // Con 4+ dias de entreno esta sesion combina fuerza general (Conditioning
+    // tren superior/piernas) con el boulder de potencia en un mismo dia, en
+    // vez de dedicarle un dia aparte (ver "consolida fisico_fuerza" en
+    // buildWeekLayout mas abajo): sigue el criterio de "Sesiones combinadas
+    // de fuerza y bulder" (Climb Strong, ref. video) -- agrupar cualidades
+    // compatibles en una sola sesion en vez de repartir carga moderada todos
+    // los dias, dejando asi un dia real libre para descanso/movilidad. El
+    // volumen de fuerza general se recorta a 2 slots (no los 3 de
+    // fisico_fuerza) para no convertir una sesion productiva en sobre-carga.
     label: "Escalada - fuerza e intensidad",
     slots: [
+      { category: "Conditioning", count: 1, requireTags: ["pull"] },
+      { category: "Conditioning", count: 1, requireTags: ["legs"] },
       CLIMBING_WARMUP_SLOT,
       { category: "Strength and Power", count: 1, preferTags: ["climbing"] },
       COOLDOWN_SLOT,
@@ -100,7 +112,12 @@ export const DAY_TEMPLATES: Record<DayFocus, DayTemplate> = {
 // entran los tres como días separados, pero igual quedan garantizados como
 // ejercicio individual via ensureWeeklyGuarantees en generatePlan.ts.
 export const CORE_CLIMBING_FOCI: readonly DayFocus[] = ["escalada_capacidad", "escalada_resistencia", "escalada_intensidad"];
-const EXTRA_FOCI: readonly DayFocus[] = ["fisico_fuerza", "dedos_fuerza", "fisico_core_antagonistas", "movilidad"];
+// fisico_fuerza ya no ocupa un dia propio a partir de 4 dias de entreno: su
+// contenido (fuerza general tren superior/piernas) quedo absorbido dentro de
+// escalada_intensidad (sesion combinada, ver arriba). El dia que eso libera
+// se usa para core/antagonistas y recien despues movilidad real -- mas dias
+// de descanso efectivo en vez de otro dia de carga moderada.
+const EXTRA_FOCI: readonly DayFocus[] = ["dedos_fuerza", "fisico_core_antagonistas", "movilidad"];
 
 function buildWeekLayout(count: number): DayFocus[] {
   const twoDay: DayFocus[] = ["escalada_capacidad", "fisico_fuerza"];
