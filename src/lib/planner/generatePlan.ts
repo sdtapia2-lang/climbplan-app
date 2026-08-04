@@ -24,30 +24,73 @@ import type { PainZoneGroup, PlannerProfile } from "./types";
 
 export class RulesPlannerError extends Error {}
 
-// "General Warm Up" (fase 24): calentamiento general fijo de 5 ejercicios
-// (Leg Swings, Split Squat Warm Up, Horse Stance Reps, Scapular Press Ups,
-// Face Pulls), tomado de la sesión homónima de Lattice Training. Reemplaza al
-// calentamiento de Flexibility elegido por tag "warmup": va siempre primero
-// en cada día de entrenamiento, referenciado por code (no por nombre) para
-// no depender de que el catálogo tenga esos ejercicios clasificados con
-// ningún tag en particular. Si el catálogo no los tiene (ej. entorno de test
-// con un fixture viejo), esto no-opea solo -- no fuerza nada.
-const GENERAL_WARMUP_CODES = ["CD0135", "CD0136", "CD0137", "CD0138", "CD0040"];
+// Calentamiento al inicio de cada día de entrenamiento: en vez de una única
+// secuencia fija, se rota entre varias rutinas reales del catálogo (todas
+// tomadas de sesiones de Lattice Training) para variar a lo largo de la
+// semana, igual que un calentamiento manual no repite exactamente lo mismo
+// todos los días. Cada lista referencia ejercicios por code (no por nombre)
+// para no depender de que el catálogo los tenga clasificados con tags
+// particulares. Si el catálogo no los tiene (ej. fixture de test viejo), el
+// filtro de abajo no-opea solo -- no fuerza nada.
+//
+// - "General Warm Up" (fase 24): activación general (piernas, cadera,
+//   escápula) -- la rutina por defecto.
+// - "Calentamiento" (Lattice, fase 20): movilidad de rodilla/cadera/tobillo,
+//   la misma usada en el protocolo manual de Mesociclo_1_Diego.
+// - "Movilidad Matutina" (Lattice, fase 20): giro de sabio, cachorro, side
+//   runner, paloma, sentadilla yogui.
+// - "Activación Pre-Sesión - Hombro y Dedos" (Lattice, fase 29): protocolo
+//   corto de hombro + dedos, reservado para días de Fingerboard/dedos_fuerza
+//   (activar sin fatigar antes de una sesión de fuerza de dedos).
+// Los códigos de cada rutina son siempre de categoría Conditioning o
+// Flexibility (nunca Aerobic Base/Power Endurance/Strength and Power/
+// Fingerboard): son un prefijo fijo del día, y meter ahí una categoría de
+// escalada rompería la regla "Conditioning siempre antes de la rutina de
+// escalada" para el resto de los bloques del día que sí son de escalada.
+const WARMUP_ROUTINES = {
+  general: ["CD0135", "CD0136", "CD0137", "CD0138", "CD0040"],
+  movilidad: ["FL0041", "FL0042", "FL0043", "FL0044", "FL0045", "FL0046"],
+  matutina: ["FL0048", "FL0049", "FL0008", "FL0050", "FL0028", "FL0051"],
+  dedos: ["CD0078", "FL0033", "CD0115"],
+} as const;
+// Rotación para días que no son de dedos: varía por índice del día dentro de
+// la semana en vez de repetir siempre la misma secuencia.
+const WARMUP_ROTATION: (keyof typeof WARMUP_ROUTINES)[] = ["general", "movilidad", "matutina"];
 
-function generalWarmupBlocks(
+function warmupCodesForDay(dayFocus: string, dayIndex: number): readonly string[] {
+  if (dayFocus === "dedos_fuerza") return WARMUP_ROUTINES.dedos;
+  return WARMUP_ROUTINES[WARMUP_ROTATION[dayIndex % WARMUP_ROTATION.length]];
+}
+
+function warmupBlocksFor(
+  codes: readonly string[],
   candidates: CandidateExercise[],
   profile: PlannerProfile,
   micro: (typeof MICROCYCLE_TEMPLATE)[number],
   reduced: ReturnType<typeof zoneActions>["reduced"],
   excluded: ReturnType<typeof zoneActions>["excluded"],
 ): AiBlock[] {
-  return GENERAL_WARMUP_CODES.map((code) => candidates.find((c) => c.exercise.code === code))
+  return codes
+    .map((code) => candidates.find((c) => c.exercise.code === code))
     .filter((c): c is CandidateExercise => !!c)
     // Mismo filtro de seguridad que candidatesForSlot: equipo disponible y
     // ninguna zona con dolor/lesión excluida (ej. Face Pulls carga hombro,
     // se saltea si hay dolor de hombro >=5 en vez de forzarlo igual).
     .filter((c) => equipmentOk(c.exercise, profile) && !c.meta.zones.some((z) => excluded.has(z)))
     .map((c) => prescribeBlock({ exercise: c.exercise, meta: c.meta, profile, micro, reduced, excluded }));
+}
+
+/** Cantidad real de bloques de calentamiento que van a entrar para ese día (tras filtro de seguridad/equipo). */
+function warmupCountFor(
+  codes: readonly string[],
+  candidates: CandidateExercise[],
+  profile: PlannerProfile,
+  excluded: ReturnType<typeof zoneActions>["excluded"],
+): number {
+  return codes
+    .map((code) => candidates.find((c) => c.exercise.code === code))
+    .filter((c): c is CandidateExercise => !!c)
+    .filter((c) => equipmentOk(c.exercise, profile) && !c.meta.zones.some((z) => excluded.has(z))).length;
 }
 
 /** Selección fija de ejercicios por día de la semana (se repite las 4 semanas). */
@@ -220,24 +263,28 @@ export function generateMesocyclePlan(params: {
   const candidates = buildCandidates(exercises);
 
   const { byDay, excluded, reduced } = selectWeekExercises(skeleton[0].days, candidates, profile, previousMesocycles);
-  // Mismo filtro que generalWarmupBlocks: cuenta solo lo que realmente se va
-  // a incluir (equipo disponible, sin zonas excluidas), para que los índices
-  // de test de línea base / recorte de descarga no queden desalineados si
-  // algo del calentamiento general se saltea por seguridad.
-  const generalWarmupCount = GENERAL_WARMUP_CODES.map((code) => candidates.find((c) => c.exercise.code === code))
-    .filter((c): c is CandidateExercise => !!c)
-    .filter((c) => equipmentOk(c.exercise, profile) && !c.meta.zones.some((z) => excluded.has(z))).length;
+  // Cantidad real de bloques de calentamiento por día (equipo/seguridad
+  // pueden variar cuáles entran), guardada para no desalinear los índices de
+  // test de línea base / recorte de descarga -- cada día puede rotar a una
+  // rutina de calentamiento distinta, así que ya no es un único número fijo.
+  const warmupCountByWeekDay = new Map<string, number>();
 
   const weeks: AiWeek[] = skeleton.map((weekSkeleton, wi) => {
     const micro = MICROCYCLE_TEMPLATE[wi];
+    let trainingDayIndex = 0;
     const days: AiDay[] = weekSkeleton.days.map((day) => {
       if (!day.focus) {
         return { day_of_week: day.dayOfWeek as AiDay["day_of_week"], day_focus: null, is_rest: true, blocks: [] };
       }
       const template = DAY_TEMPLATES[day.focus];
       const picked = byDay.get(day.dayOfWeek) ?? [];
+      const warmupCodes = warmupCodesForDay(day.focus, trainingDayIndex++);
+      warmupCountByWeekDay.set(
+        `${weekSkeleton.weekNumber}-${day.dayOfWeek}`,
+        warmupCountFor(warmupCodes, candidates, profile, excluded),
+      );
       const blocks = [
-        ...generalWarmupBlocks(candidates, profile, micro, reduced, excluded),
+        ...warmupBlocksFor(warmupCodes, candidates, profile, micro, reduced, excluded),
         ...picked.map((c) => prescribeBlock({ exercise: c.exercise, meta: c.meta, profile, micro, reduced, excluded })),
       ];
       return {
@@ -264,12 +311,13 @@ export function generateMesocyclePlan(params: {
   // en calor primero).
   const firstTraining = weeks[0].days.find((d) => !d.is_rest);
   if (firstTraining && MICROCYCLE_TEMPLATE[0].allowTests && !profile.conservative) {
-    firstTraining.blocks.splice(generalWarmupCount, 0, ...baselineBlocks(profile, candidates, excluded));
+    const warmupCount = warmupCountByWeekDay.get(`${weeks[0].week_number}-${firstTraining.day_of_week}`) ?? 0;
+    firstTraining.blocks.splice(warmupCount, 0, ...baselineBlocks(profile, candidates, excluded));
   }
 
   // Garantía: semana 4 (descarga) con como máximo ~60% de los bloques de la 3.
-  // Al recortar, nunca se tocan los bloques del calentamiento general fijo
-  // (siempre primero) y se prioriza sacar Conditioning/cierre antes que el
+  // Al recortar, nunca se tocan los bloques del calentamiento (siempre
+  // primero) y se prioriza sacar Conditioning/cierre antes que el
   // calentamiento de escalada o el contenido principal -- si no, un recorte
   // agresivo podía comerse la rutina de escalada y dejar solo el
   // Conditioning que ahora va antes en el orden del día.
@@ -277,17 +325,20 @@ export function generateMesocyclePlan(params: {
   const countBlocks = (w: AiWeek) => w.days.reduce((s, d) => s + d.blocks.length, 0);
   const cap = Math.max(1, Math.floor(countBlocks(weeks[2]) * 0.6));
   while (countBlocks(weeks[3]) > cap) {
-    const day = [...weeks[3].days].reverse().find((d) => d.blocks.length > generalWarmupCount);
+    const day = [...weeks[3].days]
+      .reverse()
+      .find((d) => d.blocks.length > (warmupCountByWeekDay.get(`${weeks[3].week_number}-${d.day_of_week}`) ?? 0));
     if (!day) break;
+    const warmupCount = warmupCountByWeekDay.get(`${weeks[3].week_number}-${day.day_of_week}`) ?? 0;
     let removeIdx = day.blocks.length - 1;
-    for (let i = day.blocks.length - 1; i >= generalWarmupCount; i--) {
+    for (let i = day.blocks.length - 1; i >= warmupCount; i--) {
       if (!CLIMBING_CATEGORIES_TRIM.includes(day.blocks[i].category)) {
         removeIdx = i;
         break;
       }
     }
     day.blocks.splice(removeIdx, 1);
-    if (day.blocks.length <= generalWarmupCount) {
+    if (day.blocks.length <= warmupCount) {
       day.blocks = [];
       day.is_rest = true;
       day.day_focus = null;

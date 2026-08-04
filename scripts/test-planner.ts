@@ -10,14 +10,25 @@ import { classifyExercise } from "@/lib/planner/knowledge/exerciseMeta";
 
 const catalog: Exercise[] = JSON.parse(readFileSync("scripts/fixtures/catalog.json", "utf8"));
 
-// "General Warm Up" (fase 24): calentamiento general fijo que reemplaza al
-// calentamiento de Flexibility elegido por tag. Debe ser siempre el prefijo
-// de cada día no-descanso, en este orden.
-const GENERAL_WARMUP_NAMES = ["Leg Swings", "Split Squat Warm Up", "Horse Stance Reps", "Scapular Press Ups", "Face Pulls"];
-// En orden, solo los que existan en el fixture (igual que generalWarmupBlocks
-// en generatePlan.ts: busca por code y filtra los que no encuentra).
-const presentGeneralWarmupNames = GENERAL_WARMUP_NAMES.filter((n) => catalog.some((e) => e.name === n));
-const generalWarmupCount = presentGeneralWarmupNames.length;
+// Calentamiento (fase 29): ya no es una única secuencia fija -- rota entre
+// varias rutinas reales del catálogo según el foco del día (ver
+// WARMUP_ROUTINES en generatePlan.ts). Debe ser siempre el prefijo de cada
+// día no-descanso, con el orden interno de alguna de estas rutinas.
+const WARMUP_CODES = {
+  general: ["CD0135", "CD0136", "CD0137", "CD0138", "CD0040"],
+  movilidad: ["FL0041", "FL0042", "FL0043", "FL0044", "FL0045", "FL0046"],
+  matutina: ["FL0048", "FL0049", "FL0008", "FL0050", "FL0028", "FL0051"],
+  dedos: ["CD0078", "FL0033", "CD0115"],
+} as const;
+const DEDOS_FOCUS_LABEL = "Fuerza de dedos y antagonistas";
+// En orden, solo los que existan en el fixture (igual que warmupBlocksFor en
+// generatePlan.ts: busca por code y filtra los que no encuentra).
+function presentWarmupNames(key: keyof typeof WARMUP_CODES): string[] {
+  return WARMUP_CODES[key]
+    .map((code) => catalog.find((e) => e.code === code)?.name)
+    .filter((n): n is string => !!n);
+}
+const WARMUP_NAME_LISTS = Object.keys(WARMUP_CODES).map((k) => presentWarmupNames(k as keyof typeof WARMUP_CODES));
 
 let failures = 0;
 let checks = 0;
@@ -153,20 +164,32 @@ for (const [eqLabel, equipment] of equipmentVariants) {
               if (!day.is_rest) assert(days.includes(day.day_of_week), `${label} S${week.week_number} entrena ${day.day_of_week} fuera de agenda`);
             }
 
-            // Orden fijo dentro del día: calentamiento general fijo (General
-            // Warm Up) primero, calentamiento de escalada (Aerobic Base) en
-            // días de PE/SP, Conditioning nunca antes de un bloque de escalada.
+            // Orden fijo dentro del día: alguna rutina de calentamiento
+            // conocida primero (completa, en orden), calentamiento de
+            // escalada (Aerobic Base) en días de PE/SP, Conditioning nunca
+            // antes de un bloque de escalada.
             for (const day of week.days) {
               if (day.blocks.length === 0) continue;
-              // "dolor hombro 6" saltea Face Pulls del calentamiento general
+              // "dolor hombro 6" saltea ejercicios de hombro del calentamiento
               // (carga hombro) y "solo peso corporal" lo saltea por falta de
               // Banda elástica -- no forzar el orden exacto en esos
               // escenarios, la exclusión en sí ya se verifica por su cuenta.
               if (injLabel !== "dolor hombro 6" && eqLabel !== "solo peso corporal") {
-                for (let i = 0; i < generalWarmupCount; i++) {
+                if (day.day_focus === DEDOS_FOCUS_LABEL) {
+                  const expected = presentWarmupNames("dedos");
+                  for (let i = 0; i < expected.length; i++) {
+                    assert(
+                      day.blocks[i]?.exercise_name === expected[i],
+                      `${label} S${week.week_number} ${day.day_of_week} no arranca con calentamiento "dedos" en la posición ${i} (esperaba "${expected[i]}", vino "${day.blocks[i]?.exercise_name}")`,
+                    );
+                  }
+                } else {
+                  const matches = WARMUP_NAME_LISTS.some(
+                    (names) => names.length > 0 && names.every((n, i) => day.blocks[i]?.exercise_name === n),
+                  );
                   assert(
-                    day.blocks[i]?.exercise_name === presentGeneralWarmupNames[i],
-                    `${label} S${week.week_number} ${day.day_of_week} no arranca con General Warm Up en la posición ${i} (esperaba "${presentGeneralWarmupNames[i]}", vino "${day.blocks[i]?.exercise_name}")`,
+                    matches,
+                    `${label} S${week.week_number} ${day.day_of_week} no arranca con ninguna rutina de calentamiento conocida (vino "${day.blocks[0]?.exercise_name}")`,
                   );
                 }
               }
