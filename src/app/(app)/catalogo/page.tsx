@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState, Segmented } from "@/components/ui";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 import { MUSCLE_GROUPS } from "@/lib/planner/knowledge/muscleGroups";
-import { useProfile, canManageCatalog } from "@/components/ProfileProvider";
+import { useProfile, canManageCatalog, canManageRoutines } from "@/components/ProfileProvider";
 import { RoutinesPanel } from "@/components/RoutinesPanel";
 
 const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
@@ -25,6 +25,7 @@ const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
 export default function CatalogPage() {
   const { profile } = useProfile();
   const canEdit = canManageCatalog(profile);
+  const canEditRoutines = canManageRoutines(profile);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -104,7 +105,7 @@ export default function CatalogPage() {
       <div className="h-4" />
 
       {tab === "rutinas" ? (
-        <RoutinesPanel canEdit={canEdit} exercises={exercises} />
+        <RoutinesPanel canEdit={canEditRoutines} exercises={exercises} />
       ) : (
         <>
       <div className="flex flex-col md:flex-row gap-3 mb-6">

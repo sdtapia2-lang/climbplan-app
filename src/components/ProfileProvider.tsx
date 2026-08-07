@@ -64,6 +64,10 @@ export function isAthleteRole(profile: Profile | null) {
 export function canManageCatalog(profile: Profile | null) {
   return isAdmin(profile);
 }
+/** Rutinas (circuitos armados a partir de ejercicios existentes): admin o entrenador, no solo admin. */
+export function canManageRoutines(profile: Profile | null) {
+  return isAdmin(profile) || isCoach(profile);
+}
 export function canCreateMesocycles(profile: Profile | null) {
   return isAdmin(profile) || isCoach(profile);
 }
