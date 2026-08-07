@@ -92,6 +92,7 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
   });
   const [weeks, setWeeks] = useState<WeekDraft[]>([emptyWeek(1), emptyWeek(2), emptyWeek(3), emptyWeek(4)]);
   const [activeWeek, setActiveWeek] = useState(0);
+  const [activeDay, setActiveDay] = useState(0);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [loading, setLoading] = useState(!!templateId);
   const [saving, setSaving] = useState(false);
@@ -464,25 +465,50 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
-        {currentWeek.days.map((day, dayIdx) => (
-          <Card key={day.id} className="flex flex-col">
+      {/* Mapa de la semana: un vistazo rápido de los 7 días, click para editar uno. */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-4">
+        {currentWeek.days.map((day, i) => (
+          <button
+            key={day.id}
+            onClick={() => setActiveDay(i)}
+            className={`shrink-0 flex flex-col items-center gap-0.5 px-3.5 py-2 rounded-xl border transition-colors ${
+              i === activeDay
+                ? "bg-[var(--color-accent-500)] text-[var(--color-bg)] border-[var(--color-accent-500)]"
+                : "border-[var(--color-divider)] hover:bg-[var(--color-text)]/[0.05]"
+            }`}
+          >
+            <span className="text-xs font-medium">{day.day_of_week.slice(0, 3)}</span>
+            <span className={`text-[10px] ${i === activeDay ? "text-[var(--color-bg)]/80" : "text-[var(--color-text)]/50"}`}>
+              {day.is_rest ? "Descanso" : `${day.blocks.length} bloque${day.blocks.length === 1 ? "" : "s"}`}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {(() => {
+        const day = currentWeek.days[activeDay];
+        const dayIdx = activeDay;
+        return (
+          <Card key={day.id}>
             <div className="flex items-center justify-between mb-2">
-              <span className="font-medium">{day.day_of_week}</span>
-              <div className="flex items-center gap-2">
+              <span className="font-medium text-lg">{day.day_of_week}</span>
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-1.5 text-xs text-[var(--color-text)]/70">
+                  <input
+                    type="checkbox"
+                    checked={day.is_rest}
+                    onChange={(e) => updateDay(dayIdx, { is_rest: e.target.checked })}
+                  />
+                  Descanso
+                </label>
                 <button title="Duplicar a día siguiente" onClick={() => duplicateDayToNext(dayIdx)} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
-                  <Files size={14} strokeWidth={2.75} aria-hidden="true" />
+                  <Files size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
                 <button title="Vaciar día" onClick={() => clearDay(dayIdx)} className="text-[var(--color-text)]/40 hover:text-red-500">
-                  <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" />
+                  <Trash2 size={16} strokeWidth={2.75} aria-hidden="true" />
                 </button>
               </div>
             </div>
-
-            <label className="flex items-center gap-1.5 text-xs text-[var(--color-text)]/70 mb-2">
-              <input type="checkbox" checked={day.is_rest} onChange={(e) => updateDay(dayIdx, { is_rest: e.target.checked })} />
-              Descanso
-            </label>
 
             {day.is_rest ? (
               <span className="inline-block self-start px-2.5 py-0.5 rounded-full text-[11px] bg-[var(--color-neutral-100)] text-[var(--color-neutral-800)]">
@@ -494,30 +520,30 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                   placeholder="Foco del día..."
                   value={day.day_focus}
                   onChange={(e) => updateDay(dayIdx, { day_focus: e.target.value })}
-                  className="mb-3 text-xs"
+                  className="mb-4 max-w-md"
                 />
-                <div className="space-y-2 flex-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {day.blocks.map((block, blockIdx) => {
                     const isOpen = expandedBlocks.has(block.id);
                     const metaLine = [block.sets && `${block.sets}s`, block.reps_or_time, block.load]
                       .filter(Boolean)
                       .join(" · ");
                     return (
-                      <div key={block.id} className="border border-[var(--color-divider)] rounded-lg p-2">
+                      <div key={block.id} className={`border border-[var(--color-divider)] rounded-lg p-3 ${isOpen ? "md:col-span-2" : ""}`}>
                         <button
                           onClick={() => toggleBlockExpanded(block.id)}
                           className="flex items-center justify-between w-full text-left gap-1"
                         >
                           <span className="min-w-0">
-                            <span className="block text-xs font-medium truncate">
+                            <span className="block text-sm font-medium truncate">
                               {block.exercise_name_freetext || "Ejercicio sin nombre"}
                             </span>
-                            {metaLine && <span className="block text-[11px] text-[var(--color-text)]/55 truncate">{metaLine}</span>}
+                            {metaLine && <span className="block text-xs text-[var(--color-text)]/55 truncate">{metaLine}</span>}
                           </span>
                           {isOpen ? (
-                            <ChevronUp size={14} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
+                            <ChevronUp size={16} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
                           ) : (
-                            <ChevronDown size={14} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
+                            <ChevronDown size={16} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
                           )}
                         </button>
 
@@ -538,31 +564,33 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                                 placeholder="Buscar ejercicio o escribir libre..."
                               />
                             </Field>
-                            <Field label="Categoría">
-                              <Select value={block.category} onChange={(e) => updateBlock(dayIdx, blockIdx, { category: e.target.value })}>
-                                {EXERCISE_CATEGORIES.map((c) => (
-                                  <option key={c}>{c}</option>
-                                ))}
-                              </Select>
-                            </Field>
-                            <Field label="RPE objetivo">
-                              <Input value={block.rpe_target} onChange={(e) => updateBlock(dayIdx, blockIdx, { rpe_target: e.target.value })} />
-                            </Field>
-                            <Field label="Series">
-                              <Input value={block.sets} onChange={(e) => updateBlock(dayIdx, blockIdx, { sets: e.target.value })} />
-                            </Field>
-                            <Field label="Reps/Tiempo">
-                              <Input value={block.reps_or_time} onChange={(e) => updateBlock(dayIdx, blockIdx, { reps_or_time: e.target.value })} />
-                            </Field>
-                            <Field label="Tiempo">
-                              <Input value={block.time} onChange={(e) => updateBlock(dayIdx, blockIdx, { time: e.target.value })} />
-                            </Field>
-                            <Field label="Carga (kg/%BW)">
-                              <Input value={block.load} onChange={(e) => updateBlock(dayIdx, blockIdx, { load: e.target.value })} />
-                            </Field>
-                            <Field label="Descanso">
-                              <Input value={block.rest} onChange={(e) => updateBlock(dayIdx, blockIdx, { rest: e.target.value })} />
-                            </Field>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                              <Field label="Categoría">
+                                <Select value={block.category} onChange={(e) => updateBlock(dayIdx, blockIdx, { category: e.target.value })}>
+                                  {EXERCISE_CATEGORIES.map((c) => (
+                                    <option key={c}>{c}</option>
+                                  ))}
+                                </Select>
+                              </Field>
+                              <Field label="RPE objetivo">
+                                <Input value={block.rpe_target} onChange={(e) => updateBlock(dayIdx, blockIdx, { rpe_target: e.target.value })} />
+                              </Field>
+                              <Field label="Series">
+                                <Input value={block.sets} onChange={(e) => updateBlock(dayIdx, blockIdx, { sets: e.target.value })} />
+                              </Field>
+                              <Field label="Reps/Tiempo">
+                                <Input value={block.reps_or_time} onChange={(e) => updateBlock(dayIdx, blockIdx, { reps_or_time: e.target.value })} />
+                              </Field>
+                              <Field label="Tiempo">
+                                <Input value={block.time} onChange={(e) => updateBlock(dayIdx, blockIdx, { time: e.target.value })} />
+                              </Field>
+                              <Field label="Carga (kg/%BW)">
+                                <Input value={block.load} onChange={(e) => updateBlock(dayIdx, blockIdx, { load: e.target.value })} />
+                              </Field>
+                              <Field label="Descanso">
+                                <Input value={block.rest} onChange={(e) => updateBlock(dayIdx, blockIdx, { rest: e.target.value })} />
+                              </Field>
+                            </div>
                             <Field label="Notas kinesio">
                               <Textarea rows={2} value={block.kinesio_notes} onChange={(e) => updateBlock(dayIdx, blockIdx, { kinesio_notes: e.target.value })} />
                             </Field>
@@ -572,14 +600,14 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                     );
                   })}
                 </div>
-                <Button variant="secondary" onClick={() => addBlock(dayIdx)} className="w-full justify-center mt-2">
+                <Button variant="secondary" onClick={() => addBlock(dayIdx)} className="w-full justify-center mt-3">
                   + Bloque
                 </Button>
               </>
             )}
           </Card>
-        ))}
-      </div>
+        );
+      })()}
 
       <datalist id="template-exercise-names">
         {exerciseNames.map((n) => (
