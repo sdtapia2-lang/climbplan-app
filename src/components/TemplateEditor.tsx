@@ -308,8 +308,11 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
       ),
     );
   }
-  function onExerciseNameBlur(dayIdx: number, blockIdx: number, value: string) {
-    const match = exercises.find((ex) => ex.name.toLowerCase() === value.trim().toLowerCase());
+  function onExerciseNameBlur(dayIdx: number, blockIdx: number, value: string, category: string) {
+    const needle = value.trim().toLowerCase();
+    const match =
+      exercises.find((ex) => ex.category === category && ex.name.toLowerCase() === needle) ??
+      exercises.find((ex) => ex.name.toLowerCase() === needle);
     if (match) {
       updateBlock(dayIdx, blockIdx, { exercise_id: match.id, exercise_name_freetext: match.name, category: match.category });
     } else {
@@ -317,7 +320,12 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
     }
   }
 
-  const exerciseNames = useMemo(() => exercises.map((e) => e.name), [exercises]);
+  const exerciseNamesByCategory = useMemo(() => {
+    const map = new Map<string, string[]>();
+    for (const cat of EXERCISE_CATEGORIES) map.set(cat, []);
+    for (const e of exercises) map.get(e.category)?.push(e.name);
+    return map;
+  }, [exercises]);
 
   async function saveAll() {
     setSaving(true);
@@ -625,23 +633,34 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                                 <Trash2 size={14} strokeWidth={2.75} aria-hidden="true" />
                               </button>
                             </div>
+                            <Field label="Categoría">
+                              <Select
+                                value={block.category}
+                                onChange={(e) => {
+                                  const nextCategory = e.target.value;
+                                  const ex = exercises.find((x) => x.id === block.exercise_id);
+                                  const clearExercise = ex && ex.category !== nextCategory;
+                                  updateBlock(dayIdx, blockIdx, {
+                                    category: nextCategory,
+                                    ...(clearExercise ? { exercise_id: null, exercise_name_freetext: "" } : {}),
+                                  });
+                                }}
+                              >
+                                {EXERCISE_CATEGORIES.map((c) => (
+                                  <option key={c}>{c}</option>
+                                ))}
+                              </Select>
+                            </Field>
                             <Field label="Ejercicio">
                               <Input
-                                list="template-exercise-names"
+                                list={`template-exercise-names-${block.category}`}
                                 value={block.exercise_name_freetext}
                                 onChange={(e) => updateBlock(dayIdx, blockIdx, { exercise_name_freetext: e.target.value })}
-                                onBlur={(e) => onExerciseNameBlur(dayIdx, blockIdx, e.target.value)}
-                                placeholder="Buscar ejercicio o escribir libre..."
+                                onBlur={(e) => onExerciseNameBlur(dayIdx, blockIdx, e.target.value, block.category)}
+                                placeholder="Buscar ejercicio de esta categoría o escribir libre..."
                               />
                             </Field>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                              <Field label="Categoría">
-                                <Select value={block.category} onChange={(e) => updateBlock(dayIdx, blockIdx, { category: e.target.value })}>
-                                  {EXERCISE_CATEGORIES.map((c) => (
-                                    <option key={c}>{c}</option>
-                                  ))}
-                                </Select>
-                              </Field>
                               <Field label="RPE objetivo">
                                 <Input value={block.rpe_target} onChange={(e) => updateBlock(dayIdx, blockIdx, { rpe_target: e.target.value })} />
                               </Field>
@@ -739,11 +758,13 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
         );
       })()}
 
-      <datalist id="template-exercise-names">
-        {exerciseNames.map((n) => (
-          <option key={n} value={n} />
-        ))}
-      </datalist>
+      {EXERCISE_CATEGORIES.map((cat) => (
+        <datalist key={cat} id={`template-exercise-names-${cat}`}>
+          {(exerciseNamesByCategory.get(cat) ?? []).map((n) => (
+            <option key={n} value={n} />
+          ))}
+        </datalist>
+      ))}
     </div>
   );
 }
