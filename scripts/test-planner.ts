@@ -15,7 +15,7 @@ const catalog: Exercise[] = JSON.parse(readFileSync("scripts/fixtures/catalog.js
 // WARMUP_ROUTINES en generatePlan.ts). Debe ser siempre el prefijo de cada
 // día no-descanso, con el orden interno de alguna de estas rutinas.
 const WARMUP_CODES = {
-  general: ["CD0135", "CD0136", "CD0137", "CD0138", "CD0040"],
+  general: ["CD0143", "CD0144", "CD0145", "CD0146", "CD0040"],
   movilidad: ["FL0041", "FL0042", "FL0043", "FL0044", "FL0045", "FL0046"],
   matutina: ["FL0048", "FL0049", "FL0008", "FL0050", "FL0028", "FL0051"],
   dedos: ["CD0078", "FL0033", "CD0115"],

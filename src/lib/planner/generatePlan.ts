@@ -48,7 +48,9 @@ export class RulesPlannerError extends Error {}
 // escalada rompería la regla "Conditioning siempre antes de la rutina de
 // escalada" para el resto de los bloques del día que sí son de escalada.
 const WARMUP_ROUTINES = {
-  general: ["CD0135", "CD0136", "CD0137", "CD0138", "CD0040"],
+  // CD0143-146 (no CD0135-138): fase 32 dedupeo las 3 copias duplicadas de
+  // estos 4 ejercicios y estos fueron los codes que sobrevivieron.
+  general: ["CD0143", "CD0144", "CD0145", "CD0146", "CD0040"],
   movilidad: ["FL0041", "FL0042", "FL0043", "FL0044", "FL0045", "FL0046"],
   matutina: ["FL0048", "FL0049", "FL0008", "FL0050", "FL0028", "FL0051"],
   dedos: ["CD0078", "FL0033", "CD0115"],
