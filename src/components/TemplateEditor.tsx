@@ -667,9 +667,6 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                               <Field label="Reps/Tiempo">
                                 <Input value={block.reps_or_time} onChange={(e) => updateBlock(dayIdx, blockIdx, { reps_or_time: e.target.value })} />
                               </Field>
-                              <Field label="Tiempo">
-                                <Input value={block.time} onChange={(e) => updateBlock(dayIdx, blockIdx, { time: e.target.value })} />
-                              </Field>
                               <Field label="Carga (kg)">
                                 <Input value={block.load} onChange={(e) => updateBlock(dayIdx, blockIdx, { load: e.target.value })} />
                               </Field>
