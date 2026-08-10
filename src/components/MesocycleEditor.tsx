@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Card, Field, Input, Select, Textarea, Button, Modal, CategoryTag } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise, type Routine, type RoutineItem } from "@/lib/types";
-import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp, CopyPlus, GripVertical } from "lucide-react";
+import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp, CopyPlus, GripVertical, Layers } from "lucide-react";
 import { DndContext, PointerSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, rectSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -23,7 +23,35 @@ type BlockDraft = {
   load: string;
   rest: string;
   kinesio_notes: string;
+  /** Nombre de la Rutina de origen (ej. "General Warm Up"); null si es un ejercicio suelto. Blocks consecutivos con el mismo valor se agrupan visualmente. */
+  routine_name: string | null;
 };
+
+/** Agrupa bloques consecutivos que comparten el mismo routine_name para mostrarlos como una sola unidad colapsable. */
+type RenderItem = { kind: "single"; block: BlockDraft; index: number } | { kind: "group"; routineName: string; blocks: BlockDraft[]; indices: number[] };
+function groupBlocksForRender(blocks: BlockDraft[]): RenderItem[] {
+  const items: RenderItem[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const b = blocks[i];
+    if (!b.routine_name) {
+      items.push({ kind: "single", block: b, index: i });
+      i++;
+      continue;
+    }
+    const groupBlocks: BlockDraft[] = [b];
+    const indices = [i];
+    let j = i + 1;
+    while (j < blocks.length && blocks[j].routine_name === b.routine_name) {
+      groupBlocks.push(blocks[j]);
+      indices.push(j);
+      j++;
+    }
+    items.push({ kind: "group", routineName: b.routine_name, blocks: groupBlocks, indices });
+    i = j;
+  }
+  return items;
+}
 
 type DayDraft = {
   id: string;
@@ -84,6 +112,7 @@ function emptyBlock(): BlockDraft {
     load: "",
     rest: "",
     kinesio_notes: "",
+    routine_name: null,
   };
 }
 
@@ -108,6 +137,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
   const [loading, setLoading] = useState(!!mesocycleId);
   const [saving, setSaving] = useState(false);
   const [expandedBlocks, setExpandedBlocks] = useState<Set<string>>(new Set());
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [bulkModalOpen, setBulkModalOpen] = useState(false);
@@ -119,6 +149,15 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
       const next = new Set(prev);
       if (next.has(blockId)) next.delete(blockId);
       else next.add(blockId);
+      return next;
+    });
+  }
+
+  function toggleGroupExpanded(groupKey: string) {
+    setExpandedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupKey)) next.delete(groupKey);
+      else next.add(groupKey);
       return next;
     });
   }
@@ -179,6 +218,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                 load: b.load ?? "",
                 rest: b.rest ?? "",
                 kinesio_notes: b.kinesio_notes ?? "",
+                routine_name: b.routine_name ?? null,
               })),
             });
           }
@@ -219,6 +259,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     const supabase = createClient();
     const { data } = await supabase.from("routine_items").select("*").eq("routine_id", routineId).order("position");
     const items = (data as RoutineItem[]) ?? [];
+    const routineName = routines.find((r) => r.id === routineId)?.name ?? null;
     return items.map((it) => {
       const ex = exercises.find((e) => e.id === it.exercise_id);
       return {
@@ -233,6 +274,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         load: "",
         rest: it.rest ?? "",
         kinesio_notes: "",
+        routine_name: routineName,
       };
     });
   }
@@ -413,6 +455,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           load: b.load || null,
           rest: b.rest || null,
           kinesio_notes: b.kinesio_notes || null,
+          routine_name: b.routine_name || null,
           position: pos,
         })),
       ),
@@ -616,14 +659,8 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                   onChange={(e) => updateDay(dayIdx, { day_focus: e.target.value })}
                   className="mb-4 max-w-md"
                 />
-                <DndContext
-                  sensors={dndSensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={(event) => reorderBlocks(dayIdx, event)}
-                >
-                <SortableContext items={day.blocks.map((b) => b.id)} strategy={rectSortingStrategy}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {day.blocks.map((block, blockIdx) => {
+                {(() => {
+                  const renderBlockCard = (block: BlockDraft, blockIdx: number) => {
                     const isOpen = expandedBlocks.has(block.id);
                     const metaLine = [block.sets && `${block.sets}s`, block.reps_or_time, block.load]
                       .filter(Boolean)
@@ -699,10 +736,57 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                         )}
                       </SortableBlock>
                     );
-                  })}
-                </div>
-                </SortableContext>
-                </DndContext>
+                  };
+
+                  const renderItems = groupBlocksForRender(day.blocks);
+
+                  return (
+                    <DndContext
+                      sensors={dndSensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={(event) => reorderBlocks(dayIdx, event)}
+                    >
+                      <SortableContext items={day.blocks.map((b) => b.id)} strategy={rectSortingStrategy}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {renderItems.map((item) => {
+                            if (item.kind === "single") return renderBlockCard(item.block, item.index);
+
+                            const groupKey = `${day.id}::${item.routineName}`;
+                            const isGroupOpen = expandedGroups.has(groupKey);
+                            return (
+                              <div
+                                key={groupKey}
+                                className={`border border-dashed border-[var(--color-accent-300)] rounded-lg p-3 ${isGroupOpen ? "md:col-span-2" : ""}`}
+                              >
+                                <button
+                                  onClick={() => toggleGroupExpanded(groupKey)}
+                                  className="flex items-center justify-between w-full text-left gap-1"
+                                >
+                                  <span className="flex items-center gap-1.5 text-sm font-medium min-w-0">
+                                    <Layers size={14} strokeWidth={2.75} className="shrink-0 text-[var(--color-accent-700)]" aria-hidden="true" />
+                                    <span className="truncate">
+                                      Rutina: {item.routineName} ({item.blocks.length} ejercicios)
+                                    </span>
+                                  </span>
+                                  {isGroupOpen ? (
+                                    <ChevronUp size={16} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
+                                  ) : (
+                                    <ChevronDown size={16} strokeWidth={2.75} className="shrink-0 text-[var(--color-text)]/40" aria-hidden="true" />
+                                  )}
+                                </button>
+                                {isGroupOpen && (
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                                    {item.blocks.map((block, i) => renderBlockCard(block, item.indices[i]))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  );
+                })()}
                 <Button variant="secondary" onClick={() => addBlock(dayIdx)} className="w-full justify-center mt-3">
                   + Bloque
                 </Button>

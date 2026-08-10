@@ -122,6 +122,9 @@ export function adjustMesocyclePlanRules(params: {
           load: b.load,
           rest: b.rest,
           kinesio_notes: b.kinesio_notes,
+          // El ajuste semanal no preserva la agrupacion de rutina del bloque
+          // original -- solo la generacion inicial la asigna.
+          routine_name: null,
         };
       });
 
@@ -154,6 +157,7 @@ export function adjustMesocyclePlanRules(params: {
               load: null,
               rest: "2-3 min",
               kinesio_notes: kinesioNoteFor(hitExclude, pain.get(hitExclude) ?? 5, "exclude"),
+              routine_name: null,
             };
           } else {
             newBlocks.splice(i, 1);

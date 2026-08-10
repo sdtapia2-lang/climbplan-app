@@ -100,6 +100,7 @@ async function writePlanToMesocycle(admin: SupabaseAdmin, params: {
           load: b.load,
           rest: b.rest,
           kinesio_notes: b.non_catalog_reason ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catálogo: ${b.non_catalog_reason})`.trim() : b.kinesio_notes,
+          routine_name: b.routine_name,
           position: pos,
         });
       });

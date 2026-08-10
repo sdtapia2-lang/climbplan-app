@@ -68,8 +68,10 @@ export function prescribeBlock(params: {
   micro: MicrocycleWeek;
   reduced: Map<PainZoneGroup, number>;
   excluded?: Set<PainZoneGroup>;
+  /** Nombre de la Rutina de origen (ej. calentamiento), si corresponde. */
+  routineName?: string | null;
 }): AiBlock {
-  const { exercise, meta, profile, micro, reduced, excluded } = params;
+  const { exercise, meta, profile, micro, reduced, excluded, routineName } = params;
   const name = exercise.name.toLowerCase();
 
   const baseSets = parseSets(exercise.typical_sets);
@@ -134,6 +136,7 @@ export function prescribeBlock(params: {
     load: loadFor(exercise, meta, profile, micro),
     rest: parseRest(exercise.description) ?? (exercise.category === "Conditioning" ? "2-3 min" : "3 min"),
     kinesio_notes: notes.length ? notes.join(" ") : null,
+    routine_name: routineName ?? null,
   };
 }
 

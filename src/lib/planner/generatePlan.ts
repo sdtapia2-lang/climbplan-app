@@ -53,23 +53,33 @@ const WARMUP_ROUTINES = {
   matutina: ["FL0048", "FL0049", "FL0008", "FL0050", "FL0028", "FL0051"],
   dedos: ["CD0078", "FL0033", "CD0115"],
 } as const;
+// Nombre real de la Rutina en el catálogo (ver /catalogo → Rutinas): se
+// guarda en cada bloque (routine_name) para que el editor los agrupe
+// visualmente en vez de mostrarlos como N ejercicios sin relación aparente.
+const WARMUP_ROUTINE_NAMES: Record<keyof typeof WARMUP_ROUTINES, string> = {
+  general: "General Warm Up",
+  movilidad: "Calentamiento",
+  matutina: "Movilidad Matutina",
+  dedos: "Activación Pre-Sesión - Hombro y Dedos",
+};
 // Rotación para días que no son de dedos: varía por índice del día dentro de
 // la semana en vez de repetir siempre la misma secuencia.
 const WARMUP_ROTATION: (keyof typeof WARMUP_ROUTINES)[] = ["general", "movilidad", "matutina"];
 
-function warmupCodesForDay(dayFocus: string, dayIndex: number): readonly string[] {
-  if (dayFocus === "dedos_fuerza") return WARMUP_ROUTINES.dedos;
-  return WARMUP_ROUTINES[WARMUP_ROTATION[dayIndex % WARMUP_ROTATION.length]];
+function warmupKeyForDay(dayFocus: string, dayIndex: number): keyof typeof WARMUP_ROUTINES {
+  if (dayFocus === "dedos_fuerza") return "dedos";
+  return WARMUP_ROTATION[dayIndex % WARMUP_ROTATION.length];
 }
 
 function warmupBlocksFor(
-  codes: readonly string[],
+  warmupKey: keyof typeof WARMUP_ROUTINES,
   candidates: CandidateExercise[],
   profile: PlannerProfile,
   micro: (typeof MICROCYCLE_TEMPLATE)[number],
   reduced: ReturnType<typeof zoneActions>["reduced"],
   excluded: ReturnType<typeof zoneActions>["excluded"],
 ): AiBlock[] {
+  const codes = WARMUP_ROUTINES[warmupKey];
   return codes
     .map((code) => candidates.find((c) => c.exercise.code === code))
     .filter((c): c is CandidateExercise => !!c)
@@ -77,17 +87,19 @@ function warmupBlocksFor(
     // ninguna zona con dolor/lesión excluida (ej. Face Pulls carga hombro,
     // se saltea si hay dolor de hombro >=5 en vez de forzarlo igual).
     .filter((c) => equipmentOk(c.exercise, profile) && !c.meta.zones.some((z) => excluded.has(z)))
-    .map((c) => prescribeBlock({ exercise: c.exercise, meta: c.meta, profile, micro, reduced, excluded }));
+    .map((c) =>
+      prescribeBlock({ exercise: c.exercise, meta: c.meta, profile, micro, reduced, excluded, routineName: WARMUP_ROUTINE_NAMES[warmupKey] }),
+    );
 }
 
 /** Cantidad real de bloques de calentamiento que van a entrar para ese día (tras filtro de seguridad/equipo). */
 function warmupCountFor(
-  codes: readonly string[],
+  warmupKey: keyof typeof WARMUP_ROUTINES,
   candidates: CandidateExercise[],
   profile: PlannerProfile,
   excluded: ReturnType<typeof zoneActions>["excluded"],
 ): number {
-  return codes
+  return WARMUP_ROUTINES[warmupKey]
     .map((code) => candidates.find((c) => c.exercise.code === code))
     .filter((c): c is CandidateExercise => !!c)
     .filter((c) => equipmentOk(c.exercise, profile) && !c.meta.zones.some((z) => excluded.has(z))).length;
@@ -152,6 +164,7 @@ function baselineBlocks(
         load: null,
         rest: spec.rest,
         kinesio_notes: spec.note,
+        routine_name: null,
       });
       continue;
     }
@@ -172,6 +185,7 @@ function baselineBlocks(
         load: null,
         rest: spec.rest,
         kinesio_notes: spec.note,
+        routine_name: null,
       });
     }
   }
@@ -278,13 +292,13 @@ export function generateMesocyclePlan(params: {
       }
       const template = DAY_TEMPLATES[day.focus];
       const picked = byDay.get(day.dayOfWeek) ?? [];
-      const warmupCodes = warmupCodesForDay(day.focus, trainingDayIndex++);
+      const warmupKey = warmupKeyForDay(day.focus, trainingDayIndex++);
       warmupCountByWeekDay.set(
         `${weekSkeleton.weekNumber}-${day.dayOfWeek}`,
-        warmupCountFor(warmupCodes, candidates, profile, excluded),
+        warmupCountFor(warmupKey, candidates, profile, excluded),
       );
       const blocks = [
-        ...warmupBlocksFor(warmupCodes, candidates, profile, micro, reduced, excluded),
+        ...warmupBlocksFor(warmupKey, candidates, profile, micro, reduced, excluded),
         ...picked.map((c) => prescribeBlock({ exercise: c.exercise, meta: c.meta, profile, micro, reduced, excluded })),
       ];
       return {

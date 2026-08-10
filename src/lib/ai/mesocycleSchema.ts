@@ -16,6 +16,10 @@ export const AiBlockSchema = z.object({
   load: z.string().nullable(),
   rest: z.string().nullable(),
   kinesio_notes: z.string().nullable(),
+  routine_name: z
+    .string()
+    .nullable()
+    .describe("Nombre de la Rutina de origen si este bloque es parte de una rutina de calentamiento (ej. 'General Warm Up'); null para un ejercicio suelto."),
 });
 export type AiBlock = z.infer<typeof AiBlockSchema>;
 

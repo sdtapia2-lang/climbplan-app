@@ -256,6 +256,7 @@ export type TemplateBlock = {
   load: string | null;
   rest: string | null;
   kinesio_notes: string | null;
+  routine_name: string | null;
   position: number;
 };
 
@@ -291,6 +292,8 @@ export type Block = {
   load: string | null;
   rest: string | null;
   kinesio_notes: string | null;
+  /** Nombre de la Rutina de origen si este bloque vino de "+ Rutina" o de una rutina de calentamiento del generador; null si es un ejercicio suelto. */
+  routine_name: string | null;
   position: number;
   actual_sets: string | null;
   actual_reps_or_time: string | null;

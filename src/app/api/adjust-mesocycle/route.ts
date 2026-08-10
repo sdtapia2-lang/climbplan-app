@@ -322,6 +322,7 @@ async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], pl
           kinesio_notes: b.non_catalog_reason
             ? `${b.kinesio_notes ?? ""}${b.kinesio_notes ? " " : ""}(Fuera de catálogo: ${b.non_catalog_reason})`.trim()
             : b.kinesio_notes,
+          routine_name: b.routine_name,
           position: basePosition + idx,
         }));
         await admin.from("blocks").insert(newBlockRows);
