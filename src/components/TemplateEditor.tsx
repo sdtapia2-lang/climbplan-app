@@ -661,9 +661,6 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                               />
                             </Field>
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                              <Field label="RPE objetivo">
-                                <Input value={block.rpe_target} onChange={(e) => updateBlock(dayIdx, blockIdx, { rpe_target: e.target.value })} />
-                              </Field>
                               <Field label="Series">
                                 <Input value={block.sets} onChange={(e) => updateBlock(dayIdx, blockIdx, { sets: e.target.value })} />
                               </Field>
@@ -673,8 +670,11 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
                               <Field label="Tiempo">
                                 <Input value={block.time} onChange={(e) => updateBlock(dayIdx, blockIdx, { time: e.target.value })} />
                               </Field>
-                              <Field label="Carga (kg/%BW)">
+                              <Field label="Carga (kg)">
                                 <Input value={block.load} onChange={(e) => updateBlock(dayIdx, blockIdx, { load: e.target.value })} />
+                              </Field>
+                              <Field label="RPE objetivo">
+                                <Input value={block.rpe_target} onChange={(e) => updateBlock(dayIdx, blockIdx, { rpe_target: e.target.value })} />
                               </Field>
                               <Field label="Descanso">
                                 <Input value={block.rest} onChange={(e) => updateBlock(dayIdx, blockIdx, { rest: e.target.value })} />
