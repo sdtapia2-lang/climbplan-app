@@ -80,9 +80,9 @@
   --color-accent-2-800: var(--color-accent-2-800);
   --color-accent-2-900: var(--color-accent-2-900);
 
-  --font-heading: var(--font-caprasimo), system-ui, sans-serif;
-  --font-body: var(--font-figtree), system-ui, sans-serif;
-  --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --font-heading: var(--font-archivo-black), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 
   --shadow-organic-sm: var(--shadow-organic-sm);
   --shadow-organic-md: var(--shadow-organic-md);

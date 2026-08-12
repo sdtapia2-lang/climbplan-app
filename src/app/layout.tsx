@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Caprasimo, Figtree } from "next/font/google";
+import { Archivo_Black, Inter } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
-const caprasimo = Caprasimo({
-  variable: "--font-caprasimo",
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
   weight: "400",
   subsets: ["latin"],
 });
 
-const figtree = Figtree({
-  variable: "--font-figtree",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -44,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${caprasimo.variable} ${figtree.variable} h-full antialiased`}
+      className={`${archivoBlack.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--color-bg)] text-[var(--color-text)] font-[family-name:var(--font-body)]">
         <ServiceWorkerRegister />
