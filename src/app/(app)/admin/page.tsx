@@ -82,7 +82,7 @@ function AdminPanel() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Administración</h1>
+      <h1 className="text-2xl font-semibold">Administración</h1>
 
       <Card>
         <h2 className="font-medium mb-4">Usuarios y roles</h2>

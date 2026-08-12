@@ -48,7 +48,7 @@ function InviteForm() {
 
   return (
     <div className="max-w-md">
-      <h1 className="text-xl font-semibold mb-2">Invitar escalador</h1>
+      <h1 className="text-2xl font-semibold mb-2">Invitar escalador</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Crea una cuenta que tú administras: el escalador solo va a ver los planes y formularios que le creas,
         y no va a poder agregar ni modificar ejercicios de su planificación (solo registrar lo que hizo).

@@ -57,7 +57,7 @@ function PerfilForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold mb-1">Mi perfil</h1>
+      <h1 className="text-2xl font-semibold mb-1">Mi perfil</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Esta información se muestra en el directorio de entrenadores si activas el perfil público.
       </p>

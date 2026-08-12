@@ -30,7 +30,7 @@ export default function EvaluationListPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-semibold">Evaluaciones &mdash; {athlete?.name}</h1>
+        <h1 className="text-2xl font-semibold">Evaluaciones &mdash; {athlete?.name}</h1>
         <Link href="/evaluacion/new">
           <Button>+ Nueva evaluación</Button>
         </Link>

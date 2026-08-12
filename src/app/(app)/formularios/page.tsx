@@ -32,7 +32,7 @@ export default function FormTemplatesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Plantillas de formulario</h1>
+        <h1 className="text-2xl font-semibold">Plantillas de formulario</h1>
         {canCreate && (
           <Link href="/formularios/new">
             <Button>+ Nueva plantilla</Button>

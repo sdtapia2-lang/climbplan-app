@@ -214,7 +214,7 @@ export default function CheckInPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-semibold">Check-in semanal &mdash; {athlete?.name}</h1>
+        <h1 className="text-2xl font-semibold">Check-in semanal &mdash; {athlete?.name}</h1>
         <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>
       </div>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
