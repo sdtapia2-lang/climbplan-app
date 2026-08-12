@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Segmented } from "@/components/ui";
 import EvaluationListPage from "../evaluacion/page";
 import CheckInPage from "../checkin/page";
 
 type Tab = "evaluacion" | "checkin";
 
-export default function ProgresoPage() {
-  const [tab, setTab] = useState<Tab>("checkin");
+function ProgresoTabs() {
+  const searchParams = useSearchParams();
+  const initialTab: Tab = searchParams.get("tab") === "evaluacion" ? "evaluacion" : "checkin";
+  const [tab, setTab] = useState<Tab>(initialTab);
 
   return (
     <div>
@@ -24,5 +27,13 @@ export default function ProgresoPage() {
       </div>
       {tab === "checkin" ? <CheckInPage /> : <EvaluationListPage />}
     </div>
+  );
+}
+
+export default function ProgresoPage() {
+  return (
+    <Suspense>
+      <ProgresoTabs />
+    </Suspense>
   );
 }

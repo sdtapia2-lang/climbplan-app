@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
@@ -11,6 +12,16 @@ export default function EvaluationListPage() {
   const { athlete, athleteId } = useAthlete();
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    // En mobile, la pantalla de bottom-nav para evaluaciones es /progreso (pestaña "Evaluación") —
+    // redirige solo cuando se accede a esta ruta standalone, no cuando se renderiza embebida ahí.
+    if (pathname === "/evaluacion" && typeof window !== "undefined" && window.innerWidth < 768) {
+      router.replace("/progreso?tab=evaluacion");
+    }
+  }, [pathname, router]);
 
   useEffect(() => {
     if (!athleteId) return;

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
@@ -62,6 +63,16 @@ export default function CheckInPage() {
   const [milestoneDraft, setMilestoneDraft] = useState(emptyMilestoneDraft());
   const [savingMilestone, setSavingMilestone] = useState(false);
   const [metrics, setMetrics] = useState<MetricDefinition[]>([]);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    // En mobile, la pantalla de bottom-nav para check-in es /progreso (pestaña "Check-in") —
+    // redirige solo cuando se accede a esta ruta standalone, no cuando se renderiza embebida ahí.
+    if (pathname === "/checkin" && typeof window !== "undefined" && window.innerWidth < 768) {
+      router.replace("/progreso?tab=checkin");
+    }
+  }, [pathname, router]);
   const [metricLogs, setMetricLogs] = useState<Record<string, MetricLog[]>>({});
   const [metricModalOpen, setMetricModalOpen] = useState(false);
   const [metricDraft, setMetricDraft] = useState(emptyMetricDraft());
