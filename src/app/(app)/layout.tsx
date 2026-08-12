@@ -7,6 +7,7 @@ import { ProfileProvider, useProfile } from "@/components/ProfileProvider";
 import { AthleteProvider } from "@/components/AthleteProvider";
 import { Sidebar } from "@/components/Sidebar";
 import { MobileNav } from "@/components/MobileNav";
+import { MobileTopBar } from "@/components/MobileTopBar";
 import { OnboardingScreen } from "@/components/OnboardingScreen";
 import { EvaluationForm } from "@/components/EvaluationForm";
 import { Spinner, Card } from "@/components/ui";
@@ -66,9 +67,10 @@ function Gate({ children }: { children: React.ReactNode }) {
 
   return (
     <AthleteProvider>
+      <MobileTopBar />
       <div className="flex flex-1 min-h-screen">
         <Sidebar />
-        <main className="flex-1 min-w-0 overflow-x-hidden px-4 md:px-6 py-6 pb-24 md:pb-6">
+        <main className="flex-1 min-w-0 overflow-x-hidden px-4 md:px-6 pt-16 md:pt-6 pb-24 md:pb-6">
           <div className="max-w-5xl mx-auto">{children}</div>
         </main>
       </div>
