@@ -1,44 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #f5ead8;
-  --color-surface: #ebddc5;
-  --color-text: #201e1d;
-  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+  --color-bg: #f1efe9;
+  --color-surface: #e4e1d9;
+  --color-text: #2a2825;
+  --color-divider: color-mix(in srgb, #2a2825 16%, transparent);
 
-  --color-neutral-100: #f9f4ed;
-  --color-neutral-200: #eee7db;
-  --color-neutral-300: #dcd3c4;
-  --color-neutral-400: #c0b6a5;
-  --color-neutral-500: #a19786;
-  --color-neutral-600: #82796a;
-  --color-neutral-700: #645c50;
-  --color-neutral-800: #474238;
-  --color-neutral-900: #2e2b25;
+  --color-neutral-100: #f7f5f1;
+  --color-neutral-200: #ece9e2;
+  --color-neutral-300: #ddd8cd;
+  --color-neutral-400: #b9b3a6;
+  --color-neutral-500: #9c9686;
+  --color-neutral-600: #84806f;
+  --color-neutral-700: #666255;
+  --color-neutral-800: #4a4740;
+  --color-neutral-900: #2e2c27;
 
-  --color-accent-100: #fff2eb;
-  --color-accent-200: #ffe1d0;
-  --color-accent-300: #ffc6a5;
-  --color-accent-400: #f6a06b;
-  --color-accent-500: #d67f48;
-  --color-accent-600: #b2622d;
-  --color-accent-700: #8c491a;
-  --color-accent-800: #643312;
-  --color-accent-900: #402310;
+  --color-accent-100: #eef2e8;
+  --color-accent-200: #dbe4cc;
+  --color-accent-300: #c0d1a8;
+  --color-accent-400: #a0b884;
+  --color-accent-500: #7d9169;
+  --color-accent-600: #647550;
+  --color-accent-700: #5c6e4a;
+  --color-accent-800: #414f34;
+  --color-accent-900: #2b3423;
 
-  --color-accent-2-100: #f0fae1;
-  --color-accent-2-200: #e1eecc;
-  --color-accent-2-300: #ccdbb2;
-  --color-accent-2-400: #aebf92;
-  --color-accent-2-500: #8fa073;
-  --color-accent-2-600: #728157;
-  --color-accent-2-700: #56633f;
-  --color-accent-2-800: #3d472b;
-  --color-accent-2-900: #272e1b;
+  --color-accent-2-100: #f5efe8;
+  --color-accent-2-200: #e9dccb;
+  --color-accent-2-300: #d6bfa0;
+  --color-accent-2-400: #bd9a72;
+  --color-accent-2-500: #a17c54;
+  --color-accent-2-600: #816140;
+  --color-accent-2-700: #614933;
+  --color-accent-2-800: #443323;
+  --color-accent-2-900: #2c2116;
 
-  --shadow-organic-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
-  --shadow-organic-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
-  --shadow-organic-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+  --shadow-organic-sm: 0 1px 2px color-mix(in srgb, #2e2c27 14%, transparent);
+  --shadow-organic-md: 0 3px 10px color-mix(in srgb, #2e2c27 16%, transparent);
+  --shadow-organic-lg: 0 12px 32px color-mix(in srgb, #2e2c27 22%, transparent);
 }
 
 @theme inline {
