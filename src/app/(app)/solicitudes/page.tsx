@@ -82,7 +82,7 @@ function SolicitudesPanel() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-1">Solicitudes</h1>
+      <h1 className="text-2xl font-semibold mb-1">Solicitudes</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Escaladores nuevos que pidieron entrevista {isAdmin(profile) ? "a cualquier entrenador" : "para entrenar contigo"}.
       </p>

@@ -7,7 +7,7 @@ import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/types";
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
-      className={`bg-[var(--color-surface)] rounded-[32px] p-[13px] shadow-[var(--shadow-organic-sm)] ${className}`}
+      className={`bg-[var(--color-surface)] rounded-[32px] p-3.5 shadow-[var(--shadow-organic-sm)] ${className}`}
     >
       {children}
     </div>
@@ -124,7 +124,7 @@ export function Modal({
   if (!open) return null;
   return (
     <div className="fixed inset-0 bg-[var(--color-neutral-900)]/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-[var(--color-surface)] rounded-[32px] max-w-lg w-full max-h-[85vh] overflow-y-auto p-[17.6px] relative shadow-[var(--shadow-organic-lg)]">
+      <div className="bg-[var(--color-surface)] rounded-[32px] max-w-lg w-full max-h-[85vh] overflow-y-auto p-4 relative shadow-[var(--shadow-organic-lg)]">
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-[family-name:var(--font-heading)] text-xl m-0">{title}</h2>
           <button

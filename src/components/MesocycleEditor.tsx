@@ -513,7 +513,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
             &larr;
           </button>
-          <h1 className="text-xl font-semibold">{mesocycleId ? "Editar mesociclo" : "Nuevo mesociclo"}</h1>
+          <h1 className="text-2xl font-semibold">{mesocycleId ? "Editar mesociclo" : "Nuevo mesociclo"}</h1>
         </div>
         <div className="flex items-center gap-2">
           {mesocycleId && (

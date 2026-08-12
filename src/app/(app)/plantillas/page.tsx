@@ -62,7 +62,7 @@ export default function TemplatesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Planes por defecto</h1>
+        <h1 className="text-2xl font-semibold">Planes por defecto</h1>
         {canCreate && (
           <Link href="/plantillas/new">
             <Button>+ Nueva plantilla</Button>

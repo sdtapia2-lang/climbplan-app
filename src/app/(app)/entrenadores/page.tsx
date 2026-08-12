@@ -29,7 +29,7 @@ export default function EntrenadoresPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-1">Entrenadores</h1>
+      <h1 className="text-2xl font-semibold mb-1">Entrenadores</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">Entrenadores disponibles en la app.</p>
 
       {coaches.length === 0 ? (

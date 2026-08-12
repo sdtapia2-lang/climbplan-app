@@ -191,7 +191,7 @@ export function FormTemplateBuilder({ templateId }: { templateId?: string }) {
           <button onClick={() => router.back()} className="text-[var(--color-text)]/40 hover:text-[var(--color-neutral-700)]">
             &larr;
           </button>
-          <h1 className="text-xl font-semibold">{templateId ? "Editar plantilla" : "Nueva plantilla"}</h1>
+          <h1 className="text-2xl font-semibold">{templateId ? "Editar plantilla" : "Nueva plantilla"}</h1>
         </div>
         <Button onClick={save} disabled={saving}>
           {saving ? "Guardando..." : "Guardar"}

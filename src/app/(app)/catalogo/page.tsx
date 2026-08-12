@@ -90,7 +90,7 @@ export default function CatalogPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Catálogo de ejercicios</h1>
+        <h1 className="text-2xl font-semibold">Catálogo de ejercicios</h1>
         {tab === "ejercicios" && canEdit && <Button onClick={() => setModalOpen(true)}>+ Nuevo</Button>}
       </div>
 

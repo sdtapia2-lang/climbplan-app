@@ -92,7 +92,7 @@ export default function MesocycleListPage() {
     <div>
       <InjuryBanner athlete={athlete} />
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
+        <h1 className="text-2xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
         <div className="flex items-center gap-2">
           {showGenerateNext && (
             <Button onClick={() => generate("next")} disabled={generating} variant="secondary">

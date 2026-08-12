@@ -183,7 +183,7 @@ export default function TrainingPage() {
       <InjuryBanner athlete={athlete} />
       {banner}
       <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-xl font-semibold">
+        <h1 className="text-2xl font-semibold">
           {mesocycle.name} &mdash; Semana {week?.week_number}
         </h1>
         {week?.load_type && <Badge tone="orange">{week.load_type}</Badge>}
