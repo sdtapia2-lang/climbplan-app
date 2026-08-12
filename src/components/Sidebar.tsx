@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { useProfile, isAdmin, isCoach, isAthleteRole, canCreateMesocycles } from "./ProfileProvider";
+import { AthleteSwitcher } from "./AthleteSwitcher";
 import {
   LayoutDashboard,
   Layers,
@@ -22,41 +23,22 @@ import {
   Compass,
   UserCog,
   Inbox,
-  ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   LogOut,
 } from "lucide-react";
 
-const NAV_ITEMS = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/plantillas", label: "Planes", icon: Layers },
-  { href: "/mesociclo", label: "Mesociclo", icon: Calendar },
-  { href: "/entrenamiento", label: "Entrenamiento", icon: Dumbbell },
-  { href: "/catalogo", label: "Catálogo", icon: BookOpen },
-  { href: "/evaluacion", label: "Evaluación", icon: ClipboardCheck },
-  { href: "/checkin", label: "Check-in", icon: Heart },
-  { href: "/formularios", label: "Formularios", icon: FileText },
-  { href: "/entrenadores", label: "Entrenadores", icon: Compass },
-];
-
-const ROLE_LABELS: Record<string, string> = {
-  admin: "Administrador",
-  entrenador: "Entrenador",
-  escalador: "Escalador",
-};
+type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
+type NavGroup = { label: string; items: NavItem[] };
 
 const STORAGE_KEY = "climbplan.sidebarCollapsed";
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { athletes, athlete, setAthleteId } = useAthlete();
+  const { athlete } = useAthlete();
   const { profile } = useProfile();
-  const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const canSwitch = athletes.length > 1;
-  const initial = (profile?.full_name || profile?.email || "?").trim().charAt(0).toUpperCase();
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
@@ -79,21 +61,43 @@ export function Sidebar() {
     router.refresh();
   }
 
-  const items = [
-    ...NAV_ITEMS,
-    ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/analitica", label: "Analítica", icon: BarChart3 }] : []),
-    ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
-    ...(isCoach(profile) || isAdmin(profile)
-      ? [
-          { href: "/solicitudes", label: "Solicitudes", icon: Inbox },
-          { href: "/perfil", label: "Mi perfil", icon: UserCog },
-        ]
-      : []),
-    ...(isAthleteRole(profile) && athlete
-      ? [{ href: `/atleta/${athlete.id}`, label: "Mi perfil", icon: UserCog }]
-      : []),
-    ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
+  const groups: NavGroup[] = [
+    {
+      label: "Planificación",
+      items: [
+        { href: "/mesociclo", label: "Mesociclo", icon: Calendar },
+        { href: "/plantillas", label: "Planes", icon: Layers },
+        { href: "/entrenamiento", label: "Entrenamiento", icon: Dumbbell },
+        { href: "/catalogo", label: "Catálogo", icon: BookOpen },
+      ],
+    },
+    {
+      label: "Seguimiento",
+      items: [
+        { href: "/evaluacion", label: "Evaluación", icon: ClipboardCheck },
+        { href: "/checkin", label: "Check-in", icon: Heart },
+        { href: "/formularios", label: "Formularios", icon: FileText },
+        ...(isCoach(profile) || isAdmin(profile)
+          ? [{ href: "/analitica", label: "Analítica", icon: BarChart3 }]
+          : []),
+      ],
+    },
+    {
+      label: "Personas",
+      items: [
+        { href: "/entrenadores", label: "Entrenadores", icon: Compass },
+        ...(canCreateMesocycles(profile) ? [{ href: "/escaladores/nuevo", label: "Invitar", icon: UserPlus }] : []),
+        ...(isCoach(profile) || isAdmin(profile) ? [{ href: "/solicitudes", label: "Solicitudes", icon: Inbox }] : []),
+        ...(isAdmin(profile) ? [{ href: "/admin", label: "Admin", icon: ShieldCheck }] : []),
+      ],
+    },
   ];
+
+  const perfilHref = isAthleteRole(profile) && athlete ? `/atleta/${athlete.id}` : "/perfil";
+
+  function isActive(href: string) {
+    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  }
 
   return (
     <aside
@@ -113,6 +117,8 @@ export function Sidebar() {
         {!collapsed && <span className="font-[family-name:var(--font-heading)] text-[18px]">Ápex</span>}
       </div>
 
+      <AthleteSwitcher collapsed={collapsed} />
+
       <button
         onClick={toggleCollapsed}
         title={collapsed ? "Expandir menú" : "Colapsar menú"}
@@ -131,78 +137,80 @@ export function Sidebar() {
         )}
       </button>
 
-      <nav className="flex-1 overflow-y-auto px-2 space-y-0.5">
-        {items.map((item) => {
-          const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              title={collapsed ? item.label : undefined}
-              className={`flex items-center gap-2.5 px-2.5 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
-                collapsed ? "justify-center" : ""
-              } ${
-                active
-                  ? "bg-[var(--color-accent-200)] text-[var(--color-accent-800)] font-semibold"
-                  : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
-              }`}
-            >
-              <Icon size={17} strokeWidth={2.75} className="shrink-0" aria-hidden="true" />
-              {!collapsed && item.label}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 overflow-y-auto px-2 space-y-3">
+        <Link
+          href="/"
+          title={collapsed ? "Dashboard" : undefined}
+          className={`flex items-center gap-2.5 px-2.5 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
+            collapsed ? "justify-center" : ""
+          } ${
+            isActive("/")
+              ? "bg-[var(--color-accent-200)] text-[var(--color-accent-800)] font-semibold"
+              : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
+          }`}
+        >
+          <LayoutDashboard size={17} strokeWidth={2.75} className="shrink-0" aria-hidden="true" />
+          {!collapsed && "Dashboard"}
+        </Link>
+
+        {groups.map((group) => (
+          <div key={group.label}>
+            {!collapsed && (
+              <p className="px-2.5 mb-0.5 text-[10px] tracking-[0.08em] uppercase text-[var(--color-text)]/45">
+                {group.label}
+              </p>
+            )}
+            <div className="space-y-0.5">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    title={collapsed ? item.label : undefined}
+                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
+                      collapsed ? "justify-center" : ""
+                    } ${
+                      isActive(item.href)
+                        ? "bg-[var(--color-accent-200)] text-[var(--color-accent-800)] font-semibold"
+                        : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
+                    }`}
+                  >
+                    <Icon size={17} strokeWidth={2.75} className="shrink-0" aria-hidden="true" />
+                    {!collapsed && item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
-      <div className="p-3 border-t border-[var(--color-divider)] relative">
-        {open && canSwitch && (
-          <div className="absolute left-3 bottom-[calc(100%+4px)] bg-[var(--color-surface)] rounded-2xl shadow-[var(--shadow-organic-md)] min-w-[160px] py-1 z-20">
-            {athletes.map((a) => (
-              <button
-                key={a.id}
-                onClick={() => {
-                  setAthleteId(a.id);
-                  setOpen(false);
-                }}
-                className="block w-full text-left px-3 py-1.5 text-sm hover:bg-[var(--color-text)]/[0.06]"
-              >
-                {a.name}
-              </button>
-            ))}
-          </div>
-        )}
-
-        <button
-          onClick={() => canSwitch && setOpen((o) => !o)}
-          className={`flex items-center gap-2 w-full mb-2 ${collapsed ? "justify-center" : ""}`}
+      <div className="p-3 border-t border-[var(--color-divider)] space-y-0.5">
+        <Link
+          href={perfilHref}
+          title={collapsed ? "Mi perfil" : undefined}
+          className={`flex items-center gap-2.5 px-2.5 py-2 rounded-full text-sm whitespace-nowrap transition-colors ${
+            collapsed ? "justify-center" : ""
+          } ${
+            isActive(perfilHref)
+              ? "bg-[var(--color-accent-200)] text-[var(--color-accent-800)] font-semibold"
+              : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
+          }`}
         >
-          <div
-            className="w-8 h-8 rounded-full bg-[var(--color-accent-300)] text-[var(--color-accent-800)] flex items-center justify-center text-sm font-semibold shrink-0"
-            title={profile?.full_name || profile?.email || ""}
-          >
-            {initial}
-          </div>
-          {!collapsed && (
-            <div className="text-left overflow-hidden">
-              <p className="text-sm truncate flex items-center gap-1">
-                {athlete?.name ?? "Sin atletas"}
-                {canSwitch && <ChevronDown size={12} strokeWidth={2.75} className="text-[var(--color-text)]/50 shrink-0" aria-hidden="true" />}
-              </p>
-              {profile?.role && <p className="text-xs text-[var(--color-text)]/55">{ROLE_LABELS[profile.role]}</p>}
-            </div>
-          )}
-        </button>
+          <UserCog size={17} strokeWidth={2.75} className="shrink-0" aria-hidden="true" />
+          {!collapsed && "Mi perfil"}
+        </Link>
 
         <button
           onClick={handleLogout}
           title="Cerrar sesión"
           aria-label="Cerrar sesión"
-          className={`flex items-center gap-2 text-sm text-[var(--color-text)]/50 hover:text-[var(--color-text)] w-full ${
+          className={`flex items-center gap-2.5 px-2.5 py-2 rounded-full text-sm w-full text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07] ${
             collapsed ? "justify-center" : ""
           }`}
         >
-          <LogOut size={16} strokeWidth={2.75} aria-hidden="true" />
+          <LogOut size={17} strokeWidth={2.75} className="shrink-0" aria-hidden="true" />
           {!collapsed && "Cerrar sesión"}
         </button>
       </div>
