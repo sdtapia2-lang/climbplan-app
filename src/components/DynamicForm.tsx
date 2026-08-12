@@ -88,7 +88,7 @@ export function DynamicForm({ templateId }: { templateId: string }) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold mb-1">{template.name}</h1>
+      <h1 className="text-2xl font-semibold mb-1">{template.name}</h1>
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
         {template.description} &mdash; para {athlete?.name ?? "..."}
       </p>
