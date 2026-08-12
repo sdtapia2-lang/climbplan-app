@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, Activity, Heart, UserCircle } from "lucide-react";
+import { House, Activity, LineChart, UserCircle } from "lucide-react";
 import { useAthlete } from "./AthleteProvider";
 
 export function MobileNav() {
@@ -12,7 +12,7 @@ export function MobileNav() {
   const items = [
     { href: "/", label: "Hoy", icon: House },
     { href: "/entrenamiento", label: "Entreno", icon: Activity },
-    { href: "/checkin", label: "Check-in", icon: Heart },
+    { href: "/progreso", label: "Progreso", icon: LineChart },
     { href: athleteId ? `/atleta/${athleteId}` : "/", label: "Perfil", icon: UserCircle },
   ];
 
