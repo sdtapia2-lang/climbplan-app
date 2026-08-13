@@ -25,6 +25,8 @@ import {
   Inbox,
   ChevronsLeft,
   ChevronsRight,
+  ChevronDown,
+  ChevronUp,
   LogOut,
 } from "lucide-react";
 
@@ -32,6 +34,7 @@ type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
 type NavGroup = { label: string; items: NavItem[] };
 
 const STORAGE_KEY = "climbplan.sidebarCollapsed";
+const GROUPS_STORAGE_KEY = "climbplan.sidebarCollapsedGroups";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -39,17 +42,37 @@ export function Sidebar() {
   const { athlete } = useAthlete();
   const { profile } = useProfile();
   const [collapsed, setCollapsed] = useState(false);
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- lee preferencia guardada al montar
     if (stored === "1") setCollapsed(true);
+    const storedGroups = typeof window !== "undefined" ? localStorage.getItem(GROUPS_STORAGE_KEY) : null;
+    if (storedGroups) {
+      try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- lee preferencia guardada al montar
+        setCollapsedGroups(new Set(JSON.parse(storedGroups)));
+      } catch {
+        // ignora preferencia corrupta
+      }
+    }
   }, []);
 
   function toggleCollapsed() {
     setCollapsed((c) => {
       const next = !c;
       if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+      return next;
+    });
+  }
+
+  function toggleGroup(label: string) {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      if (typeof window !== "undefined") localStorage.setItem(GROUPS_STORAGE_KEY, JSON.stringify([...next]));
       return next;
     });
   }
@@ -153,14 +176,25 @@ export function Sidebar() {
           {!collapsed && "Dashboard"}
         </Link>
 
-        {groups.map((group) => (
+        {groups.map((group) => {
+          const isGroupOpen = !collapsedGroups.has(group.label);
+          return (
           <div key={group.label}>
             {!collapsed && (
-              <p className="px-2.5 mb-0.5 text-[10px] tracking-[0.08em] uppercase text-[var(--color-text)]/45">
-                {group.label}
-              </p>
+              <button
+                onClick={() => toggleGroup(group.label)}
+                className="flex items-center justify-between w-full px-2.5 mb-0.5 text-[10px] tracking-[0.08em] uppercase text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70"
+                aria-expanded={isGroupOpen}
+              >
+                <span>{group.label}</span>
+                {isGroupOpen ? (
+                  <ChevronUp size={11} strokeWidth={2.75} aria-hidden="true" />
+                ) : (
+                  <ChevronDown size={11} strokeWidth={2.75} aria-hidden="true" />
+                )}
+              </button>
             )}
-            <div className="space-y-0.5">
+            <div className={`space-y-0.5 ${!collapsed && !isGroupOpen ? "hidden" : ""}`}>
               {group.items.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -183,7 +217,8 @@ export function Sidebar() {
               })}
             </div>
           </div>
-        ))}
+          );
+        })}
       </nav>
 
       <div className="p-3 border-t border-[var(--color-divider)] space-y-0.5">
