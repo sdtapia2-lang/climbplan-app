@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { RequireRole, useProfile } from "@/components/ProfileProvider";
+import { RequireRole, useProfile, isCoach } from "@/components/ProfileProvider";
 import { Card, Field, Input, Textarea, Button, Spinner } from "@/components/ui";
+import type { CoachSubscription, SubscriptionPlan } from "@/lib/types";
+import { CreditCard } from "lucide-react";
 
 export default function PerfilPage() {
   return (
@@ -22,6 +24,26 @@ function PerfilForm() {
   const [contactPhone, setContactPhone] = useState("");
   const [publicProfile, setPublicProfile] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [subscription, setSubscription] = useState<(CoachSubscription & { subscription_plans: SubscriptionPlan }) | null>(null);
+  const [athleteCount, setAthleteCount] = useState(0);
+
+  useEffect(() => {
+    if (!profile?.id || !isCoach(profile)) return;
+    (async () => {
+      const supabase = createClient();
+      const [{ data: sub }, { data: count }] = await Promise.all([
+        supabase
+          .from("coach_subscriptions")
+          .select("*, subscription_plans(*)")
+          .eq("coach_id", profile.id)
+          .eq("status", "active")
+          .maybeSingle(),
+        supabase.rpc("coach_athlete_count", { p_coach_id: profile.id }),
+      ]);
+      setSubscription((sub as (CoachSubscription & { subscription_plans: SubscriptionPlan }) | null) ?? null);
+      setAthleteCount(count ?? 0);
+    })();
+  }, [profile]);
 
   useEffect(() => {
     if (!profile) return;
@@ -61,6 +83,37 @@ function PerfilForm() {
       <p className="text-sm text-[var(--color-text)]/55 mb-6">
         Esta información se muestra en el directorio de entrenadores si activas el perfil público.
       </p>
+
+      {isCoach(profile) && (
+        <Card className="mb-6">
+          <p className="text-sm text-[var(--color-text)]/55 mb-2 flex items-center gap-1.5">
+            <CreditCard size={15} strokeWidth={2.75} aria-hidden="true" />
+            Tu plan
+          </p>
+          {subscription ? (
+            <>
+              <p className="font-medium mb-1">{subscription.subscription_plans.name}</p>
+              <p className="text-sm text-[var(--color-text)]/70">
+                {athleteCount}
+                {subscription.subscription_plans.max_athletes !== null
+                  ? ` / ${subscription.subscription_plans.max_athletes} atletas`
+                  : " atletas (sin tope)"}
+                {subscription.subscription_plans.price !== null && (
+                  <>
+                    {" · "}
+                    ${subscription.subscription_plans.price}
+                    {subscription.subscription_plans.billing_period ? ` / ${subscription.subscription_plans.billing_period}` : ""}
+                  </>
+                )}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-[var(--color-text)]/40">
+              Sin plan asignado todavía ({athleteCount} atletas, sin límite por ahora). Pídele a un admin que te asigne uno.
+            </p>
+          )}
+        </Card>
+      )}
 
       <Card className="space-y-4">
         <Field label="Nombre">

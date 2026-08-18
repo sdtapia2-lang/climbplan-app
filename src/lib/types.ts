@@ -37,6 +37,34 @@ export type CoachRequest = {
   resolved_at: string | null;
 };
 
+// Fase 43: planes y cupos de atletas por entrenador (Fase 6 del plan de
+// entrevistas) -- sin pasarela de pago real, los asigna un admin a mano.
+export const BILLING_PERIODS = ["mensual", "anual", "unico"] as const;
+export type BillingPeriod = (typeof BILLING_PERIODS)[number];
+
+export type SubscriptionPlan = {
+  id: string;
+  name: string;
+  /** null = ilimitado. */
+  max_athletes: number | null;
+  price: number | null;
+  billing_period: BillingPeriod | null;
+  created_at: string;
+};
+
+export type CoachSubscriptionStatus = "active" | "canceled" | "expired";
+
+export type CoachSubscription = {
+  id: string;
+  coach_id: string;
+  plan_id: string;
+  status: CoachSubscriptionStatus;
+  starts_at: string;
+  ends_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Athlete = {
   id: string;
   name: string;

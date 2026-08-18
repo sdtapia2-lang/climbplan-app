@@ -80,6 +80,18 @@ export function canManageOwnMesocycle(profile: Profile | null) {
   return canCreateMesocycles(profile) || isSelfCoached(profile);
 }
 
+/**
+ * Puede agregar otro atleta bajo el cupo del plan de este entrenador (Fase 6).
+ * `maxAthletes` es el cupo vigente ya resuelto por el llamador (coach_max_athletes
+ * en la base) -- null significa sin plan asignado todavía o plan sin tope,
+ * en ambos casos sin límite. Admin nunca está sujeto a cupo.
+ */
+export function canAddAthlete(profile: Profile | null, currentCount: number, maxAthletes: number | null) {
+  if (isAdmin(profile)) return true;
+  if (maxAthletes === null) return true;
+  return currentCount < maxAthletes;
+}
+
 /** Redirige si el rol actual no está en la lista permitida. Usar dentro de una página. */
 export function RequireRole({
   roles,

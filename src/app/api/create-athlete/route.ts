@@ -31,6 +31,22 @@ export async function POST(request: Request) {
 
   const admin = createAdminClient();
 
+  // Fase 6: cupo de atletas por plan (los tres entrenadores rechazaron el
+  // cobro por atleta directo -- esto lo asigna un admin a mano). Admin nunca
+  // está sujeto a cupo.
+  if (callerProfile.role === "entrenador") {
+    const [{ data: maxAthletes }, { data: athleteCount }] = await Promise.all([
+      admin.rpc("coach_max_athletes", { p_coach_id: user.id }),
+      admin.rpc("coach_athlete_count", { p_coach_id: user.id }),
+    ]);
+    if (maxAthletes !== null && (athleteCount ?? 0) >= maxAthletes) {
+      return NextResponse.json(
+        { error: `Llegaste al cupo de tu plan (${maxAthletes} atletas). Actualiza tu plan para agregar más.` },
+        { status: 403 },
+      );
+    }
+  }
+
   const { data: athlete, error: athleteError } = await admin
     .from("athletes")
     .insert({ name: athleteName })

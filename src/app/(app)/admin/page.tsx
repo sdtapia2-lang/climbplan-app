@@ -4,7 +4,18 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { RequireRole } from "@/components/ProfileProvider";
 import { Card, Input, Select, Button, Spinner, Badge } from "@/components/ui";
-import { ROLES, type Athlete, type CoachAthlete, type Profile, type Role } from "@/lib/types";
+import {
+  ROLES,
+  BILLING_PERIODS,
+  type Athlete,
+  type BillingPeriod,
+  type CoachAthlete,
+  type CoachSubscription,
+  type Profile,
+  type Role,
+  type SubscriptionPlan,
+} from "@/lib/types";
+import { Trash2 } from "lucide-react";
 
 export default function AdminPage() {
   return (
@@ -18,22 +29,32 @@ function AdminPanel() {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [coachAthletes, setCoachAthletes] = useState<CoachAthlete[]>([]);
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [subscriptions, setSubscriptions] = useState<CoachSubscription[]>([]);
   const [loading, setLoading] = useState(true);
   const [newAthleteName, setNewAthleteName] = useState("");
   const [newAssignCoach, setNewAssignCoach] = useState("");
   const [newAssignAthlete, setNewAssignAthlete] = useState("");
+  const [newPlanName, setNewPlanName] = useState("");
+  const [newPlanMax, setNewPlanMax] = useState("");
+  const [newPlanPrice, setNewPlanPrice] = useState("");
+  const [newPlanPeriod, setNewPlanPeriod] = useState<BillingPeriod>("mensual");
 
   async function load() {
     setLoading(true);
     const supabase = createClient();
-    const [{ data: p }, { data: a }, { data: ca }] = await Promise.all([
+    const [{ data: p }, { data: a }, { data: ca }, { data: sp }, { data: cs }] = await Promise.all([
       supabase.from("profiles").select("*").order("created_at"),
       supabase.from("athletes").select("*").order("name"),
       supabase.from("coach_athletes").select("*"),
+      supabase.from("subscription_plans").select("*").order("created_at"),
+      supabase.from("coach_subscriptions").select("*").eq("status", "active"),
     ]);
     setProfiles((p as Profile[]) ?? []);
     setAthletes((a as Athlete[]) ?? []);
     setCoachAthletes((ca as CoachAthlete[]) ?? []);
+    setPlans((sp as SubscriptionPlan[]) ?? []);
+    setSubscriptions((cs as CoachSubscription[]) ?? []);
     setLoading(false);
   }
 
@@ -68,6 +89,47 @@ function AdminPanel() {
   async function removeAssignment(id: string) {
     const supabase = createClient();
     await supabase.from("coach_athletes").delete().eq("id", id);
+    load();
+  }
+
+  // Planes y cupos (Fase 6): sin pasarela de pago real, el admin asigna a
+  // mano. Como mucho una suscripción activa por entrenador (coach_subscriptions_one_active_idx),
+  // así que cambiar de plan es actualizar plan_id en la misma fila.
+  async function createPlan() {
+    if (!newPlanName.trim()) return;
+    const supabase = createClient();
+    await supabase.from("subscription_plans").insert({
+      name: newPlanName.trim(),
+      max_athletes: newPlanMax ? Number(newPlanMax) : null,
+      price: newPlanPrice ? Number(newPlanPrice) : null,
+      billing_period: newPlanPeriod,
+    });
+    setNewPlanName("");
+    setNewPlanMax("");
+    setNewPlanPrice("");
+    load();
+  }
+
+  async function deletePlan(id: string) {
+    const supabase = createClient();
+    const { error } = await supabase.from("subscription_plans").delete().eq("id", id);
+    if (error) {
+      alert("No se pudo borrar el plan (probablemente algún entrenador todavía lo tiene asignado): " + error.message);
+      return;
+    }
+    load();
+  }
+
+  async function assignPlan(coachId: string, planId: string) {
+    const supabase = createClient();
+    const existing = subscriptions.find((s) => s.coach_id === coachId);
+    if (!planId) {
+      if (existing) await supabase.from("coach_subscriptions").update({ status: "canceled" }).eq("id", existing.id);
+    } else if (existing) {
+      await supabase.from("coach_subscriptions").update({ plan_id: planId }).eq("id", existing.id);
+    } else {
+      await supabase.from("coach_subscriptions").insert({ coach_id: coachId, plan_id: planId });
+    }
     load();
   }
 
@@ -185,6 +247,88 @@ function AdminPanel() {
             ))}
           </Select>
           <Button onClick={addAssignment}>Agregar asignación</Button>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-medium mb-4">Planes de suscripción</h2>
+        <p className="text-sm text-[var(--color-text)]/55 mb-4">
+          Sin pasarela de pago real: el cobro se maneja fuera de la app y estos planes solo fijan el cupo de atletas.
+        </p>
+        <div className="space-y-2 mb-4">
+          {plans.length === 0 && <p className="text-sm text-[var(--color-text)]/40">Sin planes todavía.</p>}
+          {plans.map((plan) => (
+            <div key={plan.id} className="flex items-center justify-between border border-[var(--color-divider)] rounded-lg p-3 text-sm">
+              <span>
+                <span className="font-medium">{plan.name}</span> &middot;{" "}
+                {plan.max_athletes !== null ? `${plan.max_athletes} atletas` : "sin tope de atletas"}
+                {plan.price !== null && (
+                  <>
+                    {" "}
+                    &middot; ${plan.price}
+                    {plan.billing_period ? `/${plan.billing_period}` : ""}
+                  </>
+                )}
+              </span>
+              <button onClick={() => deletePlan(plan.id)} className="text-[var(--color-text)]/30 hover:text-red-500 shrink-0" aria-label="Borrar plan">
+                <Trash2 size={14} strokeWidth={2.5} aria-hidden="true" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Input placeholder="Nombre del plan..." value={newPlanName} onChange={(e) => setNewPlanName(e.target.value)} className="w-auto" />
+          <Input
+            type="number"
+            min={1}
+            placeholder="Cupo (vacío = sin tope)"
+            value={newPlanMax}
+            onChange={(e) => setNewPlanMax(e.target.value)}
+            className="w-auto"
+          />
+          <Input
+            type="number"
+            min={0}
+            placeholder="Precio"
+            value={newPlanPrice}
+            onChange={(e) => setNewPlanPrice(e.target.value)}
+            className="w-auto"
+          />
+          <Select value={newPlanPeriod} onChange={(e) => setNewPlanPeriod(e.target.value as BillingPeriod)} className="w-auto">
+            {BILLING_PERIODS.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </Select>
+          <Button onClick={createPlan}>Crear plan</Button>
+        </div>
+      </Card>
+
+      <Card>
+        <h2 className="font-medium mb-4">Suscripciones de entrenadores</h2>
+        <div className="space-y-2">
+          {coaches.length === 0 && <p className="text-sm text-[var(--color-text)]/40">Sin entrenadores todavía.</p>}
+          {coaches.map((c) => {
+            const count = coachAthletes.filter((ca) => ca.coach_id === c.id).length;
+            const activePlanId = subscriptions.find((s) => s.coach_id === c.id)?.plan_id ?? "";
+            return (
+              <div key={c.id} className="flex flex-wrap items-center gap-3 border border-[var(--color-divider)] rounded-lg p-3 text-sm">
+                <span className="min-w-[160px]">
+                  {c.full_name || c.email} <span className="text-[var(--color-text)]/40">({count} atletas)</span>
+                </span>
+                <Select value={activePlanId} onChange={(e) => assignPlan(c.id, e.target.value)} className="w-auto">
+                  <option value="">Sin plan (sin tope)</option>
+                  {plans.map((plan) => (
+                    <option key={plan.id} value={plan.id}>
+                      {plan.name}
+                      {plan.max_athletes !== null ? ` (${plan.max_athletes})` : ""}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            );
+          })}
         </div>
       </Card>
     </div>
