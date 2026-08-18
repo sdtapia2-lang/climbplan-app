@@ -174,6 +174,7 @@ export default function TrainingPage() {
           dayLabel={`${sessionDay.day_of_week}${sessionDay.day_focus ? ` — ${sessionDay.day_focus}` : ""}`}
           blocks={sessionDay.blocks}
           athleteId={athleteId}
+          athlete={athlete}
           onClose={() => setSessionDay(null)}
           onFinished={() => {
             setSessionDay(null);
@@ -181,7 +182,7 @@ export default function TrainingPage() {
           }}
         />
       )}
-      <InjuryBanner athlete={athlete} />
+      <InjuryBanner athlete={athlete} athleteId={athleteId ?? undefined} weekId={week?.id ?? null} onAdjusted={load} />
       {banner}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-2xl font-semibold">

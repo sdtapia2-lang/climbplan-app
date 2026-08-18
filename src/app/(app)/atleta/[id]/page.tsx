@@ -151,9 +151,16 @@ export default function AthleteProfilePage() {
             <Input value={athlete.sport_outdoor_max ?? ""} onChange={(e) => update("sport_outdoor_max", e.target.value)} />
           </Field>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 grid grid-cols-2 gap-4">
           <Field label="Grado consolidado">
             <Input value={athlete.consolidated_grade ?? ""} onChange={(e) => update("consolidated_grade", e.target.value)} />
+          </Field>
+          <Field label="Estilo de escalada">
+            <Input
+              placeholder="ej: regletero, dinámico, técnico..."
+              value={athlete.climbing_style ?? ""}
+              onChange={(e) => update("climbing_style", e.target.value)}
+            />
           </Field>
         </div>
       </Card>
@@ -173,6 +180,21 @@ export default function AthleteProfilePage() {
           <Field label="Formato de periodización">
             <Input value={athlete.periodization_format ?? ""} onChange={(e) => update("periodization_format", e.target.value)} />
           </Field>
+          <Field label="Horizonte objetivo">
+            <Input
+              placeholder="ej: competencia en 3 meses, viaje a Bishop en octubre..."
+              value={athlete.target_horizon ?? ""}
+              onChange={(e) => update("target_horizon", e.target.value)}
+            />
+          </Field>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Fortalezas">
+              <Textarea rows={2} value={athlete.strengths ?? ""} onChange={(e) => update("strengths", e.target.value)} />
+            </Field>
+            <Field label="Debilidades">
+              <Textarea rows={2} value={athlete.weaknesses ?? ""} onChange={(e) => update("weaknesses", e.target.value)} />
+            </Field>
+          </div>
         </div>
       </Card>
 
@@ -291,8 +313,26 @@ export default function AthleteProfilePage() {
                 <Textarea rows={2} value={athlete.injury_restrictions ?? ""} onChange={(e) => update("injury_restrictions", e.target.value)} />
               </Field>
             </div>
+            <Field label="Vendaje / strapping">
+              <Input value={athlete.injury_strapping ?? ""} onChange={(e) => update("injury_strapping", e.target.value)} />
+            </Field>
+            <div className="col-span-2">
+              <Field label="Notas del profesional de salud">
+                <Textarea
+                  rows={2}
+                  value={athlete.injury_professional_notes ?? ""}
+                  onChange={(e) => update("injury_professional_notes", e.target.value)}
+                />
+              </Field>
+            </div>
           </div>
         )}
+
+        <div className="mt-6">
+          <Field label="Condiciones médicas relevantes" tooltip="Cualquier condición médica que el entrenador deba tener en cuenta al planificar, más allá de una lesión activa.">
+            <Textarea rows={2} value={athlete.medical_conditions ?? ""} onChange={(e) => update("medical_conditions", e.target.value)} />
+          </Field>
+        </div>
 
         <div className="mt-6">
           <p className="text-sm font-medium mb-3">Historial de lesiones</p>

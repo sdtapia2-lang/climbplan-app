@@ -326,6 +326,7 @@ function AthleteDashboard() {
           dayLabel={`${todayDay.day_of_week}${todayDay.day_focus ? ` — ${todayDay.day_focus}` : ""}`}
           blocks={todayDay.blocks}
           athleteId={athleteId}
+          athlete={athlete}
           onClose={() => setSessionOpen(false)}
           onFinished={() => {
             setSessionOpen(false);

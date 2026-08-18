@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button, Input, Textarea, CategoryTag } from "./ui";
-import { PAIN_ZONES, type Block, type PainZoneKey, type SetLog } from "@/lib/types";
+import { Button, Input, Textarea, CategoryTag, Modal, Spinner } from "./ui";
+import { PAIN_ZONES, type Athlete, type Block, type Evaluation, type Exercise, type PainZoneKey, type SetLog } from "@/lib/types";
 import { parseRestSeconds, parseSetsCount, formatClock } from "@/lib/parseRest";
 import { estimateBlockMinutes, estimateSessionMinutes } from "@/lib/estimateTime";
 import { computeReadiness, type ReadinessInput } from "@/lib/readiness";
-import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert } from "lucide-react";
+import { suggestAlternatives, type AlternativeSuggestion } from "@/lib/planner/substitute";
+import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert, Shuffle } from "lucide-react";
 
 /** RPE real, dolor con zona y comentario de un bloque, capturados durante la sesión guiada. */
 type BlockFeedback = { rpe: string; pain: number; painZone: PainZoneKey | null };
@@ -24,6 +25,8 @@ type Props = {
   dayLabel: string;
   blocks: Block[];
   athleteId: string;
+  /** Si tiene lesión activa, sus restricciones se muestran durante toda la sesión (Fase 3.2). */
+  athlete?: Athlete | null;
   onClose: () => void;
   onFinished: () => void;
 };
@@ -50,8 +53,13 @@ function initSetLogs(block: Block): SetLog[] {
   return Array.from({ length: n }, () => ({ reps: defaultReps(block), load: block.load ?? "", done: false }));
 }
 
-export function SessionPlayer({ dayLabel, blocks, athleteId, onClose, onFinished }: Props) {
-  const exercises = useMemo(() => blocks.filter((b) => b.exercise_name_freetext), [blocks]);
+export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, onFinished }: Props) {
+  // Estado local, inicializado una sola vez desde `blocks`: igual que `logs`/
+  // `feedback` de abajo, no se resincroniza con la prop durante la sesión.
+  // Necesario (no un useMemo) porque intercambiar un ejercicio por una
+  // alternativa (Fase 3.1) debe reflejarse en la pantalla sin cerrar y
+  // reabrir el reproductor.
+  const [exercises, setExercises] = useState<Block[]>(() => blocks.filter((b) => b.exercise_name_freetext));
 
   // Se pide una sola vez, antes del primer ejercicio. Empieza cerrado (true = ya
   // se resolvió) si no hay ejercicios para no bloquear una sesión vacía.
@@ -126,6 +134,77 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, onClose, onFinished
 
   function updateFeedback(blockId: string, patch: Partial<BlockFeedback>) {
     setFeedback((all) => ({ ...all, [blockId]: { ...all[blockId], ...patch } }));
+  }
+
+  // Alternativas ante dolor (Fase 3.1, pedido #4 de Suri) -- catálogo, ficha
+  // del atleta y última evaluación se buscan una sola vez, recién cuando se
+  // pide la primera vez (la mayoría de las sesiones no tienen dolor).
+  const [refData, setRefData] = useState<{ exercises: Exercise[]; athlete: Athlete | null; evaluation: Evaluation | null } | null>(null);
+  const [altBlockId, setAltBlockId] = useState<string | null>(null);
+  const [altLoading, setAltLoading] = useState(false);
+  const [altSuggestions, setAltSuggestions] = useState<AlternativeSuggestion[]>([]);
+  const [swapping, setSwapping] = useState(false);
+
+  async function openAlternatives(block: Block) {
+    setAltBlockId(block.id);
+    setAltLoading(true);
+    setAltSuggestions([]);
+    let data = refData;
+    if (!data) {
+      const supabase = createClient();
+      const [{ data: exerciseRows }, { data: athleteRow }, { data: evalRows }] = await Promise.all([
+        supabase.from("exercises").select("*"),
+        supabase.from("athletes").select("*").eq("id", athleteId).single(),
+        supabase.from("evaluations").select("*").eq("athlete_id", athleteId).order("eval_date", { ascending: false }).limit(1),
+      ]);
+      data = {
+        exercises: (exerciseRows as Exercise[]) ?? [],
+        athlete: (athleteRow as Athlete) ?? null,
+        evaluation: (evalRows?.[0] as Evaluation) ?? null,
+      };
+      setRefData(data);
+    }
+    const fb = feedback[block.id];
+    const zoneKey = fb?.painZone ?? block.pain_zone;
+    const level = fb?.pain ?? block.pain_during ?? 0;
+    if (data.athlete && zoneKey) {
+      setAltSuggestions(
+        suggestAlternatives({
+          block,
+          painZoneKey: zoneKey,
+          painLevel: level,
+          exercises: data.exercises,
+          athlete: data.athlete,
+          evaluation: data.evaluation,
+        }),
+      );
+    }
+    setAltLoading(false);
+  }
+
+  async function applyAlternative(suggestion: AlternativeSuggestion) {
+    if (!altBlockId) return;
+    setSwapping(true);
+    const supabase = createClient();
+    const { error } = await supabase.rpc("swap_block_exercise", {
+      p_block_id: altBlockId,
+      p_exercise_id: suggestion.exercise.id,
+      p_exercise_name: suggestion.exercise.name,
+      p_note: suggestion.note,
+    });
+    setSwapping(false);
+    if (error) {
+      alert("No se pudo aplicar el cambio: " + error.message);
+      return;
+    }
+    setExercises((all) =>
+      all.map((b) =>
+        b.id === altBlockId
+          ? { ...b, exercise_id: suggestion.exercise.id, exercise_name_freetext: suggestion.exercise.name, kinesio_notes: suggestion.note, manually_edited: true }
+          : b,
+      ),
+    );
+    setAltBlockId(null);
   }
 
   function updateReadiness(patch: Partial<ReadinessInput>) {
@@ -244,6 +323,16 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, onClose, onFinished
         <div className="h-full bg-[var(--color-accent-500)] transition-[width]" style={{ width: `${progressPct}%` }} />
       </div>
 
+      {athlete?.has_active_injury && (athlete.injury_restrictions || athlete.injury_location) && (
+        <div className="flex items-start gap-2 px-4 py-2 bg-red-50 text-red-800 text-xs border-b border-red-200">
+          <TriangleAlert size={13} strokeWidth={2.5} className="mt-0.5 shrink-0" aria-hidden="true" />
+          <span>
+            <span className="font-medium">Lesión activa{athlete.injury_location ? ` (${athlete.injury_location})` : ""}.</span>{" "}
+            {athlete.injury_restrictions ?? "Respetá el dolor durante el ejercicio."}
+          </span>
+        </div>
+      )}
+
       <div className="flex-1 overflow-y-auto">
         {readinessOpen ? (
           <ReadinessScreen readiness={readiness} onChange={updateReadiness} onSubmit={() => closeReadiness(true)} onSkip={() => closeReadiness(false)} />
@@ -283,9 +372,19 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, onClose, onFinished
             onCompleteSet={completeSet}
             onAddSet={() => addSet(current.id)}
             onDeleteSet={(i) => deleteSet(current.id, i)}
+            onShowAlternatives={() => openAlternatives(current)}
           />
         ) : null}
       </div>
+
+      <AlternativesModal
+        open={!!altBlockId}
+        loading={altLoading}
+        suggestions={altSuggestions}
+        swapping={swapping}
+        onApply={applyAlternative}
+        onClose={() => setAltBlockId(null)}
+      />
 
       {!readinessOpen && !finished && !resting && current && (
         <div className="px-4 py-3 border-t border-[var(--color-divider)] flex items-center gap-2">
@@ -398,6 +497,7 @@ function ExerciseScreen({
   onCompleteSet,
   onAddSet,
   onDeleteSet,
+  onShowAlternatives,
 }: {
   block: Block;
   index: number;
@@ -409,6 +509,7 @@ function ExerciseScreen({
   onCompleteSet: (setIdx: number) => void;
   onAddSet: () => void;
   onDeleteSet: (setIdx: number) => void;
+  onShowAlternatives: () => void;
 }) {
   const meta = [block.reps_or_time, block.load, block.rpe_target && `RPE ${block.rpe_target}`, `~${estimateBlockMinutes(block)} min`]
     .filter(Boolean)
@@ -506,8 +607,57 @@ function ExerciseScreen({
 
       <div className="mt-5 pt-4 border-t border-[var(--color-divider)]">
         <ExerciseFeedback feedback={feedback} onChange={onFeedbackChange} />
+        {feedback.pain >= 3 && feedback.painZone && (
+          <button
+            onClick={onShowAlternatives}
+            className="mt-3 flex items-center gap-1.5 text-sm text-[var(--color-accent-700)] hover:underline"
+          >
+            <Shuffle size={14} strokeWidth={2.5} aria-hidden="true" /> Ver alternativas sin esa molestia
+          </button>
+        )}
       </div>
     </div>
+  );
+}
+
+/** Modal de sustitución de ejercicio (Fase 3.1): tres alternativas rankeadas, un toque intercambia. */
+function AlternativesModal({
+  open,
+  loading,
+  suggestions,
+  swapping,
+  onApply,
+  onClose,
+}: {
+  open: boolean;
+  loading: boolean;
+  suggestions: AlternativeSuggestion[];
+  swapping: boolean;
+  onApply: (s: AlternativeSuggestion) => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal open={open} onClose={onClose} title="Alternativas sin esa molestia">
+      {loading ? (
+        <Spinner />
+      ) : suggestions.length === 0 ? (
+        <p className="text-sm text-[var(--color-text)]/50">
+          No encontramos una alternativa segura en el catálogo para esta zona. Avisale a tu entrenador.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {suggestions.map((s) => (
+            <div key={s.exercise.id} className="border border-[var(--color-divider)] rounded-lg p-3">
+              <p className="font-medium mb-1">{s.exercise.name}</p>
+              <p className="text-xs text-[var(--color-text)]/55 mb-3">{s.note}</p>
+              <Button variant="secondary" onClick={() => onApply(s)} disabled={swapping} className="w-full justify-center">
+                {swapping ? "Aplicando..." : "Usar esta alternativa"}
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </Modal>
   );
 }
 
