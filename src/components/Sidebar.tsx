@@ -100,9 +100,9 @@ export function Sidebar() {
         { href: "/evaluacion", label: "Evaluación", icon: ClipboardCheck },
         { href: "/checkin", label: "Check-in", icon: Heart },
         { href: "/formularios", label: "Formularios", icon: FileText },
-        ...(isCoach(profile) || isAdmin(profile)
-          ? [{ href: "/analitica", label: "Analítica", icon: BarChart3 }]
-          : []),
+        // Fase 2.1: /analitica dejó de ser solo-entrenador -- el atleta ve sus
+        // propios gráficos, RLS lo escopea del lado del servidor.
+        { href: "/analitica", label: "Analítica", icon: BarChart3 },
       ],
     },
     {

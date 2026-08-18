@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
 import { Card, Field, Input, Select, Textarea, Button, Modal, Spinner, EmptyState } from "@/components/ui";
+import { Sparkline } from "@/components/charts/Sparkline";
 import {
   PAIN_ZONES,
   MILESTONE_CATEGORIES,
@@ -279,7 +280,6 @@ export default function CheckInPage() {
           {metrics.map((m) => {
             const logs = (metricLogs[m.id] ?? []).slice(-8);
             const last = logs[logs.length - 1];
-            const max = Math.max(...logs.map((l) => l.value), 1);
             return (
               <Card key={m.id}>
                 <div className="flex items-center justify-between mb-2">
@@ -307,19 +307,7 @@ export default function CheckInPage() {
                     <p className="text-2xl font-[family-name:var(--font-heading)] text-[var(--color-accent-700)] mb-2">
                       {last.value} <span className="text-sm text-[var(--color-text)]/50">{m.unit}</span>
                     </p>
-                    {logs.length > 1 && (
-                      <div className="flex items-end gap-1.5 h-16">
-                        {logs.map((l) => (
-                          <div key={l.id} className="flex-1 flex flex-col items-center justify-end h-full">
-                            <div
-                              className="w-full rounded-t-sm bg-[var(--color-accent-500)]"
-                              style={{ height: `${Math.max((l.value / max) * 100, 4)}%` }}
-                              title={`${l.log_date}: ${l.value}`}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <Sparkline points={logs.map((l) => ({ key: l.id, value: l.value, title: `${l.log_date}: ${l.value}` }))} />
                   </>
                 ) : (
                   <p className="text-sm text-[var(--color-text)]/50">Sin valores todavía</p>

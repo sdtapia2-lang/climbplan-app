@@ -6,9 +6,12 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isAdmin, isCoach, canManageOwnMesocycle } from "@/components/ProfileProvider";
 import { Card, Button, Spinner, Badge } from "@/components/ui";
-import type { CoachAlert, Mesocycle, Week } from "@/lib/types";
+import { SessionPlayer } from "@/components/SessionPlayer";
+import { BarChart, type BarPoint } from "@/components/charts/BarChart";
+import type { CoachAlert, Mesocycle, Week, Day, Block } from "@/lib/types";
+import { DAYS_OF_WEEK } from "@/lib/types";
 import { computeAdherence } from "@/lib/adherence";
-import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge, TriangleAlert, X } from "lucide-react";
+import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge, TriangleAlert, X, Play, Heart } from "lucide-react";
 
 const iconClass = "inline-block align-[-3px] mr-1";
 
@@ -217,6 +220,8 @@ function computeCurrentWeekNumber(
   return weeks[idx]?.week_number ?? weeks[0].week_number;
 }
 
+type DayWithBlocks = Day & { blocks: Block[] };
+
 function AthleteDashboard() {
   const { athlete, athleteId, loading: athleteLoading } = useAthlete();
   const { profile } = useProfile();
@@ -225,54 +230,110 @@ function AthleteDashboard() {
   const [mesocycle, setMesocycle] = useState<Mesocycle | null>(null);
   const [weeks, setWeeks] = useState<Week[]>([]);
   const [evalCount, setEvalCount] = useState(0);
+  const [todayDay, setTodayDay] = useState<DayWithBlocks | null>(null);
+  const [weekPoints, setWeekPoints] = useState<BarPoint[]>([]);
+  const [checkinDoneThisWeek, setCheckinDoneThisWeek] = useState(false);
+  const [sessionOpen, setSessionOpen] = useState(false);
 
-  useEffect(() => {
-    if (!athleteId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- no hay atleta seleccionado aun
-      setLoading(false);
-      return;
-    }
-    (async () => {
-      setLoading(true);
-      const supabase = createClient();
+  async function load() {
+    if (!athleteId) return;
+    setLoading(true);
+    const supabase = createClient();
 
-      const { data: mesos } = await supabase
-        .from("mesocycles")
+    const { data: mesos } = await supabase
+      .from("mesocycles")
+      .select("*")
+      .eq("athlete_id", athleteId)
+      .neq("status", "Completado")
+      .order("created_at", { ascending: false })
+      .limit(1);
+    const meso = (mesos?.[0] as Mesocycle) ?? null;
+    setMesocycle(meso);
+
+    if (meso) {
+      const { data: weeksData } = await supabase
+        .from("weeks")
         .select("*")
-        .eq("athlete_id", athleteId)
-        .neq("status", "Completado")
-        .order("created_at", { ascending: false })
-        .limit(1);
-      const meso = (mesos?.[0] as Mesocycle) ?? null;
-      setMesocycle(meso);
+        .eq("mesocycle_id", meso.id)
+        .order("week_number");
+      const weeksList = (weeksData as Week[]) ?? [];
+      setWeeks(weeksList);
 
-      if (meso) {
-        const { data: weeksData } = await supabase
-          .from("weeks")
-          .select("*")
-          .eq("mesocycle_id", meso.id)
-          .order("week_number");
-        setWeeks((weeksData as Week[]) ?? []);
+      const currentWeek = computeCurrentWeek(meso, weeksList);
+      if (currentWeek) {
+        const { data: dayRows } = await supabase
+          .from("days")
+          .select("*, blocks(*)")
+          .eq("week_id", currentWeek.id)
+          .order("position");
+        const daysWithBlocks = (dayRows as DayWithBlocks[]) ?? [];
+        const todayName = DAYS_OF_WEEK[(new Date().getDay() + 6) % 7];
+        setTodayDay(daysWithBlocks.find((d) => d.day_of_week === todayName) ?? null);
+
+        const { count: checkinCount } = await supabase
+          .from("checkins")
+          .select("id", { count: "exact", head: true })
+          .eq("athlete_id", athleteId)
+          .eq("week_id", currentWeek.id);
+        setCheckinDoneThisWeek((checkinCount ?? 0) > 0);
       } else {
-        setWeeks([]);
+        setTodayDay(null);
+        setCheckinDoneThisWeek(false);
       }
 
-      const { count } = await supabase
-        .from("evaluations")
-        .select("id", { count: "exact", head: true })
-        .eq("athlete_id", athleteId);
-      setEvalCount(count ?? 0);
+      const { data: adherenceData } = await supabase
+        .from("weeks")
+        .select("week_number, days(is_rest, blocks(completed))")
+        .eq("mesocycle_id", meso.id)
+        .lte("week_number", currentWeek?.week_number ?? 0)
+        .order("week_number");
+      const points: BarPoint[] = (adherenceData ?? []).map((w) => {
+        const { pct } = computeAdherence([{ start_date: null, weeks: [w] }], { scope: "lifetime" });
+        return { key: String(w.week_number), label: `S${w.week_number}`, value: pct ?? 0, displayValue: pct !== null ? `${pct}%` : "—" };
+      });
+      setWeekPoints(points);
+    } else {
+      setWeeks([]);
+      setTodayDay(null);
+      setCheckinDoneThisWeek(false);
+      setWeekPoints([]);
+    }
 
-      setLoading(false);
-    })();
+    const { count } = await supabase
+      .from("evaluations")
+      .select("id", { count: "exact", head: true })
+      .eq("athlete_id", athleteId);
+    setEvalCount(count ?? 0);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch al cambiar de atleta
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [athleteId]);
 
   if (athleteLoading || loading) return <Spinner />;
 
   const currentWeek = computeCurrentWeek(mesocycle, weeks);
+  const hasTodaySession = !!todayDay && !todayDay.is_rest && todayDay.blocks.length > 0;
 
   return (
     <div>
+      {sessionOpen && todayDay && athleteId && (
+        <SessionPlayer
+          dayLabel={`${todayDay.day_of_week}${todayDay.day_focus ? ` — ${todayDay.day_focus}` : ""}`}
+          blocks={todayDay.blocks}
+          athleteId={athleteId}
+          onClose={() => setSessionOpen(false)}
+          onFinished={() => {
+            setSessionOpen(false);
+            load();
+          }}
+        />
+      )}
+
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-semibold">{athlete?.name ?? "Sin atleta"}</h1>
         {athlete && (
@@ -282,7 +343,28 @@ function AthleteDashboard() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {hasTodaySession && (
+        <Card className="mb-4 border-[var(--color-accent-400)]">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="text-sm text-[var(--color-text)]/55 mb-1">
+                <Play size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
+                Sesión de hoy
+              </p>
+              <p className="font-medium">
+                {todayDay!.day_of_week}
+                {todayDay!.day_focus ? ` — ${todayDay!.day_focus}` : ""}
+              </p>
+              <p className="text-xs text-[var(--color-text)]/55">{todayDay!.blocks.length} bloques</p>
+            </div>
+            <Button onClick={() => setSessionOpen(true)}>
+              <Play size={14} strokeWidth={2.75} aria-hidden="true" /> Empezar sesión
+            </Button>
+          </div>
+        </Card>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <Card>
           <p className="text-sm text-[var(--color-text)]/55 mb-2">
             <Calendar size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
@@ -329,9 +411,21 @@ function AthleteDashboard() {
               <div className="flex gap-2 mb-3">
                 {currentWeek.load_type && <Badge tone="orange">{currentWeek.load_type}</Badge>}
               </div>
+              <p className="flex items-center gap-1.5 text-xs text-[var(--color-text)]/55 mb-3">
+                <Heart size={13} strokeWidth={2.75} className={checkinDoneThisWeek ? "text-[var(--color-accent-700)]" : ""} aria-hidden="true" />
+                Check-in: {checkinDoneThisWeek ? "hecho esta semana" : "pendiente esta semana"}
+              </p>
               <Link href="/entrenamiento" className="text-sm text-[var(--color-accent-700)] hover:underline">
                 Ir a entrenamiento &rarr;
               </Link>
+              {!checkinDoneThisWeek && (
+                <>
+                  {" · "}
+                  <Link href="/checkin" className="text-sm text-[var(--color-accent-700)] hover:underline">
+                    Hacer check-in &rarr;
+                  </Link>
+                </>
+              )}
             </>
           ) : (
             <p className="text-[var(--color-text)]/40">Sin semanas cargadas</p>
@@ -350,6 +444,12 @@ function AthleteDashboard() {
           </Link>
         </Card>
       </div>
+
+      {weekPoints.length > 0 && (
+        <Card>
+          <BarChart title="Adherencia por semana" points={weekPoints} maxValue={100} footerNote="Bloques completados sobre el total planificado, por semana." />
+        </Card>
+      )}
     </div>
   );
 }
