@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
@@ -51,6 +51,21 @@ function groupBlocksForRender(blocks: BlockDraft[]): RenderItem[] {
     i = j;
   }
   return items;
+}
+
+/**
+ * True si el atleta ya registro algo en este bloque. Esas columnas no viven en el
+ * borrador del editor, asi que si el bloque se borra el dato no se puede recuperar.
+ */
+function hasExecutionData(b: Record<string, unknown>): boolean {
+  if (b.completed) return true;
+  if (Array.isArray(b.set_logs) && b.set_logs.length > 0) return true;
+  if (b.pain_during !== null && b.pain_during !== undefined) return true;
+  for (const k of ["actual_sets", "actual_reps_or_time", "actual_load", "actual_rpe", "comment"]) {
+    const v = b[k];
+    if (v !== null && v !== undefined && String(v).trim() !== "") return true;
+  }
+  return false;
 }
 
 type DayDraft = {
@@ -143,6 +158,19 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
   const [bulkModalOpen, setBulkModalOpen] = useState(false);
   const [bulkRoutineId, setBulkRoutineId] = useState("");
   const [bulkDayIdxs, setBulkDayIdxs] = useState<Set<number>>(new Set());
+  const [confirmDataLoss, setConfirmDataLoss] = useState<string[] | null>(null);
+
+  // IDs que ya existen en la base al cargar. Al guardar solo borramos los que
+  // desaparecieron del borrador: el resto se actualiza con upsert, para no tocar
+  // las columnas de ejecucion del atleta (actual_*, set_logs, pain_during, etc.).
+  const loadedIdsRef = useRef<{ weeks: Set<string>; days: Set<string>; blocks: Set<string> }>({
+    weeks: new Set(),
+    days: new Set(),
+    blocks: new Set(),
+  });
+  // Bloques con ejecucion ya registrada, por id -> nombre visible. Si el editor
+  // los elimina, ese dato se pierde para siempre: hay que avisar antes.
+  const executedBlocksRef = useRef<Map<string, string>>(new Map());
 
   function toggleBlockExpanded(blockId: string) {
     setExpandedBlocks((prev) => {
@@ -196,11 +224,22 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         .order("week_number");
       if (weekRows && weekRows.length > 0) {
         const loadedWeeks: WeekDraft[] = [];
+        const ids = { weeks: new Set<string>(), days: new Set<string>(), blocks: new Set<string>() };
+        const executed = new Map<string, string>();
         for (const w of weekRows) {
+          ids.weeks.add(w.id);
           const { data: dayRows } = await supabase.from("days").select("*").eq("week_id", w.id).order("position");
           const days: DayDraft[] = [];
           for (const d of dayRows ?? []) {
+            ids.days.add(d.id);
             const { data: blockRows } = await supabase.from("blocks").select("*").eq("day_id", d.id).order("position");
+            for (const b of blockRows ?? []) {
+              ids.blocks.add(b.id);
+              if (hasExecutionData(b)) {
+                const label = b.exercise_name_freetext || "Ejercicio sin nombre";
+                executed.set(b.id, `Semana ${w.week_number} · ${d.day_of_week} · ${label}`);
+              }
+            }
             days.push({
               id: d.id,
               day_of_week: d.day_of_week,
@@ -231,6 +270,8 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
             days,
           });
         }
+        loadedIdsRef.current = ids;
+        executedBlocksRef.current = executed;
         setWeeks(loadedWeeks);
       }
       setLoading(false);
@@ -398,7 +439,13 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     return map;
   }, [exercises]);
 
-  async function saveAll() {
+  /**
+   * Guarda con upsert por id en vez de borrar y reinsertar. Las columnas de
+   * ejecucion del atleta (actual_*, set_logs, completed, pain_during, comment,
+   * manually_edited) no van en el payload, asi que el upsert las deja intactas.
+   * Solo se borran las filas que el editor efectivamente elimino.
+   */
+  async function persist() {
     if (!athleteId) return;
     setSaving(true);
     const supabase = createClient();
@@ -418,7 +465,6 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
 
     if (id) {
       await supabase.from("mesocycles").update(mesoPayload).eq("id", id);
-      await supabase.from("weeks").delete().eq("mesocycle_id", id);
     } else {
       const { data, error } = await supabase.from("mesocycles").insert(mesoPayload).select("id").single();
       if (error || !data) {
@@ -437,7 +483,12 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
       focus: w.focus || null,
       distribution: w.distribution || null,
     }));
-    await supabase.from("weeks").insert(weekRows);
+    const { error: weekErr } = await supabase.from("weeks").upsert(weekRows, { onConflict: "id" });
+    if (weekErr) {
+      setSaving(false);
+      alert("No se pudieron guardar las semanas: " + weekErr.message);
+      return;
+    }
 
     const dayRows = weeks.flatMap((w) =>
       w.days.map((d, pos) => ({
@@ -449,7 +500,14 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         position: pos,
       })),
     );
-    if (dayRows.length) await supabase.from("days").insert(dayRows);
+    if (dayRows.length) {
+      const { error } = await supabase.from("days").upsert(dayRows, { onConflict: "id" });
+      if (error) {
+        setSaving(false);
+        alert("No se pudieron guardar los dias: " + error.message);
+        return;
+      }
+    }
 
     const blockRows = weeks.flatMap((w) =>
       w.days.flatMap((d) =>
@@ -471,11 +529,47 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         })),
       ),
     );
-    if (blockRows.length) await supabase.from("blocks").insert(blockRows);
+    if (blockRows.length) {
+      const { error } = await supabase.from("blocks").upsert(blockRows, { onConflict: "id" });
+      if (error) {
+        setSaving(false);
+        alert("No se pudieron guardar los bloques: " + error.message);
+        return;
+      }
+    }
+
+    // Borrar solo lo que el editor elimino, hijos primero.
+    const keptWeeks = new Set(weeks.map((w) => w.id));
+    const keptDays = new Set(dayRows.map((d) => d.id));
+    const keptBlocks = new Set(blockRows.map((b) => b.id));
+    const orphanBlocks = [...loadedIdsRef.current.blocks].filter((x) => !keptBlocks.has(x));
+    const orphanDays = [...loadedIdsRef.current.days].filter((x) => !keptDays.has(x));
+    const orphanWeeks = [...loadedIdsRef.current.weeks].filter((x) => !keptWeeks.has(x));
+    if (orphanBlocks.length) await supabase.from("blocks").delete().in("id", orphanBlocks);
+    if (orphanDays.length) await supabase.from("days").delete().in("id", orphanDays);
+    if (orphanWeeks.length) await supabase.from("weeks").delete().in("id", orphanWeeks);
+
+    // Lo guardado pasa a ser la nueva linea base por si se guarda otra vez sin recargar.
+    loadedIdsRef.current = { weeks: keptWeeks, days: keptDays, blocks: keptBlocks };
+    for (const bid of orphanBlocks) executedBlocksRef.current.delete(bid);
 
     setSaving(false);
     router.push(`/mesociclo/${id}`);
     router.refresh();
+  }
+
+  async function saveAll() {
+    if (!athleteId) return;
+    // Si el editor quito bloques que el atleta ya ejecuto, avisar antes de perder ese registro.
+    const keptBlocks = new Set(weeks.flatMap((w) => w.days.flatMap((d) => d.blocks.map((b) => b.id))));
+    const losing = [...executedBlocksRef.current.entries()]
+      .filter(([bid]) => !keptBlocks.has(bid))
+      .map(([, label]) => label);
+    if (losing.length > 0) {
+      setConfirmDataLoss(losing);
+      return;
+    }
+    await persist();
   }
 
   async function deleteMesocycle() {
@@ -898,6 +992,38 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           </Button>
           <Button variant="danger" onClick={deleteMesocycle} disabled={saving}>
             {saving ? "Eliminando..." : "Eliminar"}
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        open={confirmDataLoss !== null}
+        onClose={() => setConfirmDataLoss(null)}
+        title="Se va a perder registro del atleta"
+      >
+        <p className="text-sm text-[var(--color-text)]/70 mb-3">
+          {confirmDataLoss?.length === 1
+            ? "Quitaste un ejercicio que el atleta ya ejecutó. Si guardas, se pierde lo que registró (series, cargas, dolor):"
+            : `Quitaste ${confirmDataLoss?.length} ejercicios que el atleta ya ejecutó. Si guardas, se pierde lo que registró (series, cargas, dolor):`}
+        </p>
+        <ul className="text-sm text-[var(--color-text)]/70 mb-4 max-h-48 overflow-y-auto list-disc pl-5 space-y-1">
+          {confirmDataLoss?.map((label) => (
+            <li key={label}>{label}</li>
+          ))}
+        </ul>
+        <div className="flex items-center justify-end gap-2">
+          <Button variant="secondary" onClick={() => setConfirmDataLoss(null)} disabled={saving}>
+            Cancelar
+          </Button>
+          <Button
+            variant="danger"
+            onClick={async () => {
+              setConfirmDataLoss(null);
+              await persist();
+            }}
+            disabled={saving}
+          >
+            {saving ? "Guardando..." : "Guardar igual"}
           </Button>
         </div>
       </Modal>

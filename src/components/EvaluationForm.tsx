@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Field, Input, Textarea, Button, Segmented } from "./ui";
-import type { Evaluation } from "@/lib/types";
+import { PAIN_ZONES, type Evaluation } from "@/lib/types";
 import { TriangleAlert } from "lucide-react";
 
 const TABS = ["General", "Salud", "Movilidad", "Fuerza", "Dedos/Tindeq", "Resistencia", "Nivel"] as const;
@@ -71,15 +71,6 @@ const HEALTH_QUESTIONS: [string, string][] = [
   ["bp_medication", "Medicación para presión arterial o corazón"],
   ["joint_issue", "Problema óseo o articular que empeore con ejercicio"],
   ["other_medical", "Otra razón médica relevante"],
-];
-
-const PAIN_ZONES_LIST: [string, string][] = [
-  ["fingers", "Dedos / poleas"],
-  ["wrist", "Muñeca"],
-  ["elbow", "Codo"],
-  ["shoulder", "Hombro"],
-  ["low_back", "Espalda baja"],
-  ["knee", "Rodilla"],
 ];
 
 function numOrNull(v: string) {
@@ -239,7 +230,7 @@ export function EvaluationForm({
           ))}
           <p className="text-sm font-medium mt-4">Dolor actual (0-10) por zona</p>
           <div className="grid grid-cols-2 gap-3">
-            {PAIN_ZONES_LIST.map(([key, label]) => (
+            {PAIN_ZONES.map(([key, label]) => (
               <Field key={key} label={label}>
                 <Input
                   type="number"

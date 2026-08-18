@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { RequireRole } from "@/components/ProfileProvider";
 import { Card, Spinner } from "@/components/ui";
+import { computeAdherence } from "@/lib/adherence";
 
 type Stats = {
   adherencePct: number;
@@ -101,8 +102,16 @@ function AnalyticsPanel() {
         }
       }
 
+      // Misma definición que el dashboard del entrenador (src/lib/adherence.ts):
+      // solo cuenta semanas ya vencidas, para que un mesociclo en curso no arrastre
+      // el número hacia abajo por sus semanas futuras. Sin esto, este número podía
+      // no coincidir con el que ve el entrenador para el mismo atleta.
+      const { pct: adherencePct } = computeAdherence(
+        (data ?? []).map((meso) => ({ start_date: meso.start_date, weeks: meso.weeks ?? [] })),
+        { scope: "elapsed" },
+      );
       setStats({
-        adherencePct: total > 0 ? Math.round((completed / total) * 100) : 0,
+        adherencePct: adherencePct ?? 0,
         avgRpe: rpeCount > 0 ? Math.round((rpeSum / rpeCount) * 10) / 10 : null,
         completedBlocks: completed,
         totalBlocks: total,
@@ -201,7 +210,8 @@ function AnalyticsPanel() {
       )}
 
       <p className="text-xs text-[var(--color-text)]/40 mt-4">
-        Calculado sobre {stats.totalBlocks} bloques de entrenamiento cargados en todos los mesociclos del atleta.
+        Adherencia calculada sobre las semanas ya vencidas de todos los mesociclos del atleta ({stats.totalBlocks}{" "}
+        bloques cargados en total). No incluye lo autorreportado en el check-in semanal.
       </p>
     </div>
   );

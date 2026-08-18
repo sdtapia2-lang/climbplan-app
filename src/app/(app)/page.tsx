@@ -7,6 +7,7 @@ import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isAdmin, isCoach, canManageOwnMesocycle } from "@/components/ProfileProvider";
 import { Card, Button, Spinner, Badge } from "@/components/ui";
 import type { Mesocycle, Week } from "@/lib/types";
+import { computeAdherence } from "@/lib/adherence";
 import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge } from "lucide-react";
 
 const iconClass = "inline-block align-[-3px] mr-1";
@@ -53,23 +54,12 @@ function CoachDashboard() {
         if (byAthlete[meso.athlete_id]) continue;
         const weeksSorted = [...(meso.weeks ?? [])].sort((a, b) => a.week_number - b.week_number);
         const currentWeekNumber = computeCurrentWeekNumber(meso.start_date, weeksSorted);
-
-        let total = 0;
-        let completed = 0;
-        for (const w of weeksSorted) {
-          for (const day of w.days ?? []) {
-            if (day.is_rest) continue;
-            for (const block of day.blocks ?? []) {
-              total += 1;
-              if (block.completed) completed += 1;
-            }
-          }
-        }
+        const { pct: adherencePct } = computeAdherence([{ start_date: meso.start_date, weeks: weeksSorted }]);
 
         byAthlete[meso.athlete_id] = {
           mesocycle: { id: meso.id, name: meso.name, status: meso.status, phase: meso.phase },
           currentWeekNumber,
-          adherencePct: total > 0 ? Math.round((completed / total) * 100) : null,
+          adherencePct,
         };
       }
       setSummaries(byAthlete);

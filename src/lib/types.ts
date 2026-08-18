@@ -305,6 +305,8 @@ export type Block = {
   comment: string | null;
   completed: boolean;
   completed_at: string | null;
+  /** Lo marca un trigger cuando el bloque se edita a mano. El ajuste con IA respeta estos bloques y no los pisa. */
+  manually_edited: boolean;
   created_at: string;
 };
 
