@@ -47,7 +47,7 @@ type WeekRow = {
 
 function addDays(dateStr: string, days: number) {
   const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
+  d.setUTCDate(d.getUTCDate() + days);
   return d;
 }
 
