@@ -256,7 +256,7 @@ export async function POST(request: Request) {
       });
     }
 
-    await writeAdjustment(admin, weeks, generated.result);
+    await writeAdjustment(admin, weeks, generated.result, exercises as Exercise[]);
 
     await admin
       .from("ai_generation_runs")
@@ -273,7 +273,11 @@ export async function POST(request: Request) {
   }
 }
 
-async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], plan: AiAdjustmentPlan) {
+async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], plan: AiAdjustmentPlan, exercises: Exercise[]) {
+  // Mismo fix que generate-mesocycle/route.ts: sin esto, un bloque ajustado
+  // por check-in nunca queda linkeado al catálogo y el botón "Ver demo"
+  // (Fase 4) no tiene nada para mostrar.
+  const exerciseIdByName = new Map(exercises.map((e) => [e.name.trim().toLowerCase(), e.id]));
   for (const week of plan.weeks) {
     const weekRow = currentWeeks.find((w) => w.week_number === week.week_number);
     if (!weekRow) continue;
@@ -310,7 +314,7 @@ async function writeAdjustment(admin: SupabaseAdmin, currentWeeks: WeekRow[], pl
         const newBlockRows = day.blocks.map((b, idx) => ({
           id: randomUUID(),
           day_id: dayRow.id,
-          exercise_id: null,
+          exercise_id: b.is_catalog_exercise ? (exerciseIdByName.get(b.exercise_name.trim().toLowerCase()) ?? null) : null,
           exercise_name_freetext: b.exercise_name,
           category: b.category,
           rpe_target: b.rpe_target,

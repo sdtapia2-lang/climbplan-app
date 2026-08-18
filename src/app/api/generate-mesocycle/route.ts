@@ -32,8 +32,13 @@ async function writePlanToMesocycle(admin: SupabaseAdmin, params: {
   athleteId: string;
   plan: AiMesocyclePlan;
   runId: string;
+  exercises: Exercise[];
 }) {
-  const { athleteId, plan, runId } = params;
+  const { athleteId, plan, runId, exercises } = params;
+  // Sin esto, ningún bloque generado queda linkeado al catálogo:
+  // exercise_id siempre se insertaba null, así que el botón "Ver demo"
+  // (Fase 4) nunca tenía nada para mostrar en un mesociclo recién generado.
+  const exerciseIdByName = new Map(exercises.map((e) => [e.name.trim().toLowerCase(), e.id]));
   const startDate = new Date().toISOString().slice(0, 10);
   // Fase 5a: el mesociclo ya no siempre son 4 semanas (28 días) -- antes esto
   // estaba hardcodeado a +27 días sin importar cuántas semanas trajera el
@@ -99,7 +104,7 @@ async function writePlanToMesocycle(admin: SupabaseAdmin, params: {
         blockRows.push({
           id: randomUUID(),
           day_id: dayId,
-          exercise_id: null,
+          exercise_id: b.is_catalog_exercise ? (exerciseIdByName.get(b.exercise_name.trim().toLowerCase()) ?? null) : null,
           exercise_name_freetext: b.exercise_name,
           category: b.category,
           rpe_target: b.rpe_target,
@@ -296,7 +301,12 @@ export async function POST(request: Request) {
       }
     }
 
-    const mesocycleId = await writePlanToMesocycle(admin, { athleteId, plan: generated.result, runId: run.id });
+    const mesocycleId = await writePlanToMesocycle(admin, {
+      athleteId,
+      plan: generated.result,
+      runId: run.id,
+      exercises: exercises as Exercise[],
+    });
 
     await admin
       .from("ai_generation_runs")

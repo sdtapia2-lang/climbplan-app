@@ -8,7 +8,8 @@ import { parseRestSeconds, parseSetsCount, formatClock } from "@/lib/parseRest";
 import { estimateBlockMinutes, estimateSessionMinutes } from "@/lib/estimateTime";
 import { computeReadiness, type ReadinessInput } from "@/lib/readiness";
 import { suggestAlternatives, type AlternativeSuggestion } from "@/lib/planner/substitute";
-import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert, Shuffle } from "lucide-react";
+import { ExerciseMediaPanel } from "./ExerciseMediaPanel";
+import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert, Shuffle, Video } from "lucide-react";
 
 /** RPE real, dolor con zona y comentario de un bloque, capturados durante la sesión guiada. */
 type BlockFeedback = { rpe: string; pain: number; painZone: PainZoneKey | null };
@@ -144,6 +145,10 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
   const [altLoading, setAltLoading] = useState(false);
   const [altSuggestions, setAltSuggestions] = useState<AlternativeSuggestion[]>([]);
   const [swapping, setSwapping] = useState(false);
+
+  // Biblioteca de videos (Fase 4): el momento de mayor impacto para verla es
+  // acá, ejecutando el ejercicio, en vez de tener que ir al catálogo antes.
+  const [demoExerciseId, setDemoExerciseId] = useState<string | null>(null);
 
   async function openAlternatives(block: Block) {
     setAltBlockId(block.id);
@@ -373,9 +378,14 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
             onAddSet={() => addSet(current.id)}
             onDeleteSet={(i) => deleteSet(current.id, i)}
             onShowAlternatives={() => openAlternatives(current)}
+            onShowDemo={current.exercise_id ? () => setDemoExerciseId(current.exercise_id) : undefined}
           />
         ) : null}
       </div>
+
+      <Modal open={!!demoExerciseId} onClose={() => setDemoExerciseId(null)} title="Videos del ejercicio">
+        {demoExerciseId && <ExerciseMediaPanel exerciseId={demoExerciseId} />}
+      </Modal>
 
       <AlternativesModal
         open={!!altBlockId}
@@ -498,6 +508,7 @@ function ExerciseScreen({
   onAddSet,
   onDeleteSet,
   onShowAlternatives,
+  onShowDemo,
 }: {
   block: Block;
   index: number;
@@ -510,6 +521,8 @@ function ExerciseScreen({
   onAddSet: () => void;
   onDeleteSet: (setIdx: number) => void;
   onShowAlternatives: () => void;
+  /** undefined si el bloque no está linkeado a un ejercicio del catálogo (freetext suelto o de la IA). */
+  onShowDemo?: () => void;
 }) {
   const meta = [block.reps_or_time, block.load, block.rpe_target && `RPE ${block.rpe_target}`, `~${estimateBlockMinutes(block)} min`]
     .filter(Boolean)
@@ -529,7 +542,17 @@ function ExerciseScreen({
           </span>
         )}
       </div>
-      <h2 className="text-2xl font-semibold leading-tight mb-2 whitespace-pre-line">{block.exercise_name_freetext}</h2>
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h2 className="text-2xl font-semibold leading-tight whitespace-pre-line">{block.exercise_name_freetext}</h2>
+        {onShowDemo && (
+          <button
+            onClick={onShowDemo}
+            className="shrink-0 flex items-center gap-1 text-sm text-[var(--color-accent-700)] hover:underline mt-1"
+          >
+            <Video size={14} strokeWidth={2.5} aria-hidden="true" /> Ver demo
+          </button>
+        )}
+      </div>
       {meta && <p className="text-sm text-[var(--color-text)]/70 mb-3">{meta}</p>}
 
       {block.kinesio_notes && (

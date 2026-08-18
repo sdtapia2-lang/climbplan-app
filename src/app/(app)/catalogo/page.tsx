@@ -5,8 +5,10 @@ import { createClient } from "@/lib/supabase/client";
 import { Card, Field, Input, Textarea, Select, Button, Modal, Badge, Spinner, EmptyState, Segmented } from "@/components/ui";
 import { EQUIPMENT_OPTIONS, EXERCISE_CATEGORIES, type Exercise } from "@/lib/types";
 import { MUSCLE_GROUPS } from "@/lib/planner/knowledge/muscleGroups";
-import { useProfile, canManageCatalog, canManageRoutines } from "@/components/ProfileProvider";
+import { useProfile, canManageCatalog, canManageRoutines, isAdmin, isCoach } from "@/components/ProfileProvider";
 import { RoutinesPanel } from "@/components/RoutinesPanel";
+import { ExerciseMediaPanel } from "@/components/ExerciseMediaPanel";
+import { Video } from "lucide-react";
 
 const emptyExercise: Omit<Exercise, "id" | "created_at" | "code"> = {
   name: "",
@@ -35,6 +37,8 @@ export default function CatalogPage() {
   const [draft, setDraft] = useState<typeof emptyExercise>(emptyExercise);
   const [saving, setSaving] = useState(false);
   const [tab, setTab] = useState<"ejercicios" | "rutinas">("ejercicios");
+  const [mediaExercise, setMediaExercise] = useState<Exercise | null>(null);
+  const canManageMedia = isAdmin(profile) || isCoach(profile);
 
   async function load() {
     setLoading(true);
@@ -155,15 +159,27 @@ export default function CatalogPage() {
                   </Badge>
                 ))}
               </div>
-              <p className="text-xs text-[var(--color-text)]/40">
+              <p className="text-xs text-[var(--color-text)]/40 mb-2">
                 {[ex.typical_sets && `${ex.typical_sets} series`, ex.typical_reps, ex.typical_time, ex.typical_duration, ex.typical_effort]
                   .filter(Boolean)
                   .join(" · ")}
               </p>
+              {canManageMedia && (
+                <button
+                  onClick={() => setMediaExercise(ex)}
+                  className="flex items-center gap-1.5 text-sm text-[var(--color-accent-700)] hover:underline"
+                >
+                  <Video size={14} strokeWidth={2.5} aria-hidden="true" /> Videos
+                </button>
+              )}
             </Card>
           ))}
         </div>
       )}
+
+      <Modal open={!!mediaExercise} onClose={() => setMediaExercise(null)} title={`Videos — ${mediaExercise?.name ?? ""}`}>
+        {mediaExercise && <ExerciseMediaPanel exerciseId={mediaExercise.id} />}
+      </Modal>
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nuevo ejercicio">
         <div className="space-y-4">

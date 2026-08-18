@@ -5,13 +5,14 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isSelfCoached } from "@/components/ProfileProvider";
-import { Card, Input, Button, Badge, Spinner, EmptyState, CategoryTag } from "@/components/ui";
+import { Card, Input, Button, Modal, Badge, Spinner, EmptyState, CategoryTag } from "@/components/ui";
 import { SessionPlayer } from "@/components/SessionPlayer";
 import { InjuryBanner } from "@/components/InjuryBanner";
+import { ExerciseMediaPanel } from "@/components/ExerciseMediaPanel";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
 import { computeCurrentWeek } from "@/lib/weeks";
 import { estimateSessionMinutes } from "@/lib/estimateTime";
-import { TriangleAlert, Check, Sparkles, X, Play } from "lucide-react";
+import { TriangleAlert, Check, Sparkles, X, Play, Video } from "lucide-react";
 
 type DayWithBlocks = Day & { blocks: Block[] };
 type PendingAdjustmentBanner = { runId: string; completedAt: string | null };
@@ -25,6 +26,7 @@ export default function TrainingPage() {
   const [days, setDays] = useState<DayWithBlocks[]>([]);
   const [adjustmentBanner, setAdjustmentBanner] = useState<PendingAdjustmentBanner | null>(null);
   const [sessionDay, setSessionDay] = useState<DayWithBlocks | null>(null);
+  const [demoExerciseId, setDemoExerciseId] = useState<string | null>(null);
   const todayName = DAYS_OF_WEEK[(new Date().getDay() + 6) % 7];
 
   async function load() {
@@ -182,6 +184,9 @@ export default function TrainingPage() {
           }}
         />
       )}
+      <Modal open={!!demoExerciseId} onClose={() => setDemoExerciseId(null)} title="Videos del ejercicio">
+        {demoExerciseId && <ExerciseMediaPanel exerciseId={demoExerciseId} />}
+      </Modal>
       <InjuryBanner athlete={athlete} athleteId={athleteId ?? undefined} weekId={week?.id ?? null} onAdjusted={load} />
       {banner}
       <div className="flex items-center gap-3 mb-6">
@@ -229,6 +234,14 @@ export default function TrainingPage() {
                             </span>
                           )}
                           <p className="font-medium">{block.exercise_name_freetext}</p>
+                          {block.exercise_id && (
+                            <button
+                              onClick={() => setDemoExerciseId(block.exercise_id)}
+                              className="flex items-center gap-1 text-xs text-[var(--color-accent-700)] hover:underline"
+                            >
+                              <Video size={12} strokeWidth={2.5} aria-hidden="true" /> Ver demo
+                            </button>
+                          )}
                         </div>
                         <p className="text-xs text-[var(--color-text)]/55">
                           {[block.sets && `${block.sets} series`, block.reps_or_time, block.time, block.load && `${block.load}`, block.rpe_target && `RPE ${block.rpe_target}`, block.rest && `descanso ${block.rest}`]

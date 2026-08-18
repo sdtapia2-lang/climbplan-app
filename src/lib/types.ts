@@ -195,6 +195,26 @@ export type Exercise = {
   created_at: string;
 };
 
+// Fase 44: biblioteca de videos por ejercicio (Fase 4 del plan de
+// entrevistas) -- owner_id null = base compartida, owner_id de un
+// entrenador = privada (solo él y sus propios atletas la ven).
+export const EXERCISE_MEDIA_KINDS = ["demo", "cue", "variant"] as const;
+export type ExerciseMediaKind = (typeof EXERCISE_MEDIA_KINDS)[number];
+
+export type ExerciseMedia = {
+  id: string;
+  exercise_id: string;
+  kind: ExerciseMediaKind;
+  media_type: "url" | "upload";
+  url: string | null;
+  storage_path: string | null;
+  title: string | null;
+  notes: string | null;
+  position: number;
+  owner_id: string | null;
+  created_at: string;
+};
+
 /** Circuito armado por un entrenador a partir de ejercicios individuales existentes. */
 export type Routine = {
   id: string;
