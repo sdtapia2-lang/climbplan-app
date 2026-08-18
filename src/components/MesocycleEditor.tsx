@@ -98,6 +98,11 @@ type MesocycleDraft = {
   max_rpe_week: string;
 };
 
+// Fase 5a del plan de entrevistas: Rorro pidió mesociclos de 2-3 a 6 semanas,
+// no siempre 4. Mismo rango que microcycleTemplateFor en el generador.
+const MIN_WEEKS = 2;
+const MAX_WEEKS = 6;
+
 function uid() {
   return crypto.randomUUID();
 }
@@ -399,6 +404,22 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
     updateDay(dayIdx, { day_focus: "", is_rest: false, blocks: [] });
   }
 
+  // Fase 5a: cantidad de semanas variable (2-6, ver planner/knowledge/microcycles.ts
+  // para el mismo rango del lado del generador). Solo se agrega/quita la
+  // última semana -- quitar una del medio obligaría a renumerar todo lo que
+  // viene después, incluida la semana de Descarga, que los planes de
+  // referencia siempre esperan al final.
+  function addWeek() {
+    if (weeks.length >= MAX_WEEKS) return;
+    setWeeks((ws) => [...ws, emptyWeek(ws.length + 1)]);
+  }
+
+  function removeLastWeek() {
+    if (weeks.length <= MIN_WEEKS) return;
+    setWeeks((ws) => ws.slice(0, -1));
+    setActiveWeek((i) => Math.min(i, weeks.length - 2));
+  }
+
   function copyWeekTo(targetIdx: number) {
     setWeeks((ws) =>
       ws.map((w, i) =>
@@ -679,6 +700,22 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
               S{w.week_number}
             </button>
           ))}
+          <button
+            onClick={removeLastWeek}
+            disabled={weeks.length <= MIN_WEEKS}
+            title="Quitar la última semana"
+            className="px-2 py-1.5 text-sm rounded-md border border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)] disabled:opacity-30 disabled:pointer-events-none"
+          >
+            − Semana
+          </button>
+          <button
+            onClick={addWeek}
+            disabled={weeks.length >= MAX_WEEKS}
+            title="Agregar una semana al final"
+            className="px-2 py-1.5 text-sm rounded-md border border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)] disabled:opacity-30 disabled:pointer-events-none"
+          >
+            + Semana
+          </button>
         </div>
         <div className="flex gap-2">
           {routines.length > 0 && (

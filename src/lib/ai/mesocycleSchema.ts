@@ -32,7 +32,11 @@ export const AiDaySchema = z.object({
 export type AiDay = z.infer<typeof AiDaySchema>;
 
 export const AiWeekSchema = z.object({
-  week_number: z.number().int().min(1).max(4),
+  // Fase 5a: mesociclo de 2 a 6 semanas (antes siempre 4) -- mismo rango que
+  // microcycleTemplateFor en planner/knowledge/microcycles.ts. Sin este
+  // límite ampliado, ajustar (vía checkin) un mesociclo que un entrenador
+  // extendió a mano a 5-6 semanas rechazaría cualquier semana futura > 4.
+  week_number: z.number().int().min(1).max(6),
   load_type: z.string(),
   focus: z.string().nullable(),
   distribution: z.string().nullable(),
@@ -40,12 +44,12 @@ export const AiWeekSchema = z.object({
 });
 export type AiWeek = z.infer<typeof AiWeekSchema>;
 
-// Generación inicial y "siguiente mesociclo": siempre las 4 semanas completas.
+// Generación inicial y "siguiente mesociclo": 4 semanas por defecto, ajustable a 2-6 (Fase 5a).
 export const AiMesocyclePlanSchema = z.object({
   name: z.string(),
   phase: z.string(),
   rationale: z.string().describe("Resumen del razonamiento kinesiológico detrás del plan, para logging/debug."),
-  weeks: z.array(AiWeekSchema).length(4),
+  weeks: z.array(AiWeekSchema).min(2).max(6),
 });
 export type AiMesocyclePlan = z.infer<typeof AiMesocyclePlanSchema>;
 

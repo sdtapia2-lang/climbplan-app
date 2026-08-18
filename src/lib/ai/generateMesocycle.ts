@@ -35,10 +35,16 @@ export function validateMesocyclePlan(plan: AiMesocyclePlan, exercises: Exercise
     }
   }
 
-  const w3 = plan.weeks.find((w) => w.week_number === 3);
-  const w4 = plan.weeks.find((w) => w.week_number === 4);
-  if (w3 && w4 && countBlocks(w4) > countBlocks(w3)) {
-    issues.push(`La semana 4 (descarga) tiene más bloques (${countBlocks(w4)}) que la semana 3 (${countBlocks(w3)}) -- debería ser una semana de menor volumen.`);
+  // Última semana = descarga, la anterior = pico de volumen (Fase 5a: el
+  // mesociclo ya no siempre tiene 4 semanas, así que "semana 3/4" fijo no
+  // sirve -- ver el mismo criterio en generatePlan.ts).
+  const sortedWeeks = [...plan.weeks].sort((a, b) => a.week_number - b.week_number);
+  const deloadWeek = sortedWeeks.at(-1);
+  const peakWeek = sortedWeeks.length >= 2 ? sortedWeeks.at(-2) : null;
+  if (peakWeek && deloadWeek && countBlocks(deloadWeek) > countBlocks(peakWeek)) {
+    issues.push(
+      `La última semana (${deloadWeek.week_number}, descarga) tiene más bloques (${countBlocks(deloadWeek)}) que la semana anterior (${peakWeek.week_number}, ${countBlocks(peakWeek)}) -- debería ser una semana de menor volumen.`,
+    );
   }
 
   return issues;
@@ -99,11 +105,16 @@ export async function callWithValidation<T>(params: {
   throw new MesocycleGenerationError("No se pudo generar un plan válido.");
 }
 
-export async function generateInitialMesocyclePlan(athlete: Athlete, evaluation: Evaluation, exercises: Exercise[]) {
+export async function generateInitialMesocyclePlan(
+  athlete: Athlete,
+  evaluation: Evaluation,
+  exercises: Exercise[],
+  weekCount = 4,
+) {
   return callWithValidation({
     model: INITIAL_GENERATION_MODEL,
-    system: buildSystemPrompt(exercises),
-    userPrompt: buildInitialUserPrompt(athlete, evaluation),
+    system: buildSystemPrompt(exercises, weekCount),
+    userPrompt: buildInitialUserPrompt(athlete, evaluation, weekCount),
     schema: AiMesocyclePlanSchema,
     validate: (plan) => validateMesocyclePlan(plan, exercises),
   });
@@ -115,11 +126,12 @@ export async function generateNextMesocyclePlan(
   pastMesocyclesSummary: string,
   allCheckinsSummary: string,
   exercises: Exercise[],
+  weekCount = 4,
 ) {
   return callWithValidation({
     model: INITIAL_GENERATION_MODEL,
-    system: buildSystemPrompt(exercises),
-    userPrompt: buildNextMesocycleUserPrompt({ athlete, latestEvaluation, pastMesocyclesSummary, allCheckinsSummary }),
+    system: buildSystemPrompt(exercises, weekCount),
+    userPrompt: buildNextMesocycleUserPrompt({ athlete, latestEvaluation, pastMesocyclesSummary, allCheckinsSummary, weekCount }),
     schema: AiMesocyclePlanSchema,
     validate: (plan) => validateMesocyclePlan(plan, exercises),
   });

@@ -73,6 +73,11 @@ type TemplateMetaDraft = {
   is_published: boolean;
 };
 
+// Fase 5a del plan de entrevistas: mismo rango que MesocycleEditor y que
+// microcycleTemplateFor en el generador (ver planner/knowledge/microcycles.ts).
+const MIN_WEEKS = 2;
+const MAX_WEEKS = 6;
+
 function uid() {
   return crypto.randomUUID();
 }
@@ -289,6 +294,17 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
   function clearDay(dayIdx: number) {
     updateDay(dayIdx, { day_focus: "", is_rest: false, blocks: [] });
   }
+  function addWeek() {
+    if (weeks.length >= MAX_WEEKS) return;
+    setWeeks((ws) => [...ws, emptyWeek(ws.length + 1)]);
+  }
+
+  function removeLastWeek() {
+    if (weeks.length <= MIN_WEEKS) return;
+    setWeeks((ws) => ws.slice(0, -1));
+    setActiveWeek((i) => Math.min(i, weeks.length - 2));
+  }
+
   function copyWeekTo(targetIdx: number) {
     setWeeks((ws) =>
       ws.map((w, i) =>
@@ -512,6 +528,22 @@ export function TemplateEditor({ templateId }: { templateId?: string }) {
               S{w.week_number}
             </button>
           ))}
+          <button
+            onClick={removeLastWeek}
+            disabled={weeks.length <= MIN_WEEKS}
+            title="Quitar la última semana"
+            className="px-2 py-1.5 text-sm rounded-md border border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)] disabled:opacity-30 disabled:pointer-events-none"
+          >
+            − Semana
+          </button>
+          <button
+            onClick={addWeek}
+            disabled={weeks.length >= MAX_WEEKS}
+            title="Agregar una semana al final"
+            className="px-2 py-1.5 text-sm rounded-md border border-[var(--color-divider)] hover:bg-[var(--color-neutral-100)] disabled:opacity-30 disabled:pointer-events-none"
+          >
+            + Semana
+          </button>
         </div>
         <div className="flex gap-2">
           {weeks.map((w, i) =>

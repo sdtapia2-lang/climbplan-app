@@ -9,7 +9,7 @@ import { deriveProfile } from "./profile";
 import { buildSkeleton, phaseForMesocycle } from "./skeleton";
 import { DAY_TEMPLATES } from "./knowledge/dayTemplates";
 import { BASELINE_TESTS } from "./knowledge/baselineTests";
-import { MICROCYCLE_TEMPLATE } from "./knowledge/microcycles";
+import { microcycleTemplateFor, type MicrocycleWeek } from "./knowledge/microcycles";
 import {
   ANTAGONIST_TAGS,
   buildCandidates,
@@ -77,7 +77,7 @@ function warmupBlocksFor(
   warmupKey: keyof typeof WARMUP_ROUTINES,
   candidates: CandidateExercise[],
   profile: PlannerProfile,
-  micro: (typeof MICROCYCLE_TEMPLATE)[number],
+  micro: MicrocycleWeek,
   reduced: ReturnType<typeof zoneActions>["reduced"],
   excluded: ReturnType<typeof zoneActions>["excluded"],
 ): AiBlock[] {
@@ -199,7 +199,7 @@ function ensureWeeklyGuarantees(
   week: AiWeek,
   candidates: CandidateExercise[],
   profile: PlannerProfile,
-  micro: (typeof MICROCYCLE_TEMPLATE)[number],
+  micro: MicrocycleWeek,
   reduced: ReturnType<typeof zoneActions>["reduced"],
   excluded: ReturnType<typeof zoneActions>["excluded"],
 ) {
@@ -269,13 +269,16 @@ export function generateMesocyclePlan(params: {
   evaluation: Evaluation | null;
   exercises: Exercise[];
   previousMesocycles: number;
+  /** Cantidad de semanas del mesociclo (2-6, Fase 5a). Default histórico: 4. */
+  weekCount?: number;
 }): AiMesocyclePlan {
-  const { athlete, evaluation, exercises, previousMesocycles } = params;
+  const { athlete, evaluation, exercises, previousMesocycles, weekCount = 4 } = params;
   if (!exercises.length) throw new RulesPlannerError("El catálogo de ejercicios está vacío.");
 
   const profile = deriveProfile(athlete, evaluation);
   const phase = phaseForMesocycle(previousMesocycles);
-  const skeleton = buildSkeleton(profile, phase);
+  const skeleton = buildSkeleton(profile, phase, weekCount);
+  const microTemplate = microcycleTemplateFor(weekCount);
   const candidates = buildCandidates(exercises);
 
   const { byDay, excluded, reduced } = selectWeekExercises(skeleton[0].days, candidates, profile, previousMesocycles);
@@ -286,7 +289,7 @@ export function generateMesocyclePlan(params: {
   const warmupCountByWeekDay = new Map<string, number>();
 
   const weeks: AiWeek[] = skeleton.map((weekSkeleton, wi) => {
-    const micro = MICROCYCLE_TEMPLATE[wi];
+    const micro = microTemplate[wi];
     let trainingDayIndex = 0;
     const days: AiDay[] = weekSkeleton.days.map((day) => {
       if (!day.focus) {
@@ -314,7 +317,7 @@ export function generateMesocyclePlan(params: {
     const week: AiWeek = {
       week_number: weekSkeleton.weekNumber,
       load_type: weekSkeleton.loadType,
-      focus: `${phase.name}: ${MICROCYCLE_TEMPLATE[wi].focus}`,
+      focus: `${phase.name}: ${microTemplate[wi].focus}`,
       distribution: `${days.filter((d) => !d.is_rest).length} días de entrenamiento, ${days.filter((d) => d.is_rest).length} de descanso`,
       days,
     };
@@ -326,12 +329,19 @@ export function generateMesocyclePlan(params: {
   // calentamiento (nunca antes -- un test de fuerza máxima necesita entrar
   // en calor primero).
   const firstTraining = weeks[0].days.find((d) => !d.is_rest);
-  if (firstTraining && MICROCYCLE_TEMPLATE[0].allowTests && !profile.conservative) {
+  if (firstTraining && microTemplate[0].allowTests && !profile.conservative) {
     const warmupCount = warmupCountByWeekDay.get(`${weeks[0].week_number}-${firstTraining.day_of_week}`) ?? 0;
     firstTraining.blocks.splice(warmupCount, 0, ...baselineBlocks(profile, candidates, excluded));
   }
 
-  // Garantía: semana 4 (descarga) con como máximo ~60% de los bloques de la 3.
+  // Garantía: última semana (descarga) con como máximo ~60% de los bloques
+  // de la anterior (el pico, ver microcycleTemplateFor). Con weekCount=4 esto
+  // es exactamente semana 4 vs. semana 3 como antes de generalizarse; con
+  // weekCount=2 no hay semana "pico" distinta y el índice cae en la propia
+  // semana 1 (Ajuste), que ya tiene igual composición de bloques que
+  // cualquier otra semana no recortada -- la selección de ejercicios es la
+  // misma en todas las semanas, solo cambia la prescripción (ver byDay más
+  // arriba, calculado una sola vez sobre skeleton[0]).
   // Al recortar, nunca se tocan los bloques del calentamiento (siempre
   // primero) y se prioriza sacar Conditioning/cierre antes que el
   // calentamiento de escalada o el contenido principal -- si no, un recorte
@@ -339,13 +349,15 @@ export function generateMesocyclePlan(params: {
   // Conditioning que ahora va antes en el orden del día.
   const CLIMBING_CATEGORIES_TRIM = ["Aerobic Base", "Power Endurance", "Strength and Power", "Fingerboard"];
   const countBlocks = (w: AiWeek) => w.days.reduce((s, d) => s + d.blocks.length, 0);
-  const cap = Math.max(1, Math.floor(countBlocks(weeks[2]) * 0.6));
-  while (countBlocks(weeks[3]) > cap) {
-    const day = [...weeks[3].days]
+  const peakIdx = Math.max(0, weeks.length - 2);
+  const deloadIdx = weeks.length - 1;
+  const cap = Math.max(1, Math.floor(countBlocks(weeks[peakIdx]) * 0.6));
+  while (countBlocks(weeks[deloadIdx]) > cap) {
+    const day = [...weeks[deloadIdx].days]
       .reverse()
-      .find((d) => d.blocks.length > (warmupCountByWeekDay.get(`${weeks[3].week_number}-${d.day_of_week}`) ?? 0));
+      .find((d) => d.blocks.length > (warmupCountByWeekDay.get(`${weeks[deloadIdx].week_number}-${d.day_of_week}`) ?? 0));
     if (!day) break;
-    const warmupCount = warmupCountByWeekDay.get(`${weeks[3].week_number}-${day.day_of_week}`) ?? 0;
+    const warmupCount = warmupCountByWeekDay.get(`${weeks[deloadIdx].week_number}-${day.day_of_week}`) ?? 0;
     let removeIdx = day.blocks.length - 1;
     for (let i = day.blocks.length - 1; i >= warmupCount; i--) {
       if (!CLIMBING_CATEGORIES_TRIM.includes(day.blocks[i].category)) {

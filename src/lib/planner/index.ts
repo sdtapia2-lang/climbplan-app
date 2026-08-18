@@ -14,8 +14,9 @@ export function generateInitialMesocyclePlanRules(
   athlete: Athlete,
   evaluation: Evaluation,
   exercises: Exercise[],
+  weekCount?: number,
 ): { result: AiMesocyclePlan; model: string } {
-  const result = generateMesocyclePlan({ athlete, evaluation, exercises, previousMesocycles: 0 });
+  const result = generateMesocyclePlan({ athlete, evaluation, exercises, previousMesocycles: 0, weekCount });
   assertValid(result, exercises);
   return { result, model: RULES_ENGINE_MODEL };
 }
@@ -25,12 +26,14 @@ export function generateNextMesocyclePlanRules(params: {
   latestEvaluation: Evaluation | null;
   exercises: Exercise[];
   previousMesocycles: number;
+  weekCount?: number;
 }): { result: AiMesocyclePlan; model: string } {
   const result = generateMesocyclePlan({
     athlete: params.athlete,
     evaluation: params.latestEvaluation,
     exercises: params.exercises,
     previousMesocycles: params.previousMesocycles,
+    weekCount: params.weekCount,
   });
   assertValid(result, params.exercises);
   return { result, model: RULES_ENGINE_MODEL };

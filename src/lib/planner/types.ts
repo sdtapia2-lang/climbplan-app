@@ -83,7 +83,7 @@ export type WeekSkeletonDay = {
 };
 
 export type WeekSkeleton = {
-  weekNumber: 1 | 2 | 3 | 4;
+  weekNumber: 1 | 2 | 3 | 4 | 5 | 6;
   loadType: string;
   volumeMult: number;
   rpeShift: number;

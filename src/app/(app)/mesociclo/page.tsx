@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, canManageOwnMesocycle, isSelfCoached } from "@/components/ProfileProvider";
-import { Card, Button, Badge, Spinner, EmptyState } from "@/components/ui";
+import { Card, Button, Badge, Select, Spinner, EmptyState } from "@/components/ui";
 import { InjuryBanner } from "@/components/InjuryBanner";
 import { Sparkles } from "lucide-react";
 import type { Mesocycle } from "@/lib/types";
@@ -21,6 +21,8 @@ export default function MesocycleListPage() {
   const [hasEvaluation, setHasEvaluation] = useState(false);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  // Fase 5a: duración del mesociclo a generar (Rorro: "~4 semanas, puede acortarse a 2-3").
+  const [weekCount, setWeekCount] = useState(4);
 
   const latestMesocycle = mesocycles[0] ?? null;
   const latestIsFinished =
@@ -39,7 +41,7 @@ export default function MesocycleListPage() {
       const res = await fetch("/api/generate-mesocycle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ athleteId, mode }),
+        body: JSON.stringify({ athleteId, mode, weekCount }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
@@ -95,10 +97,13 @@ export default function MesocycleListPage() {
         <h1 className="text-2xl font-semibold">Mesociclos &mdash; {athlete?.name}</h1>
         <div className="flex items-center gap-2">
           {showGenerateNext && (
-            <Button onClick={() => generate("next")} disabled={generating} variant="secondary">
-              <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
-              Generar siguiente mesociclo
-            </Button>
+            <>
+              <WeekCountSelect value={weekCount} onChange={setWeekCount} />
+              <Button onClick={() => generate("next")} disabled={generating} variant="secondary">
+                <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
+                Generar siguiente mesociclo
+              </Button>
+            </>
           )}
           {canCreate && (
             <Link href="/mesociclo/new">
@@ -132,10 +137,13 @@ export default function MesocycleListPage() {
           action={
             <div className="flex items-center gap-2">
               {showGenerateInitial && (
-                <Button onClick={() => generate("initial")} disabled={generating}>
-                  <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
-                  Generar planificación
-                </Button>
+                <>
+                  <WeekCountSelect value={weekCount} onChange={setWeekCount} />
+                  <Button onClick={() => generate("initial")} disabled={generating}>
+                    <Sparkles size={14} strokeWidth={2.75} aria-hidden="true" />
+                    Generar planificación
+                  </Button>
+                </>
               )}
               {selfCoached && !hasEvaluation && (
                 <Link href="/evaluacion/new">
@@ -176,5 +184,18 @@ export default function MesocycleListPage() {
         </div>
       )}
     </div>
+  );
+}
+
+/** Duración del mesociclo a generar (Fase 5a: 2-6 semanas, default 4). */
+function WeekCountSelect({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  return (
+    <Select value={value} onChange={(e) => onChange(Number(e.target.value))} className="!w-auto" title="Duración del mesociclo">
+      {[2, 3, 4, 5, 6].map((n) => (
+        <option key={n} value={n}>
+          {n} semanas
+        </option>
+      ))}
+    </Select>
   );
 }

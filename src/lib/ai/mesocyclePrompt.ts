@@ -1,8 +1,9 @@
 import type { Athlete, Evaluation, Exercise, CheckIn } from "@/lib/types";
 
-const RULES = `Sos un coach de escalada experto armando planificaciones de entrenamiento reales, basadas en evidencia y en el catálogo de ejercicios de Lattice Training. Seguí estas reglas sin excepción:
+function rulesFor(weekCount: number): string {
+  return `Sos un coach de escalada experto armando planificaciones de entrenamiento reales, basadas en evidencia y en el catálogo de ejercicios de Lattice Training. Seguí estas reglas sin excepción:
 
-1. ESTRUCTURA: el mesociclo tiene exactamente 4 semanas completas (week_number 1-4), cada una con 7 días (Lunes a Domingo). La progresión de carga entre semanas es: semana 1 moderada, semana 2 alta, semana 3 alta, semana 4 descarga (deload, ~50-60% del volumen de la semana 3, nunca testear máximos en la semana de descarga).
+1. ESTRUCTURA: el mesociclo tiene exactamente ${weekCount} semanas completas (week_number 1-${weekCount}), cada una con 7 días (Lunes a Domingo). La semana 1 es de adaptación (moderada), las semanas intermedias suben la carga progresivamente, y la última semana (${weekCount}) es siempre descarga (deload, ~50-60% del volumen de la semana anterior, nunca testear máximos en la semana de descarga).
 
 2. CATALOGO: cada bloque de ejercicio debe existir, por nombre exacto, en el catálogo de ejercicios provisto abajo (campo exercise_name debe matchear exactamente un "name" del catálogo, is_catalog_exercise=true). La UNICA excepción permitida es un test o protocolo que no es una sesión de la app Lattice (por ejemplo un test de Critical Force o de fuerza máxima con un dinamómetro tipo Tindeq) -- en ese caso is_catalog_exercise=false y non_catalog_reason debe explicar por qué. Nunca inventes un ejercicio que no esté en el catálogo ni lo marques como excepción sin justificación real.
 
@@ -19,6 +20,7 @@ const RULES = `Sos un coach de escalada experto armando planificaciones de entre
 8. Cada bloque necesita series/reps-tiempo/RPE/carga/descanso coherentes con lo que ese ejercicio pide en el catálogo (typical_sets, typical_reps, typical_time, typical_effort son la referencia, podés ajustarlos al nivel del atleta).
 
 Respondé con el JSON pedido, nada más.`;
+}
 
 function serializeExerciseCatalog(exercises: Exercise[]): string {
   return exercises
@@ -30,11 +32,11 @@ function serializeExerciseCatalog(exercises: Exercise[]): string {
     .join("\n");
 }
 
-export function buildSystemPrompt(exercises: Exercise[]) {
+export function buildSystemPrompt(exercises: Exercise[], weekCount = 4) {
   return [
     {
       type: "text" as const,
-      text: RULES,
+      text: rulesFor(weekCount),
     },
     {
       type: "text" as const,
@@ -121,8 +123,8 @@ function serializeEvaluation(ev: Evaluation): string {
     .join("\n");
 }
 
-export function buildInitialUserPrompt(athlete: Athlete, evaluation: Evaluation) {
-  return `Armá el primer mesociclo de entrenamiento (4 semanas) para este atleta, en base a su ficha y su evaluación física.
+export function buildInitialUserPrompt(athlete: Athlete, evaluation: Evaluation, weekCount = 4) {
+  return `Armá el primer mesociclo de entrenamiento (${weekCount} semanas) para este atleta, en base a su ficha y su evaluación física.
 
 FICHA DEL ATLETA:
 ${serializeAthlete(athlete)}
@@ -235,9 +237,10 @@ export function buildNextMesocycleUserPrompt(params: {
   latestEvaluation: Evaluation | null;
   pastMesocyclesSummary: string;
   allCheckinsSummary: string;
+  weekCount?: number;
 }) {
-  const { athlete, latestEvaluation, pastMesocyclesSummary, allCheckinsSummary } = params;
-  return `Armá el siguiente mesociclo de entrenamiento (4 semanas) para este atleta, usando todo el historial acumulado -- no es su primer mesociclo.
+  const { athlete, latestEvaluation, pastMesocyclesSummary, allCheckinsSummary, weekCount = 4 } = params;
+  return `Armá el siguiente mesociclo de entrenamiento (${weekCount} semanas) para este atleta, usando todo el historial acumulado -- no es su primer mesociclo.
 
 FICHA DEL ATLETA:
 ${serializeAthlete(athlete)}

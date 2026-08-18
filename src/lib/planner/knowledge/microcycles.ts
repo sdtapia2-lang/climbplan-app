@@ -12,7 +12,7 @@
 //   alta → descarga (50-60% volumen), tests de línea base en semana 1.
 
 export type MicrocycleWeek = {
-  week: 1 | 2 | 3 | 4;
+  week: 1 | 2 | 3 | 4 | 5 | 6;
   loadType: string;
   focus: string;
   /** Multiplicador de volumen sobre las series base del catálogo. */
@@ -27,39 +27,47 @@ export type MicrocycleWeek = {
   fingerProgression: "base" | "load" | "volume" | "deload";
 };
 
-export const MICROCYCLE_TEMPLATE: readonly MicrocycleWeek[] = [
-  {
-    week: 1,
-    loadType: "Ajuste",
-    focus: "Adaptación y línea base",
-    volumeMult: 0.85,
-    rpeShift: -1,
-    maxRpe: 7,
-    allowTests: true,
-    fingerProgression: "base",
-  },
-  {
-    week: 2,
-    loadType: "Carga",
-    focus: "Progresión de carga",
-    volumeMult: 1.0,
-    rpeShift: 0,
-    maxRpe: null,
-    allowTests: false,
-    fingerProgression: "load", // +5-10% carga, mismo volumen (regla Cata/Diego)
-  },
-  {
-    week: 3,
-    loadType: "Choque",
-    focus: "Pico de volumen",
-    volumeMult: 1.15,
-    rpeShift: 0,
-    maxRpe: null,
-    allowTests: false,
-    fingerProgression: "volume", // +1 serie, misma carga (Noceti/Cata: series 3→4)
-  },
-  {
-    week: 4,
+/**
+ * Microciclo de N semanas (2-6, Fase 5a -- Rorro: "microciclo 7, puede bajar
+ * a 5 o 3; mesociclo ~4 semanas, puede acortarse a 2-3"). Primera semana
+ * siempre Ajuste, última siempre Descarga (nunca se testean máximos ahí); las
+ * semanas intermedias suben el volumen linealmente de Carga (1.0x, igual que
+ * antes) a Choque (1.15x, el pico justo antes de la descarga, mismo valor
+ * que el mesociclo de referencia de 4 semanas usaba en su semana 3) -- con
+ * weekCount=4 este algoritmo reproduce exactamente los 4 valores fijos que
+ * tenía este módulo antes de generalizarse.
+ */
+export function microcycleTemplateFor(weekCount: number): MicrocycleWeek[] {
+  const n = Math.min(6, Math.max(2, Math.round(weekCount)));
+  const middleCount = n - 2;
+  const weeks: MicrocycleWeek[] = [
+    {
+      week: 1,
+      loadType: "Ajuste",
+      focus: "Adaptación y línea base",
+      volumeMult: 0.85,
+      rpeShift: -1,
+      maxRpe: 7,
+      allowTests: true,
+      fingerProgression: "base",
+    },
+  ];
+  for (let i = 0; i < middleCount; i++) {
+    const isPeak = i === middleCount - 1 && middleCount > 1;
+    const t = middleCount <= 1 ? 0 : i / (middleCount - 1);
+    weeks.push({
+      week: (i + 2) as MicrocycleWeek["week"],
+      loadType: isPeak ? "Choque" : "Carga",
+      focus: isPeak ? "Pico de volumen" : "Progresión de carga",
+      volumeMult: 1.0 + t * 0.15,
+      rpeShift: 0,
+      maxRpe: null,
+      allowTests: false,
+      fingerProgression: isPeak ? "volume" : "load", // Noceti/Cata: series 3→4 en el pico; +5-10% carga en las intermedias
+    });
+  }
+  weeks.push({
+    week: n as MicrocycleWeek["week"],
     loadType: "Descarga",
     focus: "Recuperación activa",
     volumeMult: 0.55, // Fobital/Diego: 50-60% del volumen
@@ -67,8 +75,9 @@ export const MICROCYCLE_TEMPLATE: readonly MicrocycleWeek[] = [
     maxRpe: 6, // nunca testear máximos en descarga
     allowTests: false,
     fingerProgression: "deload",
-  },
-] as const;
+  });
+  return weeks;
+}
 
 // Fases de mesociclo (rotación entre mesociclos sucesivos), de los ciclos
 // reales de Noceti: Acumulación (capacidad/volumen) → Transformación

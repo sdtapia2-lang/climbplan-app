@@ -3,7 +3,7 @@
 // fase del mesociclo. Días no disponibles → descanso.
 import { DAYS_OF_WEEK } from "@/lib/types";
 import type { DayFocus, PlannerProfile, WeekSkeleton, WeekSkeletonDay } from "./types";
-import { MICROCYCLE_TEMPLATE, MESOCYCLE_PHASES, type MesocyclePhase } from "./knowledge/microcycles";
+import { microcycleTemplateFor, MESOCYCLE_PHASES, type MesocyclePhase } from "./knowledge/microcycles";
 import { CORE_CLIMBING_FOCI, WEEK_LAYOUTS } from "./knowledge/dayTemplates";
 
 export function phaseForMesocycle(previousMesocycles: number): MesocyclePhase {
@@ -65,11 +65,11 @@ export function focusListFor(profile: PlannerProfile, phase: MesocyclePhase): Da
   return layout;
 }
 
-export function buildSkeleton(profile: PlannerProfile, phase: MesocyclePhase): WeekSkeleton[] {
+export function buildSkeleton(profile: PlannerProfile, phase: MesocyclePhase, weekCount = 4): WeekSkeleton[] {
   const focuses = focusListFor(profile, phase);
   const trainingSet = new Set(profile.trainingDays);
 
-  return MICROCYCLE_TEMPLATE.map((micro) => {
+  return microcycleTemplateFor(weekCount).map((micro) => {
     let slot = 0;
     const days: WeekSkeletonDay[] = DAYS_OF_WEEK.map((dayOfWeek) => {
       if (!trainingSet.has(dayOfWeek) || slot >= focuses.length) return { dayOfWeek, focus: null };

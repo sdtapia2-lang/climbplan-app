@@ -16,9 +16,15 @@ async function failRun(admin: SupabaseAdmin, runId: string, message: string) {
     .eq("id", runId);
 }
 
+// getDate()/setDate() operan en hora local: para un dateStr tipo "2026-08-18"
+// (parseado como medianoche UTC), un servidor en un huso horario detras de
+// UTC ve esa fecha como el dia anterior a la tarde, y el resultado queda un
+// dia corto. Descubierto al probar Fase 5a con un mesociclo de 3 semanas
+// (end_date daba un dia menos de lo esperado) -- getUTCDate()/setUTCDate()
+// evita la conversion de huso horario.
 function addDays(dateStr: string, days: number) {
   const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
+  d.setUTCDate(d.getUTCDate() + days);
   return d.toISOString().slice(0, 10);
 }
 
@@ -29,7 +35,10 @@ async function writePlanToMesocycle(admin: SupabaseAdmin, params: {
 }) {
   const { athleteId, plan, runId } = params;
   const startDate = new Date().toISOString().slice(0, 10);
-  const endDate = addDays(startDate, 27);
+  // Fase 5a: el mesociclo ya no siempre son 4 semanas (28 días) -- antes esto
+  // estaba hardcodeado a +27 días sin importar cuántas semanas trajera el
+  // plan generado.
+  const endDate = addDays(startDate, plan.weeks.length * 7 - 1);
 
   const { data: mesocycle, error: mesoError } = await admin
     .from("mesocycles")
@@ -178,6 +187,8 @@ export async function POST(request: Request) {
   // Motor de generación: reglas determinista por defecto (0 tokens); "ai"
   // fuerza el camino Claude original.
   const engine = body?.engine === "ai" ? "ai" : "rules";
+  // Fase 5a: duración del mesociclo (2-6 semanas, default 4).
+  const weekCount = Math.min(6, Math.max(2, Math.round(Number(body?.weekCount) || 4)));
 
   if (!athleteId) {
     return NextResponse.json({ error: "Falta athleteId." }, { status: 400 });
@@ -246,7 +257,7 @@ export async function POST(request: Request) {
     if (engine === "rules") {
       try {
         if (mode === "initial") {
-          generated = generateInitialMesocyclePlanRules(athlete as Athlete, latestEvaluation!, exercises as Exercise[]);
+          generated = generateInitialMesocyclePlanRules(athlete as Athlete, latestEvaluation!, exercises as Exercise[], weekCount);
         } else {
           const { count: prevCount } = await admin
             .from("mesocycles")
@@ -257,6 +268,7 @@ export async function POST(request: Request) {
             latestEvaluation,
             exercises: exercises as Exercise[],
             previousMesocycles: prevCount ?? 0,
+            weekCount,
           });
         }
       } catch (rulesErr) {
@@ -270,7 +282,7 @@ export async function POST(request: Request) {
 
     if (!generated) {
       if (mode === "initial") {
-        generated = await generateInitialMesocyclePlan(athlete as Athlete, latestEvaluation!, exercises as Exercise[]);
+        generated = await generateInitialMesocyclePlan(athlete as Athlete, latestEvaluation!, exercises as Exercise[], weekCount);
       } else {
         const { pastMesocyclesSummary, allCheckinsSummary } = await buildHistorySummaries(admin, athleteId);
         generated = await generateNextMesocyclePlan(
@@ -279,6 +291,7 @@ export async function POST(request: Request) {
           pastMesocyclesSummary,
           allCheckinsSummary,
           exercises as Exercise[],
+          weekCount,
         );
       }
     }
