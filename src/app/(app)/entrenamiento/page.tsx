@@ -169,10 +169,11 @@ export default function TrainingPage() {
 
   return (
     <div>
-      {sessionDay && (
+      {sessionDay && athleteId && (
         <SessionPlayer
           dayLabel={`${sessionDay.day_of_week}${sessionDay.day_focus ? ` — ${sessionDay.day_focus}` : ""}`}
           blocks={sessionDay.blocks}
+          athleteId={athleteId}
           onClose={() => setSessionDay(null)}
           onFinished={() => {
             setSessionDay(null);
@@ -221,6 +222,11 @@ export default function TrainingPage() {
                       <div>
                         <div className="flex items-center gap-2 mb-0.5">
                           <CategoryTag category={block.category} />
+                          {block.work_type && (
+                            <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[var(--color-neutral-200)] text-[var(--color-text)]/60">
+                              {block.work_type === "fisico" ? "Físico" : "Técnico"}
+                            </span>
+                          )}
                           <p className="font-medium">{block.exercise_name_freetext}</p>
                         </div>
                         <p className="text-xs text-[var(--color-text)]/55">

@@ -2,17 +2,37 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button, Input, CategoryTag } from "./ui";
-import type { Block, SetLog } from "@/lib/types";
+import { Button, Input, Textarea, CategoryTag } from "./ui";
+import { PAIN_ZONES, type Block, type PainZoneKey, type SetLog } from "@/lib/types";
 import { parseRestSeconds, parseSetsCount, formatClock } from "@/lib/parseRest";
 import { estimateBlockMinutes, estimateSessionMinutes } from "@/lib/estimateTime";
+import { computeReadiness, type ReadinessInput } from "@/lib/readiness";
 import { Play, Pause, SkipForward, Rewind, FastForward, X, Check, Plus, Trash2, TriangleAlert } from "lucide-react";
+
+/** RPE real, dolor con zona y comentario de un bloque, capturados durante la sesión guiada. */
+type BlockFeedback = { rpe: string; pain: number; painZone: PainZoneKey | null };
+
+function emptyFeedback(block: Block): BlockFeedback {
+  return {
+    rpe: block.actual_rpe ?? "",
+    pain: block.pain_during ?? 0,
+    painZone: block.pain_zone ?? null,
+  };
+}
 
 type Props = {
   dayLabel: string;
   blocks: Block[];
+  athleteId: string;
   onClose: () => void;
   onFinished: () => void;
+};
+
+const EMPTY_READINESS: ReadinessInput = {
+  sleep_quality: null,
+  fatigue_general: null,
+  fatigue_fingers: null,
+  motivation: null,
 };
 
 const DEFAULT_REST = 90; // si el bloque no declara descanso interpretable
@@ -30,13 +50,22 @@ function initSetLogs(block: Block): SetLog[] {
   return Array.from({ length: n }, () => ({ reps: defaultReps(block), load: block.load ?? "", done: false }));
 }
 
-export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) {
+export function SessionPlayer({ dayLabel, blocks, athleteId, onClose, onFinished }: Props) {
   const exercises = useMemo(() => blocks.filter((b) => b.exercise_name_freetext), [blocks]);
+
+  // Se pide una sola vez, antes del primer ejercicio. Empieza cerrado (true = ya
+  // se resolvió) si no hay ejercicios para no bloquear una sesión vacía.
+  const [readinessOpen, setReadinessOpen] = useState(exercises.length > 0);
+  const [readiness, setReadiness] = useState<ReadinessInput>(EMPTY_READINESS);
 
   const [index, setIndex] = useState(0);
   const [logs, setLogs] = useState<Record<string, SetLog[]>>(() =>
     Object.fromEntries(exercises.map((b) => [b.id, initSetLogs(b)])),
   );
+  const [feedback, setFeedback] = useState<Record<string, BlockFeedback>>(() =>
+    Object.fromEntries(exercises.map((b) => [b.id, emptyFeedback(b)])),
+  );
+  const [sessionComment, setSessionComment] = useState("");
   // Descanso: null = no hay; number = segundos restantes. `restAdvances`
   // indica si al terminar el descanso hay que pasar al siguiente ejercicio
   // (descanso entre ejercicios) o quedarse en el mismo (descanso entre series).
@@ -95,6 +124,35 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
     setLogs((all) => ({ ...all, [blockId]: all[blockId].filter((_, i) => i !== setIdx) }));
   }
 
+  function updateFeedback(blockId: string, patch: Partial<BlockFeedback>) {
+    setFeedback((all) => ({ ...all, [blockId]: { ...all[blockId], ...patch } }));
+  }
+
+  function updateReadiness(patch: Partial<ReadinessInput>) {
+    setReadiness((r) => ({ ...r, ...patch }));
+  }
+
+  // Se guarda en paralelo, sin bloquear el arranque de la sesión: es una
+  // sugerencia informativa, no algo de lo que dependa el resto del flujo.
+  function closeReadiness(submit: boolean) {
+    setReadinessOpen(false);
+    if (!submit) return;
+    const { score, suggestion } = computeReadiness(readiness);
+    const supabase = createClient();
+    supabase
+      .from("session_checkins")
+      .insert({
+        athlete_id: athleteId,
+        day_id: exercises[0]?.day_id ?? null,
+        ...readiness,
+        readiness_score: score,
+        suggested_adjustment: suggestion,
+      })
+      .then(({ error }) => {
+        if (error) console.error("No se pudo guardar el check-in de disponibilidad:", error.message);
+      });
+  }
+
   // Marca una serie como completada. Si quedan series → descanso entre series
   // (se queda en el ejercicio). Si era la última → descanso entre ejercicios
   // (avanza), o pantalla final si es el último ejercicio.
@@ -130,13 +188,19 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
     setSaving(true);
     const supabase = createClient();
     const nowIso = new Date().toISOString();
+    const lastBlockId = exercises[exercises.length - 1]?.id;
     const updates = exercises.map((b) => {
       const setLogs = logs[b.id] ?? [];
       const doneSets = setLogs.filter((s) => s.done);
       const anyDone = doneSets.length > 0;
+      const fb = feedback[b.id];
       // Deriva los actual_* para la lógica de ajuste existente.
       const repsList = [...new Set(doneSets.map((s) => s.reps).filter(Boolean))];
       const loadList = [...new Set(doneSets.map((s) => s.load).filter(Boolean))];
+      // El comentario de la sesión (si se cargó) queda en el último bloque: no hay
+      // un lugar propio para "comentario de sesión" en el esquema, y es el punto
+      // natural donde el atleta lo escribió (pantalla de cierre).
+      const blockComment = b.id === lastBlockId && sessionComment.trim() ? sessionComment.trim() : b.comment;
       return supabase
         .from("blocks")
         .update({
@@ -146,6 +210,10 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
           actual_sets: anyDone ? String(doneSets.length) : b.actual_sets,
           actual_reps_or_time: repsList.length ? repsList.join(" / ") : b.actual_reps_or_time,
           actual_load: loadList.length ? loadList.join(" / ") : b.actual_load,
+          actual_rpe: fb?.rpe || b.actual_rpe,
+          pain_during: fb ? fb.pain : b.pain_during,
+          pain_zone: fb && fb.pain > 0 ? fb.painZone : null,
+          comment: blockComment,
         })
         .eq("id", b.id);
     });
@@ -177,8 +245,17 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {finished ? (
-          <FinishScreen total={exercises.length} completed={completedExercises} saving={saving} onFinish={finishSession} />
+        {readinessOpen ? (
+          <ReadinessScreen readiness={readiness} onChange={updateReadiness} onSubmit={() => closeReadiness(true)} onSkip={() => closeReadiness(false)} />
+        ) : finished ? (
+          <FinishScreen
+            total={exercises.length}
+            completed={completedExercises}
+            saving={saving}
+            comment={sessionComment}
+            onCommentChange={setSessionComment}
+            onFinish={finishSession}
+          />
         ) : resting ? (
           <RestScreen
             secondsLeft={restLeft!}
@@ -188,6 +265,11 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
             onTogglePause={() => setPaused((p) => !p)}
             onEnd={endRest}
             onAdjust={adjustRest}
+            // El descanso entre ejercicios (no entre series) es el momento natural
+            // para pedir feedback del ejercicio que se acaba de terminar.
+            finishedExercise={restAdvances && current ? current : null}
+            feedback={current ? feedback[current.id] : undefined}
+            onFeedbackChange={current ? (patch) => updateFeedback(current.id, patch) : undefined}
           />
         ) : current ? (
           <ExerciseScreen
@@ -195,6 +277,8 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
             index={index}
             total={exercises.length}
             sets={logs[current.id] ?? []}
+            feedback={feedback[current.id]}
+            onFeedbackChange={(patch) => updateFeedback(current.id, patch)}
             onSetField={(i, patch) => updateSet(current.id, i, patch)}
             onCompleteSet={completeSet}
             onAddSet={() => addSet(current.id)}
@@ -203,7 +287,7 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
         ) : null}
       </div>
 
-      {!finished && !resting && current && (
+      {!readinessOpen && !finished && !resting && current && (
         <div className="px-4 py-3 border-t border-[var(--color-divider)] flex items-center gap-2">
           {index > 0 && (
             <Button variant="secondary" onClick={() => setIndex((i) => Math.max(0, i - 1))}>
@@ -225,11 +309,91 @@ export function SessionPlayer({ dayLabel, blocks, onClose, onFinished }: Props) 
   );
 }
 
+const READINESS_LEVELS: [number, string][] = [
+  [2, "Muy mal"],
+  [4, "Regular"],
+  [6, "Normal"],
+  [8, "Bien"],
+  [10, "Genial"],
+];
+
+function ReadinessRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number | null;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div className="mb-4">
+      <p className="text-sm mb-1.5">{label}</p>
+      <div className="grid grid-cols-5 gap-1.5">
+        {READINESS_LEVELS.map(([n, levelLabel]) => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => onChange(n)}
+            className={`py-2 rounded-lg text-[11px] leading-tight ${
+              value === n
+                ? "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
+                : "border border-[var(--color-divider)] text-[var(--color-text)]/60 hover:border-[var(--color-accent-500)]"
+            }`}
+          >
+            {levelLabel}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Check-in de disponibilidad antes de empezar. Pedido de Rorro ("puntaje que
+ * ayuda a graduar la sesión"), pensado para completarse en pocos segundos:
+ * 4 filas de un tap cada una, y "Saltar" siempre visible y sin fricción —
+ * Cris advirtió sobre su propio registro diario opcional que "medio pajero,
+ * pocos lo completan", así que esto nunca debe sentirse obligatorio.
+ */
+function ReadinessScreen({
+  readiness,
+  onChange,
+  onSubmit,
+  onSkip,
+}: {
+  readiness: ReadinessInput;
+  onChange: (patch: Partial<ReadinessInput>) => void;
+  onSubmit: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <div className="px-5 py-8 max-w-lg mx-auto">
+      <h2 className="text-xl font-semibold mb-1">Antes de arrancar</h2>
+      <p className="text-sm text-[var(--color-text)]/60 mb-6">¿Cómo llegás hoy? Toca una opción por fila (opcional).</p>
+
+      <ReadinessRow label="Sueño" value={readiness.sleep_quality} onChange={(v) => onChange({ sleep_quality: v })} />
+      <ReadinessRow label="Fatiga general" value={readiness.fatigue_general} onChange={(v) => onChange({ fatigue_general: v })} />
+      <ReadinessRow label="Fatiga de dedos" value={readiness.fatigue_fingers} onChange={(v) => onChange({ fatigue_fingers: v })} />
+      <ReadinessRow label="Motivación" value={readiness.motivation} onChange={(v) => onChange({ motivation: v })} />
+
+      <Button className="w-full justify-center mt-2" onClick={onSubmit}>
+        Empezar sesión
+      </Button>
+      <button onClick={onSkip} className="w-full text-center mt-3 text-sm text-[var(--color-text)]/50 hover:text-[var(--color-text)]">
+        Saltar
+      </button>
+    </div>
+  );
+}
+
 function ExerciseScreen({
   block,
   index,
   total,
   sets,
+  feedback,
+  onFeedbackChange,
   onSetField,
   onCompleteSet,
   onAddSet,
@@ -239,6 +403,8 @@ function ExerciseScreen({
   index: number;
   total: number;
   sets: SetLog[];
+  feedback: BlockFeedback;
+  onFeedbackChange: (patch: Partial<BlockFeedback>) => void;
   onSetField: (setIdx: number, patch: Partial<SetLog>) => void;
   onCompleteSet: (setIdx: number) => void;
   onAddSet: () => void;
@@ -256,6 +422,11 @@ function ExerciseScreen({
           Ejercicio {index + 1} de {total}
         </p>
         <CategoryTag category={block.category} />
+        {block.work_type && (
+          <span className="text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[var(--color-neutral-200)] text-[var(--color-text)]/60">
+            {block.work_type === "fisico" ? "Físico" : "Técnico"}
+          </span>
+        )}
       </div>
       <h2 className="text-2xl font-semibold leading-tight mb-2 whitespace-pre-line">{block.exercise_name_freetext}</h2>
       {meta && <p className="text-sm text-[var(--color-text)]/70 mb-3">{meta}</p>}
@@ -332,6 +503,93 @@ function ExerciseScreen({
       <button onClick={onAddSet} className="mt-3 flex items-center gap-1 text-sm text-[var(--color-accent-700)] hover:underline">
         <Plus size={14} strokeWidth={2.75} aria-hidden="true" /> Agregar serie
       </button>
+
+      <div className="mt-5 pt-4 border-t border-[var(--color-divider)]">
+        <ExerciseFeedback feedback={feedback} onChange={onFeedbackChange} />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * RPE real, dolor 0-10 y zona (si dolió). Se muestra tanto en el ejercicio en
+ * curso como en el descanso posterior, que es el momento donde Cris pidió
+ * capturarlo ("evita el sesgo de preguntar dos semanas después").
+ */
+function ExerciseFeedback({
+  label,
+  feedback,
+  onChange,
+}: {
+  label?: string;
+  feedback: BlockFeedback;
+  onChange: (patch: Partial<BlockFeedback>) => void;
+}) {
+  return (
+    <div>
+      {label && <p className="text-sm font-medium mb-2">{label}</p>}
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <span className="text-xs text-[var(--color-text)]/60 shrink-0">RPE real</span>
+        <div className="flex gap-1 flex-wrap justify-end">
+          {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => onChange({ rpe: String(n) })}
+              className={`w-7 h-7 rounded-full text-xs flex items-center justify-center ${
+                feedback.rpe === String(n)
+                  ? "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
+                  : "border border-[var(--color-divider)] text-[var(--color-text)]/60 hover:border-[var(--color-accent-500)]"
+              }`}
+              aria-label={`RPE ${n}`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <span className="text-xs text-[var(--color-text)]/60 shrink-0">¿Molestó algo? (0-10)</span>
+        <div className="flex gap-1 flex-wrap justify-end">
+          {Array.from({ length: 11 }, (_, i) => i).map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => onChange({ pain: n, painZone: n === 0 ? null : feedback.painZone })}
+              className={`w-6 h-6 rounded-full text-[10px] flex items-center justify-center ${
+                feedback.pain === n
+                  ? n >= 5
+                    ? "bg-red-500 text-white"
+                    : "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
+                  : "border border-[var(--color-divider)] text-[var(--color-text)]/60 hover:border-[var(--color-accent-500)]"
+              }`}
+              aria-label={`Dolor ${n}`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {feedback.pain > 0 && (
+        <div className="flex flex-wrap gap-1.5 justify-end">
+          {PAIN_ZONES.map(([key, zoneLabel]) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => onChange({ painZone: key })}
+              className={`text-[11px] px-2 py-1 rounded-full border ${
+                feedback.painZone === key
+                  ? "border-red-400 bg-red-100 text-red-700"
+                  : "border-[var(--color-divider)] text-[var(--color-text)]/60"
+              }`}
+            >
+              {zoneLabel}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -344,6 +602,9 @@ function RestScreen({
   onTogglePause,
   onEnd,
   onAdjust,
+  finishedExercise,
+  feedback,
+  onFeedbackChange,
 }: {
   secondsLeft: number;
   secondsTotal: number;
@@ -352,6 +613,10 @@ function RestScreen({
   onTogglePause: () => void;
   onEnd: () => void;
   onAdjust: (delta: number) => void;
+  /** Si no es null, el descanso es entre ejercicios: se pide feedback de este. */
+  finishedExercise: Block | null;
+  feedback?: BlockFeedback;
+  onFeedbackChange?: (patch: Partial<BlockFeedback>) => void;
 }) {
   const pct = secondsTotal > 0 ? Math.round(((secondsTotal - secondsLeft) / secondsTotal) * 100) : 0;
   return (
@@ -384,6 +649,16 @@ function RestScreen({
       <button onClick={onEnd} className="mt-4 text-sm text-[var(--color-accent-700)] hover:underline">
         Saltar descanso &rarr;
       </button>
+
+      {finishedExercise && feedback && onFeedbackChange && (
+        <div className="w-full max-w-xs mt-8 pt-6 border-t border-[var(--color-divider)] text-left">
+          <ExerciseFeedback
+            label={`¿Cómo estuvo "${finishedExercise.exercise_name_freetext}"?`}
+            feedback={feedback}
+            onChange={onFeedbackChange}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -392,11 +667,15 @@ function FinishScreen({
   total,
   completed,
   saving,
+  comment,
+  onCommentChange,
   onFinish,
 }: {
   total: number;
   completed: number;
   saving: boolean;
+  comment: string;
+  onCommentChange: (v: string) => void;
   onFinish: () => void;
 }) {
   return (
@@ -405,9 +684,18 @@ function FinishScreen({
         <Check size={30} strokeWidth={2.75} />
       </div>
       <h2 className="text-xl font-semibold mb-2">¡Sesión completa!</h2>
-      <p className="text-sm text-[var(--color-text)]/60 mb-8">
+      <p className="text-sm text-[var(--color-text)]/60 mb-6">
         Completaste {completed} de {total} ejercicios.
       </p>
+      <div className="w-full text-left mb-6">
+        <label className="text-xs text-[var(--color-text)]/60 mb-1 block">¿Algo para contarle a tu entrenador? (opcional)</label>
+        <Textarea
+          value={comment}
+          onChange={(e) => onCommentChange(e.target.value)}
+          placeholder="Cómo te sentiste, algo que notaste, una duda..."
+          className="!min-h-[70px]"
+        />
+      </div>
       <Button className="w-full justify-center" onClick={onFinish} disabled={saving}>
         {saving ? "Guardando..." : "Guardar y salir"}
       </Button>

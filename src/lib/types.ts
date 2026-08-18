@@ -257,6 +257,7 @@ export type TemplateBlock = {
   rest: string | null;
   kinesio_notes: string | null;
   routine_name: string | null;
+  work_type: "fisico" | "tecnico" | null;
   position: number;
 };
 
@@ -302,6 +303,10 @@ export type Block = {
   /** Detalle real por serie, registrado en la sesión guiada (punto 3). */
   set_logs: SetLog[];
   pain_during: number | null;
+  /** Zona del dolor reportado en pain_during, misma taxonomía que PAIN_ZONES. */
+  pain_zone: PainZoneKey | null;
+  /** Físico vs. técnico/táctico en el muro, para separar secciones dentro de un día (pedido de Rorro). */
+  work_type: "fisico" | "tecnico" | null;
   comment: string | null;
   completed: boolean;
   completed_at: string | null;
@@ -385,6 +390,8 @@ export const PAIN_ZONES = [
   ["knee_r", "Rodilla der"],
 ] as const;
 
+export type PainZoneKey = (typeof PAIN_ZONES)[number][0];
+
 export type CheckIn = {
   id: string;
   athlete_id: string;
@@ -395,6 +402,42 @@ export type CheckIn = {
   adherence_pct: number | null;
   pain_by_zone: Record<string, number>;
   comment: string | null;
+  created_at: string;
+};
+
+// Fase 39: check-in de disponibilidad pre-sesión (readiness) ----------------
+export type SessionCheckIn = {
+  id: string;
+  athlete_id: string;
+  day_id: string | null;
+  checkin_at: string;
+  sleep_hours: number | null;
+  sleep_quality: number | null;
+  fatigue_general: number | null;
+  fatigue_fingers: number | null;
+  fatigue_upper: number | null;
+  motivation: number | null;
+  readiness_score: number | null;
+  suggested_adjustment: string | null;
+  note: string | null;
+  created_at: string;
+};
+
+// Fase 40: alertas al entrenador ---------------------------------------------
+export type CoachAlertKind = "pain_checkin" | "pain_block" | "low_readiness";
+export type CoachAlertSeverity = "warn" | "critical";
+
+export type CoachAlert = {
+  id: string;
+  athlete_id: string;
+  kind: CoachAlertKind;
+  severity: CoachAlertSeverity;
+  title: string;
+  detail: string | null;
+  source_table: string | null;
+  source_id: string | null;
+  resolved_at: string | null;
+  resolved_by: string | null;
   created_at: string;
 };
 

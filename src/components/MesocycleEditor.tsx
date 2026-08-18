@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "./AthleteProvider";
 import { Card, Field, Input, Select, Textarea, Button, Modal, CategoryTag } from "./ui";
 import { DAYS_OF_WEEK, EXERCISE_CATEGORIES, type Exercise, type Routine, type RoutineItem } from "@/lib/types";
+import { defaultWorkType } from "@/lib/planner/knowledge/exerciseMeta";
 import { Save, Copy, Files, Trash2, ChevronDown, ChevronUp, CopyPlus, GripVertical, Layers } from "lucide-react";
 import { DndContext, PointerSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, arrayMove, rectSortingStrategy, useSortable } from "@dnd-kit/sortable";
@@ -25,6 +26,8 @@ type BlockDraft = {
   kinesio_notes: string;
   /** Nombre de la Rutina de origen (ej. "General Warm Up"); null si es un ejercicio suelto. Blocks consecutivos con el mismo valor se agrupan visualmente. */
   routine_name: string | null;
+  /** Físico vs. técnico/táctico en el muro (Fase 1.3). Se autocompleta al elegir ejercicio, editable a mano. */
+  work_type: "fisico" | "tecnico" | null;
 };
 
 /** Agrupa bloques consecutivos que comparten el mismo routine_name para mostrarlos como una sola unidad colapsable. */
@@ -128,6 +131,7 @@ function emptyBlock(): BlockDraft {
     rest: "",
     kinesio_notes: "",
     routine_name: null,
+    work_type: null,
   };
 }
 
@@ -258,6 +262,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                 rest: b.rest ?? "",
                 kinesio_notes: b.kinesio_notes ?? "",
                 routine_name: b.routine_name ?? null,
+                work_type: b.work_type ?? null,
               })),
             });
           }
@@ -316,6 +321,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         rest: it.rest ?? "",
         kinesio_notes: "",
         routine_name: routineName,
+        work_type: ex ? defaultWorkType(ex) : null,
       };
     });
   }
@@ -426,6 +432,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         exercise_id: match.id,
         exercise_name_freetext: match.name,
         category: match.category,
+        work_type: defaultWorkType(match),
       });
     } else {
       updateBlock(dayIdx, blockIdx, { exercise_id: null });
@@ -525,6 +532,7 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
           rest: b.rest || null,
           kinesio_notes: b.kinesio_notes || null,
           routine_name: b.routine_name || null,
+          work_type: b.work_type || null,
           position: pos,
         })),
       ),
@@ -817,6 +825,24 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
                                   <option key={c}>{c}</option>
                                 ))}
                               </Select>
+                            </Field>
+                            <Field label="Tipo de trabajo">
+                              <div className="inline-flex rounded-full border border-[var(--color-divider)] overflow-hidden">
+                                {(["fisico", "tecnico"] as const).map((wt, i) => (
+                                  <button
+                                    key={wt}
+                                    type="button"
+                                    onClick={() => updateBlock(dayIdx, blockIdx, { work_type: wt })}
+                                    className={`px-3 py-1.5 text-xs ${i > 0 ? "border-l border-[var(--color-divider)]" : ""} ${
+                                      block.work_type === wt
+                                        ? "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
+                                        : "text-[var(--color-text)]/70 hover:bg-[var(--color-text)]/[0.07]"
+                                    }`}
+                                  >
+                                    {wt === "fisico" ? "Físico" : "Técnico (muro)"}
+                                  </button>
+                                ))}
+                              </div>
                             </Field>
                             <Field label="Ejercicio">
                               <Input

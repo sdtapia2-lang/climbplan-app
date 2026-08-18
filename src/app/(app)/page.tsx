@@ -6,9 +6,9 @@ import { createClient } from "@/lib/supabase/client";
 import { useAthlete } from "@/components/AthleteProvider";
 import { useProfile, isAdmin, isCoach, canManageOwnMesocycle } from "@/components/ProfileProvider";
 import { Card, Button, Spinner, Badge } from "@/components/ui";
-import type { Mesocycle, Week } from "@/lib/types";
+import type { CoachAlert, Mesocycle, Week } from "@/lib/types";
 import { computeAdherence } from "@/lib/adherence";
-import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge } from "lucide-react";
+import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge, TriangleAlert, X } from "lucide-react";
 
 const iconClass = "inline-block align-[-3px] mr-1";
 
@@ -29,6 +29,7 @@ function CoachDashboard() {
   const { athletes, setAthleteId } = useAthlete();
   const [loading, setLoading] = useState(true);
   const [summaries, setSummaries] = useState<Record<string, AthleteSummary>>({});
+  const [alerts, setAlerts] = useState<CoachAlert[]>([]);
 
   useEffect(() => {
     if (athletes.length === 0) {
@@ -63,11 +64,39 @@ function CoachDashboard() {
         };
       }
       setSummaries(byAthlete);
+
+      const { data: alertRows } = await supabase
+        .from("coach_alerts")
+        .select("*")
+        .in(
+          "athlete_id",
+          athletes.map((a) => a.id),
+        )
+        .is("resolved_at", null)
+        .order("severity", { ascending: false })
+        .order("created_at", { ascending: false });
+      setAlerts((alertRows as CoachAlert[]) ?? []);
+
       setLoading(false);
     })();
   }, [athletes]);
 
+  async function resolveAlert(id: string) {
+    setAlerts((all) => all.filter((a) => a.id !== id));
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    await supabase
+      .from("coach_alerts")
+      .update({ resolved_at: new Date().toISOString(), resolved_by: user?.id ?? null })
+      .eq("id", id);
+  }
+
   if (loading) return <Spinner />;
+
+  const alertsByAthlete = new Set(alerts.map((a) => a.athlete_id));
+  const athleteNameById = new Map(athletes.map((a) => [a.id, a.name]));
 
   const activeCount = Object.values(summaries).filter((s) => s.mesocycle).length;
   const withAdherence = Object.values(summaries).filter((s) => s.adherencePct !== null);
@@ -79,6 +108,37 @@ function CoachDashboard() {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
+
+      {alerts.length > 0 && (
+        <Card className="mb-6 border-red-300">
+          <p className="flex items-center gap-1.5 text-sm font-medium text-red-700 mb-3">
+            <TriangleAlert size={15} strokeWidth={2.75} aria-hidden="true" />
+            Atención ({alerts.length})
+          </p>
+          <div className="space-y-2">
+            {alerts.map((a) => (
+              <div key={a.id} className="flex items-start justify-between gap-3 text-sm">
+                <div className="min-w-0">
+                  <p className="truncate">
+                    <span className="font-medium">{athleteNameById.get(a.athlete_id) ?? "Atleta"}</span>
+                    {" — "}
+                    {a.title}
+                  </p>
+                  {a.detail && <p className="text-xs text-[var(--color-text)]/55 truncate">{a.detail}</p>}
+                </div>
+                <button
+                  onClick={() => resolveAlert(a.id)}
+                  className="shrink-0 text-[var(--color-text)]/40 hover:text-[var(--color-text)] p-1"
+                  aria-label="Resolver"
+                  title="Marcar como resuelto"
+                >
+                  <X size={15} strokeWidth={2.5} aria-hidden="true" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card className="text-center">
@@ -113,7 +173,12 @@ function CoachDashboard() {
             return (
               <Link key={a.id} href={`/atleta/${a.id}`} onClick={() => setAthleteId(a.id)}>
                 <Card className="h-full hover:shadow-[var(--shadow-organic-md)] transition-shadow">
-                  <p className="font-medium mb-2">{a.name}</p>
+                  <p className="font-medium mb-2 flex items-center gap-1.5">
+                    {a.name}
+                    {alertsByAthlete.has(a.id) && (
+                      <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" title="Tiene alertas sin resolver" />
+                    )}
+                  </p>
                   {s?.mesocycle ? (
                     <>
                       <p className="text-sm text-[var(--color-text)]/70 mb-1 truncate">{s.mesocycle.name}</p>

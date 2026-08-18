@@ -156,3 +156,17 @@ export function classifyExercise(
 
   return { zones: [...zones], lightZones: [...lightZones], tags: [...tags] };
 }
+
+/**
+ * Físico vs. técnico/táctico en el muro (Fase 1.3, pedido de Rorro). Se usa
+ * como valor por defecto al elegir un ejercicio -- el entrenador lo puede
+ * pisar a mano. El tag "climbing" (ver CATEGORY_BASE) ya marca justo las
+ * categorías que se hacen escalando en el muro (Aerobic Base, Power
+ * Endurance, Strength and Power); el resto (Fingerboard, Conditioning,
+ * Flexibility, Otro) es trabajo físico fuera del muro.
+ */
+export function defaultWorkType(
+  exercise: Pick<Exercise, "name" | "category" | "muscle_groups">,
+): "fisico" | "tecnico" {
+  return classifyExercise(exercise).tags.includes("climbing") ? "tecnico" : "fisico";
+}
