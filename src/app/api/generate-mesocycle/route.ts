@@ -181,7 +181,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado." }, { status: 401 });
   }
 
-  const { data: callerProfile } = await supabase.from("profiles").select("role, athlete_id").eq("id", user.id).single();
+  const { data: callerProfile } = await supabase
+    .from("profiles")
+    .select("role, athlete_id, restricted")
+    .eq("id", user.id)
+    .single();
   if (!callerProfile) {
     return NextResponse.json({ error: "Perfil no encontrado." }, { status: 403 });
   }
@@ -199,7 +203,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Falta athleteId." }, { status: 400 });
   }
 
-  const isSelf = callerProfile.athlete_id === athleteId;
+  // Un escalador restringido no controla su propia planificación (ver
+  // enforce_restricted_block_edit en phase4_escalador_libre.sql) -- isSelf
+  // por sí solo dejaría que se saltee a su entrenador generando su propio
+  // plan por API directamente.
+  const isSelf = callerProfile.athlete_id === athleteId && !callerProfile.restricted;
   const isAdmin = callerProfile.role === "admin";
   if (!isSelf && !isAdmin) {
     return NextResponse.json({ error: "No autorizado para generar el plan de este atleta." }, { status: 403 });
