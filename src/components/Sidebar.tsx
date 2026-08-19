@@ -183,7 +183,7 @@ export function Sidebar() {
             {!collapsed && (
               <button
                 onClick={() => toggleGroup(group.label)}
-                className="flex items-center justify-between w-full px-2.5 mb-0.5 text-[10px] tracking-[0.08em] uppercase text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70"
+                className="flex items-center justify-between w-full px-2.5 py-1.5 mb-0.5 text-[10px] tracking-[0.08em] uppercase text-[var(--color-text)]/45 hover:text-[var(--color-text)]/70"
                 aria-expanded={isGroupOpen}
               >
                 <span>{group.label}</span>
