@@ -235,13 +235,46 @@ export function MesocycleEditor({ mesocycleId }: { mesocycleId?: string }) {
         const loadedWeeks: WeekDraft[] = [];
         const ids = { weeks: new Set<string>(), days: new Set<string>(), blocks: new Set<string>() };
         const executed = new Map<string, string>();
+
+        // Antes: una query de days por semana + una de blocks por día, todas
+        // secuenciales (await dentro de for anidados) -- ~34 round-trips
+        // seriados para un mesociclo de 4 semanas x 7 días, cada uno sumando
+        // latencia de red. Trae days y blocks de TODAS las semanas en 2
+        // queries con .in() y agrupa en memoria en vez de por-semana/por-día.
+        const weekIds = weekRows.map((w) => w.id);
+        const { data: allDayRowsRaw } = await supabase
+          .from("days")
+          .select("*")
+          .in("week_id", weekIds)
+          .order("position");
+        const allDayRows = allDayRowsRaw ?? [];
+        type DayRow = (typeof allDayRows)[number];
+        const dayIds = allDayRows.map((d) => d.id);
+
+        const { data: allBlockRowsRaw } = dayIds.length
+          ? await supabase.from("blocks").select("*").in("day_id", dayIds).order("position")
+          : { data: null };
+        const allBlockRows = allBlockRowsRaw ?? [];
+        type BlockRow = (typeof allBlockRows)[number];
+
+        const daysByWeek = new Map<string, DayRow[]>();
+        for (const d of allDayRows) {
+          if (!daysByWeek.has(d.week_id)) daysByWeek.set(d.week_id, []);
+          daysByWeek.get(d.week_id)!.push(d);
+        }
+        const blocksByDay = new Map<string, BlockRow[]>();
+        for (const b of allBlockRows) {
+          if (!blocksByDay.has(b.day_id)) blocksByDay.set(b.day_id, []);
+          blocksByDay.get(b.day_id)!.push(b);
+        }
+
         for (const w of weekRows) {
           ids.weeks.add(w.id);
-          const { data: dayRows } = await supabase.from("days").select("*").eq("week_id", w.id).order("position");
+          const dayRows = daysByWeek.get(w.id);
           const days: DayDraft[] = [];
           for (const d of dayRows ?? []) {
             ids.days.add(d.id);
-            const { data: blockRows } = await supabase.from("blocks").select("*").eq("day_id", d.id).order("position");
+            const blockRows = blocksByDay.get(d.id);
             for (const b of blockRows ?? []) {
               ids.blocks.add(b.id);
               if (hasExecutionData(b)) {
