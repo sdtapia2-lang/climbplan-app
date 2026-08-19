@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" font-family="Arial, sans-serif">
+  <!-- Lienzo 4:3 (1200 x 900) -->
+  <rect width="1200" height="900" fill="#f3ede4"/>
+
+  <!-- Margen seguro (subir la figura dentro de este recuadro) -->
+  <rect x="90" y="90" width="1020" height="720" fill="none" stroke="#d67f48" stroke-width="3" stroke-dasharray="12 10"/>
+
+  <!-- Silueta de referencia (escalador colgando de una regleta) -->
+  <g stroke="#8c491a" stroke-width="10" stroke-linecap="round" fill="none">
+    <!-- barra/regleta -->
+    <line x1="470" y1="250" x2="730" y2="250" stroke="#402310" stroke-width="18"/>
+    <!-- brazos -->
+    <line x1="520" y1="255" x2="540" y2="360"/>
+    <line x1="680" y1="255" x2="660" y2="360"/>
+    <!-- torso -->
+    <line x1="540" y1="360" x2="560" y2="520"/>
+    <line x1="660" y1="360" x2="640" y2="520"/>
+    <line x1="560" y1="440" x2="640" y2="440"/>
+    <!-- cadera -->
+    <line x1="560" y1="520" x2="640" y2="520"/>
+    <!-- piernas -->
+    <line x1="575" y1="520" x2="565" y2="700"/>
+    <line x1="625" y1="520" x2="635" y2="700"/>
+    <!-- cabeza -->
+    <circle cx="600" cy="300" r="34" fill="#8c491a" stroke="none"/>
+  </g>
+
+  <!-- Etiquetas de guía -->
+  <text x="100" y="70" fill="#b2622d" font-size="26" font-weight="bold">Plantilla de referencia — formato ideal</text>
+  <text x="100" y="128" fill="#8c491a" font-size="20">Margen seguro: dejá aire alrededor de la figura</text>
+
+  <text x="600" y="855" fill="#402310" font-size="24" text-anchor="middle" font-weight="bold">1200 × 900 px · relación 4:3 · fondo claro y uniforme</text>
+
+  <!-- Cotas -->
+  <text x="600" y="878" fill="#8c491a" font-size="18" text-anchor="middle">WebP o JPG · &lt; 250 KB · nombre = ID del ejercicio (columna ID de la planilla), ej. FB0001.webp</text>
+</svg>

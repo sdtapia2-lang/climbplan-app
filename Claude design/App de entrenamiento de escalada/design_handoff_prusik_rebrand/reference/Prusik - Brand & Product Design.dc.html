@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <title>Prusik — Diseño de marca y producto</title>
+  <link rel="stylesheet" href="_ds/organic-bc6d5372-5ebb-49bb-baea-00dab42e1673/styles.css">
+  <script src="_ds/organic-bc6d5372-5ebb-49bb-baea-00dab42e1673/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; }
+    a { color: var(--color-accent-700); }
+    a:hover { color: var(--color-accent); }
+  </style>
+</helmet>
+
+<div style="background:var(--color-bg);min-height:100vh;padding:56px 64px 120px;font-family:var(--font-body);color:var(--color-text);">
+
+  <div style="max-width:900px;margin-bottom:40px;">
+    <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:8px;">Diseño de marca y producto</div>
+    <p style="font-size:14.5px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 70%, transparent);margin:0;">
+      Reconstrucción de ClimbPlan bajo una identidad propia — <strong>Prusik</strong> — usando el sistema Organic. Vista de administrador (ve todo). Escritorio para planificar y revisar; celular para lo que pasa en el gimnasio: registrar series y hacer el check-in.
+    </p>
+  </div>
+
+  <!-- ═══════════════ BRAND ═══════════════ -->
+  <div style="background:var(--color-surface);border-radius:32px;padding:40px 44px;margin-bottom:56px;box-shadow:var(--shadow-md);">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:40px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:22px;">
+        <img src="assets/prusik-logo.png" alt="Logo Prusik — nudo en forma de K" style="width:88px;height:88px;border-radius:26px;object-fit:cover;flex:none;box-shadow:var(--shadow-sm);"/>
+        <div>
+          <div style="font-family:var(--font-heading);font-size:44px;color:var(--color-text);line-height:1;">Prusik</div>
+          <div style="font-size:15px;color:var(--color-accent-700);margin-top:8px;">Tu cordada perfecta para progresar.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--color-accent-500);box-shadow:var(--shadow-sm);"></div>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--color-accent-2-500);box-shadow:var(--shadow-sm);"></div>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--color-neutral-800);box-shadow:var(--shadow-sm);"></div>
+        <div style="font-family:var(--font-heading);font-size:22px;margin-left:14px;">Aa</div>
+        <div style="font-family:var(--font-body);font-size:22px;font-weight:700;">Aa</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:32px;padding-top:28px;border-top:1px solid var(--color-divider);">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:6px;">Nombre</div>
+        <p style="font-size:13.5px;line-height:1.55;margin:0;opacity:0.85;">"Prusik" — el nudo que un escalador ata a la cuerda fija para asegurar cada movimiento de ascenso. Así es la app: el nudo que te sostiene y te hace avanzar, entrenamiento tras entrenamiento.</p>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:6px;">Tono</div>
+        <p style="font-size:13.5px;line-height:1.55;margin:0;opacity:0.85;">Directo y técnico, pero cálido — como un compañero de cordada que lleva la planilla. Sin gamificación ni urgencia artificial.</p>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:6px;">Marca</div>
+        <p style="font-size:13.5px;line-height:1.55;margin:0;opacity:0.85;">El nudo prusik dibujado como una K — la letra inicial tejida en cuerda. Nada de picos ni tipografías de montaña genéricas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ DESKTOP ═══════════════ -->
+  <div data-screen-label="Escritorio" style="font-family:var(--font-heading);font-size:22px;margin-bottom:6px;">Escritorio — planificación y seguimiento</div>
+  <p style="font-size:13.5px;opacity:0.7;margin:0 0 24px;">Dashboard del administrador, armado de mesociclos, catálogo, evaluación y analítica.</p>
+
+  <div style="display:flex;gap:44px;align-items:flex-start;overflow-x:visible;margin-bottom:64px;">
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Dashboard</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/dashboard" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Dashboard" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <h1 style="font-size:26px;margin:0 0 2px;">Panel general</h1>
+            <p style="font-size:13px;opacity:0.65;margin:0 0 22px;">Vista de administrador — todos los atletas</p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px;">
+              <sc-for list="{{ roster }}" as="ath" hint-placeholder-count="2">
+                <div class="card elev-sm">
+                  <div style="display:flex;align-items:center;justify-content:between;gap:12px;">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--color-accent-300);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:15px;color:var(--color-accent-800);">{{ ath.initial }}</div>
+                    <div style="flex:1;">
+                      <div class="card-title">{{ ath.name }}</div>
+                      <div class="card-meta">{{ ath.week }} · {{ ath.meso }}</div>
+                    </div>
+                    <span class="tag tag-accent">{{ ath.status }}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                    <span class="tag tag-accent-2">{{ ath.phase }}</span>
+                    <div style="flex:1;height:6px;border-radius:999px;background:var(--color-neutral-200);overflow:hidden;">
+                      <div style="height:100%;border-radius:999px;background:var(--color-accent-500);width:{{ ath.adherence }}%;"></div>
+                    </div>
+                    <span style="font-size:11.5px;opacity:0.65;">{{ ath.adherence }}%</span>
+                  </div>
+                  <a href="#" style="font-size:12.5px;text-decoration:none;">Ver mesociclo →</a>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:28px;color:var(--color-accent-700);">14</div>
+                <div class="card-body" style="flex:none;">evaluaciones registradas</div>
+              </div>
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:28px;color:var(--color-accent-700);">9</div>
+                <div class="card-body" style="flex:none;">check-ins esta semana</div>
+              </div>
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:28px;color:var(--color-accent-700);">85%</div>
+                <div class="card-body" style="flex:none;">adherencia promedio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Mesociclo — semana</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/mesociclo" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Mesociclo" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div>
+                <h1 style="font-size:24px;margin:0 0 4px;">Bloque Fuerza-Dedos — Semana 3</h1>
+                <div style="display:flex;gap:8px;">
+                  <span class="tag tag-accent-2">Fuerza Máxima</span>
+                  <span class="tag tag-accent">Activo</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-secondary">Copiar semana →</button>
+                <button class="btn btn-primary">Guardar todo</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:20px;">
+              <sc-for list="{{ weekDays }}" as="day" hint-placeholder-count="7">
+                <div style="background:var(--color-surface);border-radius:18px;padding:12px;min-height:220px;">
+                  <div style="font-family:var(--font-heading);font-size:13px;margin-bottom:2px;">{{ day.name }}</div>
+                  <sc-if value="{{ day.isRest }}" hint-placeholder-val="{{ false }}">
+                    <span class="tag tag-neutral" style="margin-top:6px;">Descanso</span>
+                  </sc-if>
+                  <sc-if value="{{ day.hasFocus }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:11px;opacity:0.6;margin-bottom:8px;">{{ day.focus }}</div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                      <sc-for list="{{ day.blocks }}" as="block" hint-placeholder-count="2">
+                        <div style="background:var(--color-bg);border-radius:10px;padding:8px 9px;">
+                          <div style="font-size:11.5px;font-weight:600;line-height:1.25;">{{ block.title }}</div>
+                          <div style="font-size:10.5px;opacity:0.6;">{{ block.meta }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Catálogo de ejercicios</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/catalogo" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Catálogo" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+              <h1 style="font-size:24px;margin:0;">Catálogo de ejercicios</h1>
+              <button class="btn btn-primary">+ Nuevo</button>
+            </div>
+            <div style="display:flex;gap:10px;margin-bottom:20px;">
+              <input class="input" placeholder="Buscar..." style="flex:1;" />
+              <select class="input" style="width:220px;"><option>Todas las categorías</option></select>
+              <select class="input" style="width:180px;"><option>Todo equipo</option></select>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">
+              <sc-for list="{{ catalogExercises }}" as="ex" hint-placeholder-count="6">
+                <div class="card elev-sm">
+                  <div style="display:flex;justify-content:space-between;gap:8px;">
+                    <div class="card-title" style="font-size:15px;">{{ ex.name }}</div>
+                    <sc-if value="{{ ex.benchmark }}" hint-placeholder-val="{{ false }}">
+                      <span class="tag tag-accent">Test</span>
+                    </sc-if>
+                  </div>
+                  <span class="tag tag-neutral" style="align-self:flex-start;">{{ ex.category }}</span>
+                  <p class="card-body">{{ ex.meta }}</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px;">
+                    <sc-for list="{{ ex.tags }}" as="t" hint-placeholder-count="1">
+                      <span class="tag tag-accent-2">{{ t }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Evaluación — Fuerza / Dedos</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/evaluacion" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Evaluación" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <h1 style="font-size:24px;margin:0 0 2px;">Evaluación — Seba</h1>
+            <p style="font-size:13px;opacity:0.65;margin:0 0 16px;">13 jul 2026</p>
+            <div class="seg" style="margin-bottom:20px;">
+              <label class="seg-opt"><input type="radio" name="tab" /><span>General</span></label>
+              <label class="seg-opt"><input type="radio" name="tab" /><span>Salud</span></label>
+              <label class="seg-opt"><input type="radio" name="tab" /><span>Movilidad</span></label>
+              <label class="seg-opt"><input type="radio" name="tab" checked="{{ true }}" /><span>Fuerza / Dedos</span></label>
+              <label class="seg-opt"><input type="radio" name="tab" /><span>Resistencia</span></label>
+              <label class="seg-opt"><input type="radio" name="tab" /><span>Nivel</span></label>
+            </div>
+            <div style="display:flex;gap:10px;margin-bottom:14px;">
+              <span class="tag tag-accent-2">Asimetría MVC 4.5% — dentro de rango</span>
+              <span class="tag tag-accent-2">Asimetría CF 8.3% — dentro de rango</span>
+            </div>
+            <table class="table">
+              <thead><tr><th>Protocolo Tindeq</th><th>Izquierda</th><th>Derecha</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ tindeqRows }}" as="row" hint-placeholder-count="9">
+                  <tr><td>{{ row.label }}</td><td>{{ row.left }}</td><td>{{ row.right }}</td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Analítica</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/analitica" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Analítica" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <h1 style="font-size:24px;margin:0 0 20px;">Analítica — Seba</h1>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;">
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:30px;color:var(--color-accent-700);">92%</div>
+                <div class="card-body" style="flex:none;">adherencia promedio</div>
+              </div>
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:30px;color:var(--color-accent-2-700);">7.2</div>
+                <div class="card-body" style="flex:none;">RPE promedio general</div>
+              </div>
+              <div class="card elev-sm" style="text-align:center;">
+                <div style="font-family:var(--font-heading);font-size:30px;">46/50</div>
+                <div class="card-body" style="flex:none;">bloques completados</div>
+              </div>
+            </div>
+            <div class="card-title" style="margin-bottom:14px;">Adherencia semanal</div>
+            <div style="display:flex;align-items:flex-end;gap:18px;height:140px;padding:0 8px;">
+              <sc-for list="{{ analyticsWeeks }}" as="w" hint-placeholder-count="6">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                  <div style="width:34px;border-radius:8px 8px 3px 3px;background:var(--color-accent-500);height:{{ w.barPx }}px;"></div>
+                  <span style="font-size:11px;opacity:0.6;">{{ w.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Perfil del atleta</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/atleta/seba" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Perfil" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;display:flex;gap:18px;">
+            <div style="flex:1;display:flex;flex-direction:column;gap:14px;">
+              <h1 style="font-size:24px;margin:0;">Perfil de Seba</h1>
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Datos básicos</div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;font-size:13px;">
+                  <div><div class="text-muted" style="font-size:11px;">Edad</div>29</div>
+                  <div><div class="text-muted" style="font-size:11px;">Altura</div>178 cm</div>
+                  <div><div class="text-muted" style="font-size:11px;">Peso</div>70 kg</div>
+                  <div><div class="text-muted" style="font-size:11px;">Envergadura</div>182 cm</div>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Grados</div>
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:13px;">
+                  <div><div class="text-muted" style="font-size:11px;">Boulder indoor / outdoor</div>7B / 7A</div>
+                  <div><div class="text-muted" style="font-size:11px;">Deportiva indoor / outdoor</div>8a / 7c+</div>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Objetivos</div>
+                <p class="card-body">Encadenar 8a en roca dentro de los próximos 6 meses. Limitante actual: resistencia en dedos a alta intensidad.</p>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Equipamiento disponible</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <span class="tag tag-accent-2">Fingerboard</span>
+                  <span class="tag tag-accent-2">Campus board</span>
+                  <span class="tag tag-accent-2">Tindeq Progressor</span>
+                  <span class="tag tag-accent-2">Barra dominadas</span>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div class="card-title" style="font-size:15px;">Estado de salud</div>
+                  <span class="tag tag-accent-2">Sin lesión activa</span>
+                </div>
+                <p class="card-body">Regla transversal: progresión de carga en dedos máx. 5–10%/semana.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Planes — plantillas de mesociclo</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/plantillas" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Planes" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <h1 style="font-size:24px;margin:0;">Planes por defecto</h1>
+              <button class="btn btn-primary">+ Nueva plantilla</button>
+            </div>
+            <p style="font-size:13px;opacity:0.65;margin:0 0 20px;max-width:640px;">Plantillas de mesociclo listas para aplicar a Seba. Al aplicar una, se crea una copia editable con fecha de inicio propia.</p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+              <sc-for list="{{ planTemplates }}" as="t" hint-placeholder-count="3">
+                <div class="card elev-sm">
+                  <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+                    <div class="card-title">{{ t.name }}</div>
+                    <div style="display:flex;gap:5px;">
+                      <sc-if value="{{ t.draft }}" hint-placeholder-val="{{ false }}">
+                        <span class="tag tag-outline">Borrador</span>
+                      </sc-if>
+                      <span class="tag tag-accent">{{ t.phase }}</span>
+                    </div>
+                  </div>
+                  <p class="card-body">{{ t.description }}</p>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-primary">Aplicar a Seba</button>
+                    <button class="btn btn-secondary">Editar</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Formularios — plantillas</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/formularios" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Formularios" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <h1 style="font-size:24px;margin:0;">Plantillas de formulario</h1>
+              <button class="btn btn-primary">+ Nueva plantilla</button>
+            </div>
+            <p style="font-size:13px;opacity:0.65;margin:0 0 20px;max-width:680px;">El formulario por defecto de Evaluación y Check-in (protocolo Tindeq, PAR-Q, etc.) sigue siempre disponible. Estas son plantillas adicionales para casos específicos.</p>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+              <sc-for list="{{ formTemplates }}" as="f" hint-placeholder-count="2">
+                <div class="card elev-sm">
+                  <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+                    <div class="card-title">{{ f.name }}</div>
+                    <span class="tag tag-accent-2">{{ f.type }}</span>
+                  </div>
+                  <p class="card-body">{{ f.description }}</p>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-secondary">Usar</button>
+                    <button class="btn btn-secondary">Editar</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Admin — usuarios y roles</div>
+      <x-import component-from-global-scope="ChromeWindow" from="./browser-window.jsx" url="prusik.app/admin" width="{{ 1180 }}" height="{{ 780 }}" hint-size="1180px,780px">
+        <div style="min-height:100%;background:var(--color-bg);">
+          <dc-import name="DesktopNav" active="Admin" hint-size="100%,62px"></dc-import>
+          <div style="padding:28px 32px;">
+            <h1 style="font-size:24px;margin:0 0 18px;">Administración</h1>
+            <div class="card elev-sm" style="margin-bottom:16px;">
+              <div class="card-title" style="font-size:15px;">Usuarios y roles</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ adminProfiles }}" as="p" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;border:1px solid var(--color-divider);border-radius:14px;padding:10px 14px;flex-wrap:wrap;">
+                    <div style="min-width:150px;">
+                      <div style="font-size:13px;font-weight:600;">{{ p.name }}</div>
+                      <div style="font-size:11.5px;opacity:0.55;">{{ p.email }}</div>
+                    </div>
+                    <select class="input" style="width:160px;min-height:34px;padding:5px 10px;"><option>{{ p.role }}</option></select>
+                    <sc-if value="{{ p.isClimber }}" hint-placeholder-val="{{ false }}">
+                      <select class="input" style="width:160px;min-height:34px;padding:5px 10px;"><option>{{ p.linkedAthlete }}</option></select>
+                      <span class="tag tag-accent-2">{{ p.linkedAthlete }}</span>
+                      <label style="display:flex;align-items:center;gap:6px;font-size:11.5px;opacity:0.75;"><input type="checkbox" checked="{{ p.restricted }}"/> Restringido</label>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Atletas</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <sc-for list="{{ adminAthletes }}" as="a" hint-placeholder-count="3">
+                    <span class="tag tag-neutral">{{ a }}</span>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:6px;">
+                  <input class="input" placeholder="Nombre del nuevo atleta..." style="flex:1;"/>
+                  <button class="btn btn-primary">Crear atleta</button>
+                </div>
+              </div>
+              <div class="card elev-sm">
+                <div class="card-title" style="font-size:15px;">Asignaciones entrenador → escalador</div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <sc-for list="{{ adminAssignments }}" as="asg" hint-placeholder-count="2">
+                    <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--color-divider);border-radius:12px;padding:8px 12px;font-size:12.5px;">
+                      <span>{{ asg.coach }} → {{ asg.athlete }}</span>
+                      <button class="btn btn-ghost">Quitar</button>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════ MOBILE ═══════════════ -->
+  <div data-screen-label="Celular" style="font-family:var(--font-heading);font-size:22px;margin-bottom:6px;">Celular — en el gimnasio</div>
+  <p style="font-size:13.5px;opacity:0.7;margin:0 0 24px;">Hoy, registro de entrenamiento y check-in semanal — pensado para usarse con una mano, al lado de la pared.</p>
+
+  <div style="display:flex;gap:44px;align-items:flex-start;">
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Hoy</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px">
+        <div style="display:flex;flex-direction:column;min-height:100%;background:var(--color-bg);font-family:var(--font-body);">
+          <div style="flex:1;padding:58px 20px 16px;overflow:hidden;">
+            <div style="font-family:var(--font-heading);font-size:24px;">Hola, Seba</div>
+            <div style="font-size:13px;opacity:0.6;margin-bottom:18px;">Bloque Fuerza-Dedos · Semana 3</div>
+            <div class="card elev-sm" style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span class="card-kicker">Hoy — jueves</span>
+                <span class="tag tag-accent">3 bloques</span>
+              </div>
+              <div class="card-title">Fuerza tren superior</div>
+              <button class="btn btn-primary btn-block">Empezar entrenamiento</button>
+            </div>
+            <div class="card elev-sm" style="margin-bottom:12px;">
+              <span class="card-kicker">Racha</span>
+              <div style="display:flex;align-items:baseline;gap:6px;">
+                <span style="font-family:var(--font-heading);font-size:26px;">92%</span>
+                <span class="card-body" style="flex:none;">adherencia — 4 semanas seguidas</span>
+              </div>
+            </div>
+            <div class="card elev-sm" style="background:var(--color-accent-100);">
+              <div class="card-title" style="font-size:15px;">Check-in semanal pendiente</div>
+              <p class="card-body">Sueño, motivación y dolor — 1 minuto.</p>
+              <button class="btn btn-secondary btn-block">Hacer check-in</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-around;padding:10px 8px 26px;background:var(--color-surface);border-top:1px solid var(--color-divider);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-700);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <span style="font-size:10.5px;font-weight:700;">Hoy</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 7 4-14 2 7h4"/></svg>
+              <span style="font-size:10.5px;">Entreno</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-9.5-8.4C.8 8 2.3 4.6 5.7 4.6c2 0 3.5 1.2 4.3 2.7 0.8-1.5 2.3-2.7 4.3-2.7 3.4 0 4.9 3.4 3.2 7C19 15.7 12 20 12 20z"/></svg>
+              <span style="font-size:10.5px;">Check-in</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              <span style="font-size:10.5px;">Perfil</span>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Entrenamiento</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px">
+        <div style="display:flex;flex-direction:column;min-height:100%;background:var(--color-bg);font-family:var(--font-body);">
+          <div style="flex:1;padding:58px 18px 16px;overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+              <div style="font-family:var(--font-heading);font-size:20px;">Jueves</div>
+              <span class="tag tag-accent">Hoy</span>
+            </div>
+            <div style="font-size:13px;opacity:0.6;margin-bottom:16px;">Fuerza tren superior</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ trainingBlocks }}" as="b" hint-placeholder-count="3">
+                <div class="card elev-sm">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                    <div>
+                      <div class="card-title" style="font-size:15px;">{{ b.name }}</div>
+                      <div class="card-meta">{{ b.meta }}</div>
+                    </div>
+                    <button class="{{ b.btnClass }}">{{ b.btnLabel }}</button>
+                  </div>
+                  <sc-if value="{{ b.pain }}" hint-placeholder-val="{{ false }}">
+                    <p style="font-size:11.5px;color:var(--color-accent-700);margin:2px 0 0;">⚠ {{ b.painNote }}</p>
+                  </sc-if>
+                  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px;">
+                    <input class="input" placeholder="Series" style="font-size:11px;padding:6px 10px;min-height:30px;" />
+                    <input class="input" placeholder="Reps" style="font-size:11px;padding:6px 10px;min-height:30px;" />
+                    <input class="input" placeholder="Carga" style="font-size:11px;padding:6px 10px;min-height:30px;" />
+                    <input class="input" placeholder="RPE" style="font-size:11px;padding:6px 10px;min-height:30px;" />
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-around;padding:10px 8px 26px;background:var(--color-surface);border-top:1px solid var(--color-divider);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <span style="font-size:10.5px;">Hoy</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-700);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 7 4-14 2 7h4"/></svg>
+              <span style="font-size:10.5px;font-weight:700;">Entreno</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-9.5-8.4C.8 8 2.3 4.6 5.7 4.6c2 0 3.5 1.2 4.3 2.7 0.8-1.5 2.3-2.7 4.3-2.7 3.4 0 4.9 3.4 3.2 7C19 15.7 12 20 12 20z"/></svg>
+              <span style="font-size:10.5px;">Check-in</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              <span style="font-size:10.5px;">Perfil</span>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Check-in semanal</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px">
+        <div style="display:flex;flex-direction:column;min-height:100%;background:var(--color-bg);font-family:var(--font-body);">
+          <div style="flex:1;padding:58px 18px 16px;overflow:hidden;">
+            <div style="font-family:var(--font-heading);font-size:20px;margin-bottom:2px;">Check-in semanal</div>
+            <div style="font-size:13px;opacity:0.6;margin-bottom:16px;">13 jul 2026</div>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:18px;">
+              <sc-for list="{{ checkinSliders }}" as="s" hint-placeholder-count="3">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;">
+                    <span>{{ s.label }}</span>
+                    <span style="font-weight:700;">{{ s.value }}/{{ s.max }}</span>
+                  </div>
+                  <div style="height:8px;border-radius:999px;background:var(--color-surface);overflow:hidden;">
+                    <div style="height:100%;border-radius:999px;background:var(--color-accent-500);width:{{ s.pct }}%;"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:12.5px;font-weight:600;margin-bottom:8px;">Dolor por zona (0–10)</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;">
+              <sc-for list="{{ painZonesSample }}" as="z" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:space-between;align-items:center;background:var(--color-surface);border-radius:12px;padding:8px 12px;font-size:12px;">
+                  <span>{{ z.label }}</span>
+                  <span class="{{ z.tagClass }}">{{ z.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div class="field" style="margin-bottom:16px;">
+              <label>Comentario</label>
+              <textarea class="input" rows="3" placeholder="¿Algo para contarle a tu entrenador?"></textarea>
+            </div>
+            <button class="btn btn-primary btn-block">Guardar check-in</button>
+          </div>
+          <div style="display:flex;justify-content:space-around;padding:10px 8px 26px;background:var(--color-surface);border-top:1px solid var(--color-divider);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <span style="font-size:10.5px;">Hoy</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 7 4-14 2 7h4"/></svg>
+              <span style="font-size:10.5px;">Entreno</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-700);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-9.5-8.4C.8 8 2.3 4.6 5.7 4.6c2 0 3.5 1.2 4.3 2.7 0.8-1.5 2.3-2.7 4.3-2.7 3.4 0 4.9 3.4 3.2 7C19 15.7 12 20 12 20z"/></svg>
+              <span style="font-size:10.5px;font-weight:700;">Check-in</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              <span style="font-size:10.5px;">Perfil</span>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--color-accent-700);margin-bottom:10px;">Hoy — vista Escalador (rol restringido)</div>
+      <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px">
+        <div style="display:flex;flex-direction:column;min-height:100%;background:var(--color-bg);font-family:var(--font-body);">
+          <div style="flex:1;padding:58px 20px 16px;overflow:hidden;">
+            <div style="font-family:var(--font-heading);font-size:24px;">Hola, Seba</div>
+            <div style="font-size:13px;opacity:0.6;margin-bottom:6px;">Entrenás con Diego</div>
+            <span class="tag tag-neutral" style="margin-bottom:16px;display:inline-block;">Acceso restringido — solo tu plan</span>
+            <div class="card elev-sm" style="margin-bottom:12px;margin-top:12px;">
+              <span class="card-kicker">Hoy — jueves</span>
+              <div class="card-title">Fuerza tren superior</div>
+              <button class="btn btn-primary btn-block">Empezar entrenamiento</button>
+            </div>
+            <div class="card elev-sm" style="background:var(--color-accent-100);">
+              <div class="card-title" style="font-size:15px;">Check-in semanal pendiente</div>
+              <p class="card-body">Sueño, motivación y dolor — 1 minuto.</p>
+              <button class="btn btn-secondary btn-block">Hacer check-in</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-around;padding:10px 8px 26px;background:var(--color-surface);border-top:1px solid var(--color-divider);">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-700);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <span style="font-size:10.5px;font-weight:700;">Hoy</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 7 4-14 2 7h4"/></svg>
+              <span style="font-size:10.5px;">Entreno</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-9.5-8.4C.8 8 2.3 4.6 5.7 4.6c2 0 3.5 1.2 4.3 2.7 0.8-1.5 2.3-2.7 4.3-2.7 3.4 0 4.9 3.4 3.2 7C19 15.7 12 20 12 20z"/></svg>
+              <span style="font-size:10.5px;">Check-in</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:color-mix(in srgb, var(--color-text) 45%, transparent);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+              <span style="font-size:10.5px;">Perfil</span>
+            </div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+  </div>
+
+  <p style="font-size:12.5px;opacity:0.55;margin-top:40px;max-width:640px;">
+    Vista de administrador y vista restringida de Escalador ya cubiertas. Avisame si querés la vista intermedia de Entrenador (ve solo sus atletas asignados).
+  </p>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const roster = [
+      { name: "Seba", initial: "S", phase: "Fuerza Máxima", status: "Activo", week: "Semana 3", meso: "Bloque Fuerza-Dedos", adherence: 92 },
+      { name: "Diego", initial: "D", phase: "Base Aeróbica", status: "Activo", week: "Semana 1", meso: "Retorno a la actividad", adherence: 78 },
+    ];
+
+    const weekDays = [
+      { name: "Lunes", isRest: false, hasFocus: true, focus: "Dedos + tracción", blocks: [
+        { title: "Fingerboard — repeaters 7/3", meta: "6 series · RPE 7" },
+        { title: "Dominadas lastradas", meta: "5x5 · +15kg" },
+      ]},
+      { name: "Martes", isRest: false, hasFocus: true, focus: "Boulder técnico", blocks: [
+        { title: "Boulder — trabajo de movimiento", meta: "45 min · RPE 6" },
+      ]},
+      { name: "Miércoles", isRest: true, hasFocus: false, focus: "", blocks: [] },
+      { name: "Jueves", isRest: false, hasFocus: true, focus: "Fuerza tren superior", blocks: [
+        { title: "Press banca", meta: "4x6 · RPE 8" },
+        { title: "Remo con barra", meta: "4x8" },
+      ]},
+      { name: "Viernes", isRest: false, hasFocus: true, focus: "Resistencia (ARC)", blocks: [
+        { title: "ARC — boulder continuo", meta: "20 min · RPE 5" },
+      ]},
+      { name: "Sábado", isRest: false, hasFocus: true, focus: "Proyecto exterior", blocks: [
+        { title: "Escalada libre — proyecto", meta: "sesión larga" },
+      ]},
+      { name: "Domingo", isRest: true, hasFocus: false, focus: "", blocks: [] },
+    ];
+
+    const catalogExercises = [
+      { name: "Fingerboard — Repeaters", category: "Strength and Power", meta: "6 series · 7s on / 3s off", benchmark: false, tags: ["Fingerboard"] },
+      { name: "Tindeq MVC Test", category: "Strength and Power", meta: "Test unilateral", benchmark: true, tags: ["Tindeq Progressor"] },
+      { name: "Campus board — laddering", category: "Power Endurance", meta: "4 series", benchmark: false, tags: ["Campus board"] },
+      { name: "ARC — boulder continuo", category: "Aerobic Base", meta: "15–25 min · RPE 5", benchmark: false, tags: ["Pared boulder"] },
+      { name: "Dominadas lastradas 1RM", category: "Strength and Power", meta: "Test de fuerza", benchmark: true, tags: ["Barra dominadas", "Pesas"] },
+      { name: "Movilidad de hombro", category: "Flexibility", meta: "3x10 · ambos lados", benchmark: false, tags: ["Banda elastica"] },
+    ];
+
+    const tindeqRows = [
+      { label: "MVC (kg)", left: "38.2", right: "36.5" },
+      { label: "MVC (% peso corporal)", left: "54%", right: "52%" },
+      { label: "Critical Force (reps)", left: "24", right: "22" },
+      { label: "Fuerza media CF (kg)", left: "21.4", right: "20.1" },
+      { label: "Caída CF (%)", left: "18%", right: "21%" },
+      { label: "RFD 100ms", left: "312", right: "289" },
+      { label: "RFD 150ms", left: "401", right: "378" },
+      { label: "RFD 200ms", left: "455", right: "420" },
+      { label: "RFD 250ms", left: "488", right: "449" },
+    ];
+
+    const analyticsWeeks = [62, 74, 81, 88, 92, 95].map((pct, i) => ({
+      label: "S" + (i + 1),
+      barPx: Math.round(pct * 1.2),
+    }));
+
+    const trainingBlocks = [
+      { name: "Press banca", meta: "4 series · 6 reps · RPE 8", pain: false, btnClass: "btn btn-primary", btnLabel: "✓ Hecho" },
+      { name: "Remo con barra", meta: "4 series · 8 reps", pain: false, btnClass: "btn btn-secondary", btnLabel: "Marcar hecho" },
+      { name: "Fondos en paralelas", meta: "3 series · al fallo", pain: true, painNote: "Dolor reportado en hombro derecho — evaluar antes de continuar", btnClass: "btn btn-secondary", btnLabel: "Marcar hecho" },
+    ];
+
+    const checkinRaw = [
+      { label: "Calidad de sueño", value: 8, max: 10 },
+      { label: "Motivación", value: 7, max: 10 },
+      { label: "Adherencia al plan", value: 90, max: 100 },
+    ];
+    const checkinSliders = checkinRaw.map((s) => ({ ...s, pct: Math.round((s.value / s.max) * 100) }));
+
+    const painZonesSample = [
+      { label: "Hombro der", value: 3 },
+      { label: "Dedos izq", value: 1 },
+      { label: "Espalda baja", value: 0 },
+      { label: "Codo der", value: 2 },
+    ].map((z) => ({ ...z, tagClass: z.value >= 3 ? "tag tag-accent" : "tag tag-neutral" }));
+
+    const planTemplates = [
+      { name: "Bloque Fuerza-Dedos · 4 semanas", phase: "Fuerza Máxima", draft: false, description: "Progresión de fingerboard y tracción cargada, pensado para bloques de fuerza pre-temporada." },
+      { name: "Retorno a la actividad", phase: "Base Aeróbica", draft: false, description: "Reintroducción gradual al volumen tras una pausa — carga conservadora, foco en técnica." },
+      { name: "Pretemporada resistencia", phase: "Resistencia", draft: true, description: "ARC y power endurance en bloques de 3 semanas. Aún en ajuste." },
+    ];
+
+    const formTemplates = [
+      { name: "Chequeo de lesión de hombro", type: "Evaluación", description: "Rango de movimiento, dolor y fuerza específicos para seguimiento de una lesión de hombro." },
+      { name: "Check-in de viaje / competencia", type: "Check-in", description: "Versión corta pensada para semanas de viaje: sueño, logística y estado general." },
+    ];
+
+    const adminProfiles = [
+      { name: "Sebastián Tapia", email: "seba@prusik.app", role: "Escalador", isClimber: true, linkedAthlete: "Seba", restricted: true },
+      { name: "Diego Herrera", email: "diego@prusik.app", role: "Escalador", isClimber: true, linkedAthlete: "Diego", restricted: false },
+      { name: "Camila Ruiz", email: "camila@prusik.app", role: "Entrenador", isClimber: false },
+      { name: "Nico Fuentes", email: "nico@prusik.app", role: "Sin rol (pendiente)", isClimber: false },
+    ];
+    const adminAthletes = ["Seba", "Diego"];
+    const adminAssignments = [
+      { coach: "Camila Ruiz", athlete: "Seba" },
+      { coach: "Camila Ruiz", athlete: "Diego" },
+    ];
+
+    return {
+      roster, weekDays, catalogExercises, tindeqRows, analyticsWeeks,
+      trainingBlocks, checkinSliders, painZonesSample,
+      planTemplates, formTemplates, adminProfiles, adminAthletes, adminAssignments,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
