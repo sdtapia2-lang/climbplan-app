@@ -178,12 +178,12 @@ function CoachDashboard() {
             return (
               <Link key={a.id} href={`/atleta/${a.id}`} onClick={() => setAthleteId(a.id)}>
                 <Card className="h-full hover:shadow-[var(--shadow-organic-md)] transition-shadow">
-                  <p className="font-medium mb-2 flex items-center gap-1.5">
+                  <h2 className="font-medium mb-2 flex items-center gap-1.5">
                     {a.name}
                     {alertsByAthlete.has(a.id) && (
                       <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" title="Tiene alertas sin resolver" />
                     )}
-                  </p>
+                  </h2>
                   {s?.mesocycle ? (
                     <>
                       <p className="text-sm text-[var(--color-text)]/70 mb-1 truncate">{s.mesocycle.name}</p>
