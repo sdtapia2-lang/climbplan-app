@@ -33,27 +33,31 @@ export async function POST(request: Request) {
 
   // Fase 6: cupo de atletas por plan (los tres entrenadores rechazaron el
   // cobro por atleta directo -- esto lo asigna un admin a mano). Admin nunca
-  // está sujeto a cupo.
+  // está sujeto a cupo, así que sigue el insert directo de siempre.
+  // Para entrenador, el chequeo de cupo + insert + link viven en una sola
+  // función SQL con advisory lock (create_athlete_for_coach) para que dos
+  // requests concurrentes no puedan pasar el cupo juntas -- ver
+  // phase43_subscriptions.sql.
+  let athleteId: string;
   if (callerProfile.role === "entrenador") {
-    const [{ data: maxAthletes }, { data: athleteCount }] = await Promise.all([
-      admin.rpc("coach_max_athletes", { p_coach_id: user.id }),
-      admin.rpc("coach_athlete_count", { p_coach_id: user.id }),
-    ]);
-    if (maxAthletes !== null && (athleteCount ?? 0) >= maxAthletes) {
-      return NextResponse.json(
-        { error: `Llegaste al cupo de tu plan (${maxAthletes} atletas). Actualiza tu plan para agregar más.` },
-        { status: 403 },
-      );
+    const { data: newAthleteId, error: rpcError } = await admin.rpc("create_athlete_for_coach", {
+      p_coach_id: user.id,
+      p_athlete_name: athleteName,
+    });
+    if (rpcError || !newAthleteId) {
+      return NextResponse.json({ error: rpcError?.message ?? "No se pudo crear el atleta." }, { status: 403 });
     }
-  }
-
-  const { data: athlete, error: athleteError } = await admin
-    .from("athletes")
-    .insert({ name: athleteName })
-    .select("id")
-    .single();
-  if (athleteError || !athlete) {
-    return NextResponse.json({ error: athleteError?.message ?? "No se pudo crear el atleta." }, { status: 500 });
+    athleteId = newAthleteId;
+  } else {
+    const { data: athlete, error: athleteError } = await admin
+      .from("athletes")
+      .insert({ name: athleteName })
+      .select("id")
+      .single();
+    if (athleteError || !athlete) {
+      return NextResponse.json({ error: athleteError?.message ?? "No se pudo crear el atleta." }, { status: 500 });
+    }
+    athleteId = athlete.id;
   }
 
   const { data: created, error: createUserError } = await admin.auth.admin.createUser({
@@ -62,7 +66,7 @@ export async function POST(request: Request) {
     email_confirm: true,
   });
   if (createUserError || !created?.user) {
-    await admin.from("athletes").delete().eq("id", athlete.id);
+    await admin.from("athletes").delete().eq("id", athleteId);
     return NextResponse.json({ error: createUserError?.message ?? "No se pudo crear la cuenta." }, { status: 500 });
   }
 
@@ -72,18 +76,23 @@ export async function POST(request: Request) {
   // lo completamos con los datos del escalador libre.
   const { error: profileError } = await admin
     .from("profiles")
-    .update({ role: "escalador", athlete_id: athlete.id, restricted: true })
+    .update({ role: "escalador", athlete_id: athleteId, restricted: true })
     .eq("id", newUserId);
   if (profileError) {
     return NextResponse.json({ error: profileError.message }, { status: 500 });
   }
 
-  const { error: coachError } = await admin
-    .from("coach_athletes")
-    .insert({ coach_id: user.id, athlete_id: athlete.id });
-  if (coachError) {
-    return NextResponse.json({ error: coachError.message }, { status: 500 });
+  // Para entrenador, create_athlete_for_coach ya insertó el link
+  // coach_athletes (mismo advisory lock que el chequeo de cupo). Repetirlo
+  // acá sería un insert duplicado.
+  if (callerProfile.role !== "entrenador") {
+    const { error: coachError } = await admin
+      .from("coach_athletes")
+      .insert({ coach_id: user.id, athlete_id: athleteId });
+    if (coachError) {
+      return NextResponse.json({ error: coachError.message }, { status: 500 });
+    }
   }
 
-  return NextResponse.json({ athleteId: athlete.id, userId: newUserId, email, password });
+  return NextResponse.json({ athleteId, userId: newUserId, email, password });
 }

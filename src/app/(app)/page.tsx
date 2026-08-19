@@ -85,15 +85,17 @@ function CoachDashboard() {
   }, [athletes]);
 
   async function resolveAlert(id: string) {
+    const prevAlerts = alerts;
     setAlerts((all) => all.filter((a) => a.id !== id));
     const supabase = createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    await supabase
+    const { error } = await supabase
       .from("coach_alerts")
       .update({ resolved_at: new Date().toISOString(), resolved_by: user?.id ?? null })
       .eq("id", id);
+    if (error) setAlerts(prevAlerts);
   }
 
   if (loading) return <Spinner />;

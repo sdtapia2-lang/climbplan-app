@@ -97,6 +97,13 @@ begin
     raise exception 'La solicitud ya fue resuelta';
   end if;
 
+  -- Serializa el chequeo de cupo por entrenador: sin esto, dos requests
+  -- concurrentes (dos solicitudes aceptadas casi a la vez) podrían leer el
+  -- mismo conteo y pasar el chequeo juntas, excediendo el cupo. Transaction-
+  -- scoped: se libera solo al terminar esta función, sin riesgo de quedar
+  -- colgado en un pooler de conexiones.
+  perform pg_advisory_xact_lock(hashtext(req.coach_id::text));
+
   if my_role() <> 'admin' then
     v_max := coach_max_athletes(req.coach_id);
     if v_max is not null and coach_athlete_count(req.coach_id) >= v_max then
@@ -117,3 +124,31 @@ begin
   return new_athlete_id;
 end;
 $$;
+
+-- CREACION DIRECTA de escalador por un entrenador (route handler
+-- create-athlete), con el mismo chequeo de cupo serializado. auth.admin.
+-- createUser() no es SQL y no puede vivir en esta función -- el route
+-- handler la llama primero para reservar el cupo + crear el atleta, y hace
+-- rollback (delete del atleta) si createUser falla despues.
+create or replace function create_athlete_for_coach(p_coach_id uuid, p_athlete_name text)
+returns uuid
+language plpgsql security definer set search_path = public as $$
+declare
+  v_max int;
+  v_athlete_id uuid;
+begin
+  perform pg_advisory_xact_lock(hashtext(p_coach_id::text));
+
+  v_max := coach_max_athletes(p_coach_id);
+  if v_max is not null and coach_athlete_count(p_coach_id) >= v_max then
+    raise exception 'Llegaste al cupo de tu plan (% atletas). Actualiza tu plan para agregar más.', v_max;
+  end if;
+
+  insert into athletes (name) values (p_athlete_name) returning id into v_athlete_id;
+  insert into coach_athletes (coach_id, athlete_id) values (p_coach_id, v_athlete_id);
+
+  return v_athlete_id;
+end;
+$$;
+
+grant execute on function create_athlete_for_coach(uuid, text) to authenticated;
