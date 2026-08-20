@@ -28,6 +28,8 @@ type Props = {
   athleteId: string;
   /** Si tiene lesión activa, sus restricciones se muestran durante toda la sesión (Fase 3.2). */
   athlete?: Athlete | null;
+  /** Empezar directo en este ejercicio (play individual desde la lista), saltando el check-in de disponibilidad. Sin esto, resume automáticamente donde quedó si ya hay series marcadas. */
+  initialIndex?: number;
   onClose: () => void;
   onFinished: () => void;
 };
@@ -54,7 +56,7 @@ function initSetLogs(block: Block): SetLog[] {
   return Array.from({ length: n }, () => ({ reps: defaultReps(block), load: block.load ?? "", done: false }));
 }
 
-export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, onFinished }: Props) {
+export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialIndex, onClose, onFinished }: Props) {
   // Estado local, inicializado una sola vez desde `blocks`: igual que `logs`/
   // `feedback` de abajo, no se resincroniza con la prop durante la sesión.
   // Necesario (no un useMemo) porque intercambiar un ejercicio por una
@@ -62,12 +64,23 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
   // reabrir el reproductor.
   const [exercises, setExercises] = useState<Block[]>(() => blocks.filter((b) => b.exercise_name_freetext));
 
-  // Se pide una sola vez, antes del primer ejercicio. Empieza cerrado (true = ya
-  // se resolvió) si no hay ejercicios para no bloquear una sesión vacía.
-  const [readinessOpen, setReadinessOpen] = useState(exercises.length > 0);
+  // Si ya hay series marcadas (se retoma una sesión que se cerró a mitad de
+  // camino), no tiene sentido volver a pedir el check-in de disponibilidad
+  // ni empezar en play individual: solo se pide en un arranque genuinamente
+  // nuevo de toda la sesión.
+  const hasAnyProgress = exercises.some((b) => initSetLogs(b).some((s) => s.done));
+  const [readinessOpen, setReadinessOpen] = useState(exercises.length > 0 && initialIndex === undefined && !hasAnyProgress);
   const [readiness, setReadiness] = useState<ReadinessInput>(EMPTY_READINESS);
 
-  const [index, setIndex] = useState(0);
+  // Play individual (Fase de correcciones): initialIndex ubica un ejercicio
+  // puntual. Sin eso, resume automáticamente en el primer ejercicio con una
+  // serie sin marcar -- antes esto siempre arrancaba en 0 y cerrar a mitad de
+  // sesión (el botón X no guardaba nada) obligaba a empezar de cero.
+  const [index, setIndex] = useState(() => {
+    if (initialIndex !== undefined) return Math.min(Math.max(initialIndex, 0), Math.max(exercises.length - 1, 0));
+    const firstUnfinished = exercises.findIndex((b) => initSetLogs(b).some((s) => !s.done));
+    return firstUnfinished === -1 ? 0 : firstUnfinished;
+  });
   const [logs, setLogs] = useState<Record<string, SetLog[]>>(() =>
     Object.fromEntries(exercises.map((b) => [b.id, initSetLogs(b)])),
   );
@@ -237,6 +250,41 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
       });
   }
 
+  /** Payload de blocks.update() para un bloque, a partir de sus set_logs actuales. Compartido entre el checkpoint por serie y el guardado completo. */
+  function buildBlockUpdate(block: Block, setLogsForBlock: SetLog[], isLastBlock: boolean) {
+    const doneSets = setLogsForBlock.filter((s) => s.done);
+    const anyDone = doneSets.length > 0;
+    const fb = feedback[block.id];
+    const repsList = [...new Set(doneSets.map((s) => s.reps).filter(Boolean))];
+    const loadList = [...new Set(doneSets.map((s) => s.load).filter(Boolean))];
+    const blockComment = isLastBlock && sessionComment.trim() ? sessionComment.trim() : block.comment;
+    return {
+      set_logs: setLogsForBlock,
+      completed: anyDone,
+      completed_at: anyDone ? new Date().toISOString() : block.completed_at,
+      actual_sets: anyDone ? String(doneSets.length) : block.actual_sets,
+      actual_reps_or_time: repsList.length ? repsList.join(" / ") : block.actual_reps_or_time,
+      actual_load: loadList.length ? loadList.join(" / ") : block.actual_load,
+      actual_rpe: fb?.rpe || block.actual_rpe,
+      pain_during: fb ? fb.pain : block.pain_during,
+      pain_zone: fb && fb.pain > 0 ? fb.painZone : null,
+      comment: blockComment,
+    };
+  }
+
+  /** Guarda el progreso de todos los ejercicios. Se usa tanto al terminar la sesión como al cerrarla antes de tiempo. */
+  async function saveProgress() {
+    const supabase = createClient();
+    const lastBlockId = exercises[exercises.length - 1]?.id;
+    const updates = exercises.map((b) =>
+      supabase
+        .from("blocks")
+        .update(buildBlockUpdate(b, logs[b.id] ?? [], b.id === lastBlockId))
+        .eq("id", b.id),
+    );
+    await Promise.all(updates);
+  }
+
   // Marca una serie como completada. Si quedan series → descanso entre series
   // (se queda en el ejercicio). Si era la última → descanso entre ejercicios
   // (avanza), o pantalla final si es el último ejercicio.
@@ -244,6 +292,19 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
     if (!current) return;
     const nextLogs = current && logs[current.id].map((s, i) => (i === setIdx ? { ...s, done: true } : s));
     setLogs((all) => ({ ...all, [current.id]: nextLogs! }));
+    // Checkpoint inmediato: si la sesión se cierra (o el navegador se cae)
+    // justo después de esto, la serie ya queda guardada -- antes nada se
+    // persistía hasta la pantalla final, así que cerrar a mitad de camino
+    // perdía todo lo hecho.
+    const isLastBlock = current.id === exercises[exercises.length - 1]?.id;
+    const supabase = createClient();
+    supabase
+      .from("blocks")
+      .update(buildBlockUpdate(current, nextLogs!, isLastBlock))
+      .eq("id", current.id)
+      .then(({ error }) => {
+        if (error) console.error("No se pudo guardar el progreso de la serie:", error.message);
+      });
     const allDone = nextLogs!.every((s) => s.done);
     if (allDone) {
       if (index >= exercises.length - 1) setFinished(true);
@@ -270,40 +331,19 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
 
   async function finishSession() {
     setSaving(true);
-    const supabase = createClient();
-    const nowIso = new Date().toISOString();
-    const lastBlockId = exercises[exercises.length - 1]?.id;
-    const updates = exercises.map((b) => {
-      const setLogs = logs[b.id] ?? [];
-      const doneSets = setLogs.filter((s) => s.done);
-      const anyDone = doneSets.length > 0;
-      const fb = feedback[b.id];
-      // Deriva los actual_* para la lógica de ajuste existente.
-      const repsList = [...new Set(doneSets.map((s) => s.reps).filter(Boolean))];
-      const loadList = [...new Set(doneSets.map((s) => s.load).filter(Boolean))];
-      // El comentario de la sesión (si se cargó) queda en el último bloque: no hay
-      // un lugar propio para "comentario de sesión" en el esquema, y es el punto
-      // natural donde el atleta lo escribió (pantalla de cierre).
-      const blockComment = b.id === lastBlockId && sessionComment.trim() ? sessionComment.trim() : b.comment;
-      return supabase
-        .from("blocks")
-        .update({
-          set_logs: setLogs,
-          completed: anyDone,
-          completed_at: anyDone ? nowIso : b.completed_at,
-          actual_sets: anyDone ? String(doneSets.length) : b.actual_sets,
-          actual_reps_or_time: repsList.length ? repsList.join(" / ") : b.actual_reps_or_time,
-          actual_load: loadList.length ? loadList.join(" / ") : b.actual_load,
-          actual_rpe: fb?.rpe || b.actual_rpe,
-          pain_during: fb ? fb.pain : b.pain_during,
-          pain_zone: fb && fb.pain > 0 ? fb.painZone : null,
-          comment: blockComment,
-        })
-        .eq("id", b.id);
-    });
-    await Promise.all(updates);
+    await saveProgress();
     setSaving(false);
     onFinished();
+  }
+
+  // Cerrar a mitad de sesión (botón X) ahora guarda lo hecho hasta ese punto
+  // en vez de descartarlo -- es exactamente el mismo guardado que "Terminar
+  // sesión", solo que sin exigir que todos los ejercicios estén completos.
+  async function handleClose() {
+    setSaving(true);
+    await saveProgress();
+    setSaving(false);
+    onClose();
   }
 
   if (exercises.length === 0) return null;
@@ -320,7 +360,12 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, onClose, o
             {completedExercises} / {exercises.length} ejercicios &middot; ~{estimateSessionMinutes(exercises)} min
           </p>
         </div>
-        <button onClick={onClose} className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] p-1" aria-label="Cerrar">
+        <button
+          onClick={handleClose}
+          disabled={saving}
+          className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] p-1 disabled:opacity-40"
+          aria-label="Cerrar"
+        >
           <X size={20} strokeWidth={2.5} />
         </button>
       </div>
@@ -559,6 +604,30 @@ function ExerciseScreen({
         <div className="flex items-start gap-2 text-sm text-[var(--color-accent-700)] bg-[var(--color-accent-100)]/40 rounded-lg p-3 mb-4">
           <TriangleAlert size={15} strokeWidth={2.5} className="mt-0.5 shrink-0" aria-hidden="true" />
           <span>{block.kinesio_notes}</span>
+        </div>
+      )}
+
+      {/* Serie actual en grande, al centro: un toque la marca hecha. La tabla
+          de abajo queda siempre visible para agregar series o ajustar reps/carga. */}
+      {nextUndone !== -1 ? (
+        <div className="flex flex-col items-center py-6 mb-2">
+          <button
+            onClick={() => onCompleteSet(nextUndone)}
+            className="w-32 h-32 rounded-full bg-[var(--color-accent-500)] text-[var(--color-bg)] flex items-center justify-center text-6xl font-bold tabular-nums shadow-[var(--shadow-organic-md)] active:scale-95 transition-transform"
+            aria-label={`Marcar serie ${nextUndone + 1} hecha`}
+          >
+            {nextUndone + 1}
+          </button>
+          <p className="text-sm text-[var(--color-text)]/60 mt-3">
+            Serie {nextUndone + 1} de {sets.length} &middot; toca para marcarla
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center py-6 mb-2">
+          <div className="w-32 h-32 rounded-full bg-[var(--color-accent-100)] text-[var(--color-accent-700)] flex items-center justify-center">
+            <Check size={48} strokeWidth={2.75} aria-hidden="true" />
+          </div>
+          <p className="text-sm text-[var(--color-text)]/60 mt-3">Todas las series hechas</p>
         </div>
       )}
 

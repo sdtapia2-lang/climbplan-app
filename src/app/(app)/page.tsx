@@ -329,7 +329,12 @@ function AthleteDashboard() {
           blocks={todayDay.blocks}
           athleteId={athleteId}
           athlete={athlete}
-          onClose={() => setSessionOpen(false)}
+          onClose={() => {
+            setSessionOpen(false);
+            // Cerrar ahora guarda el progreso hecho hasta ese punto (ver
+            // SessionPlayer.handleClose) -- recargar para reflejarlo acá.
+            load();
+          }}
           onFinished={() => {
             setSessionOpen(false);
             load();

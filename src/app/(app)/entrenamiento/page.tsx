@@ -26,6 +26,9 @@ export default function TrainingPage() {
   const [days, setDays] = useState<DayWithBlocks[]>([]);
   const [adjustmentBanner, setAdjustmentBanner] = useState<PendingAdjustmentBanner | null>(null);
   const [sessionDay, setSessionDay] = useState<DayWithBlocks | null>(null);
+  // Play individual por ejercicio (fase de correcciones): undefined = arrancar
+  // toda la sesión desde el principio (o resumir si ya hay progreso).
+  const [sessionStartIndex, setSessionStartIndex] = useState<number | undefined>(undefined);
   const [demoExerciseId, setDemoExerciseId] = useState<string | null>(null);
   const todayName = DAYS_OF_WEEK[(new Date().getDay() + 6) % 7];
 
@@ -177,9 +180,17 @@ export default function TrainingPage() {
           blocks={sessionDay.blocks}
           athleteId={athleteId}
           athlete={athlete}
-          onClose={() => setSessionDay(null)}
+          initialIndex={sessionStartIndex}
+          onClose={() => {
+            setSessionDay(null);
+            setSessionStartIndex(undefined);
+            // Cerrar ahora guarda el progreso hecho hasta ese punto (ver
+            // SessionPlayer.handleClose) -- recargar para reflejarlo acá.
+            load();
+          }}
           onFinished={() => {
             setSessionDay(null);
+            setSessionStartIndex(undefined);
             load();
           }}
         />
@@ -234,6 +245,17 @@ export default function TrainingPage() {
                             </span>
                           )}
                           <p className="font-medium">{block.exercise_name_freetext}</p>
+                          <button
+                            onClick={() => {
+                              const exerciseIdx = day.blocks.filter((b) => b.exercise_name_freetext).findIndex((b) => b.id === block.id);
+                              setSessionStartIndex(exerciseIdx >= 0 ? exerciseIdx : undefined);
+                              setSessionDay(day);
+                            }}
+                            className="flex items-center gap-1 text-xs text-[var(--color-accent-700)] hover:underline"
+                            title="Empezar este ejercicio"
+                          >
+                            <Play size={12} strokeWidth={2.5} aria-hidden="true" /> Empezar
+                          </button>
                           {block.exercise_id && (
                             <button
                               onClick={() => setDemoExerciseId(block.exercise_id)}
