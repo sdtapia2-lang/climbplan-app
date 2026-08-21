@@ -115,8 +115,8 @@ function CoachDashboard() {
       <h1 className="text-2xl font-semibold mb-6">Dashboard</h1>
 
       {alerts.length > 0 && (
-        <Card className="mb-6 border-red-300">
-          <p className="flex items-center gap-1.5 text-sm font-medium text-red-700 mb-3">
+        <Card className="mb-6 border-[var(--color-attention-300)]">
+          <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-attention-700)] mb-3">
             <TriangleAlert size={15} strokeWidth={2.75} aria-hidden="true" />
             Atención ({alerts.length})
           </p>
@@ -181,7 +181,7 @@ function CoachDashboard() {
                   <h2 className="font-medium mb-2 flex items-center gap-1.5">
                     {a.name}
                     {alertsByAthlete.has(a.id) && (
-                      <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" title="Tiene alertas sin resolver" />
+                      <span className="w-2 h-2 rounded-full bg-[var(--color-attention-500)] shrink-0" title="Tiene alertas sin resolver" />
                     )}
                   </h2>
                   {s?.mesocycle ? (
@@ -351,26 +351,33 @@ function AthleteDashboard() {
         )}
       </div>
 
-      {hasTodaySession && (
-        <Card className="mb-4 border-[var(--color-accent-400)]">
-          <div className="flex items-center justify-between gap-3 flex-wrap">
-            <div>
-              <p className="text-sm text-[var(--color-text)]/55 mb-1">
-                <Play size={15} strokeWidth={2.75} className={iconClass} aria-hidden="true" />
-                Sesión de hoy
-              </p>
-              <p className="font-medium">
-                {todayDay!.day_of_week}
-                {todayDay!.day_focus ? ` — ${todayDay!.day_focus}` : ""}
-              </p>
-              <p className="text-xs text-[var(--color-text)]/55">{todayDay!.blocks.length} bloques</p>
+      {todayDay &&
+        (hasTodaySession ? (
+          <Card className="mb-6 !p-0 overflow-hidden border-none shadow-[var(--shadow-organic-lg)]">
+            <div className="bg-[var(--color-accent-500)] text-[var(--color-bg)] px-6 py-7 sm:px-8 sm:py-8 flex items-center justify-between gap-6 flex-wrap">
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-[0.14em] opacity-80 mb-2">Sesión de hoy</p>
+                <p className="font-[family-name:var(--font-heading)] text-3xl sm:text-4xl leading-tight mb-1 truncate">
+                  {todayDay.day_of_week}
+                  {todayDay.day_focus ? ` — ${todayDay.day_focus}` : ""}
+                </p>
+                <p className="text-sm opacity-80">{todayDay.blocks.length} bloques</p>
+              </div>
+              <button
+                onClick={() => setSessionOpen(true)}
+                className="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[var(--color-bg)] text-[var(--color-accent-700)] flex items-center justify-center shadow-[var(--shadow-organic-md)] active:scale-95 transition-transform"
+                aria-label="Empezar sesión"
+              >
+                <Play size={30} strokeWidth={2.5} fill="currentColor" aria-hidden="true" />
+              </button>
             </div>
-            <Button onClick={() => setSessionOpen(true)}>
-              <Play size={14} strokeWidth={2.75} aria-hidden="true" /> Empezar sesión
-            </Button>
-          </div>
-        </Card>
-      )}
+          </Card>
+        ) : (
+          <Card className="mb-6 text-center py-6">
+            <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-text)]/50 mb-2">Sesión de hoy</p>
+            <p className="font-[family-name:var(--font-heading)] text-2xl">Día de descanso</p>
+          </Card>
+        ))}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <Card>

@@ -320,7 +320,7 @@ export default function TrainingPage() {
                       />
                     </div>
                     {Number(block.pain_during) >= 5 && (
-                      <p className="flex items-start gap-1 text-xs text-red-600 mt-2">
+                      <p className="flex items-start gap-1 text-xs text-[var(--color-attention-600)] mt-2">
                         <TriangleAlert size={13} strokeWidth={2.75} className="mt-px shrink-0" aria-hidden="true" />
                         Dolor reportado &ge; 5. Considera detener y consultar a un profesional de salud.
                       </p>

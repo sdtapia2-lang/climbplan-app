@@ -374,7 +374,7 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
       </div>
 
       {athlete?.has_active_injury && (athlete.injury_restrictions || athlete.injury_location) && (
-        <div className="flex items-start gap-2 px-4 py-2 bg-red-50 text-red-800 text-xs border-b border-red-200">
+        <div className="flex items-start gap-2 px-4 py-2 bg-[var(--color-attention-100)] text-[var(--color-attention-800)] text-xs border-b border-[var(--color-attention-300)]">
           <TriangleAlert size={13} strokeWidth={2.5} className="mt-0.5 shrink-0" aria-hidden="true" />
           <span>
             <span className="font-medium">Lesión activa{athlete.injury_location ? ` (${athlete.injury_location})` : ""}.</span>{" "}
@@ -636,7 +636,7 @@ function ExerciseScreen({
         <span className="w-8">Serie</span>
         <span>Reps / tiempo</span>
         <span>Carga</span>
-        <span className="w-16 text-right">Hecha</span>
+        <span className="w-20 text-right">Hecha</span>
       </div>
 
       <div className="space-y-2">
@@ -645,7 +645,7 @@ function ExerciseScreen({
           return (
             <div
               key={i}
-              className={`grid grid-cols-[auto_1fr_1fr_auto] gap-2 items-center rounded-lg p-2 border ${
+              className={`grid grid-cols-[auto_1fr_1fr_auto] gap-2 items-center rounded-lg p-2.5 border ${
                 s.done
                   ? "border-[var(--color-accent-300)] bg-[var(--color-accent-100)]/30"
                   : isCurrent
@@ -658,34 +658,34 @@ function ExerciseScreen({
                 value={s.reps}
                 onChange={(e) => onSetField(i, { reps: e.target.value })}
                 placeholder="reps"
-                className="!min-h-[32px] !py-1"
+                className="!min-h-[44px] !py-2"
               />
               <Input
                 value={s.load}
                 onChange={(e) => onSetField(i, { load: e.target.value })}
                 placeholder="carga"
-                className="!min-h-[32px] !py-1"
+                className="!min-h-[44px] !py-2"
               />
-              <div className="w-16 flex items-center justify-end gap-1">
+              <div className="w-20 flex items-center justify-end gap-1">
                 {sets.length > 1 && (
                   <button
                     onClick={() => onDeleteSet(i)}
-                    className="text-[var(--color-text)]/30 hover:text-red-500 p-1"
+                    className="text-[var(--color-text)]/30 hover:text-red-500 p-2"
                     aria-label={`Borrar serie ${i + 1}`}
                   >
-                    <Trash2 size={14} strokeWidth={2.5} />
+                    <Trash2 size={15} strokeWidth={2.5} />
                   </button>
                 )}
                 <button
                   onClick={() => (s.done ? onSetField(i, { done: false }) : onCompleteSet(i))}
-                  className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                  className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
                     s.done
                       ? "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
                       : "border border-[var(--color-divider)] text-[var(--color-text)]/30 hover:border-[var(--color-accent-500)]"
                   }`}
                   aria-label={s.done ? `Serie ${i + 1} hecha` : `Marcar serie ${i + 1}`}
                 >
-                  <Check size={15} strokeWidth={3} />
+                  <Check size={16} strokeWidth={3} />
                 </button>
               </div>
             </div>
@@ -802,7 +802,7 @@ function ExerciseFeedback({
               className={`w-6 h-6 rounded-full text-[10px] flex items-center justify-center ${
                 feedback.pain === n
                   ? n >= 5
-                    ? "bg-red-500 text-white"
+                    ? "bg-[var(--color-attention-500)] text-white"
                     : "bg-[var(--color-accent-500)] text-[var(--color-bg)]"
                   : "border border-[var(--color-divider)] text-[var(--color-text)]/60 hover:border-[var(--color-accent-500)]"
               }`}
@@ -823,7 +823,7 @@ function ExerciseFeedback({
               onClick={() => onChange({ painZone: key })}
               className={`text-[11px] px-2 py-1 rounded-full border ${
                 feedback.painZone === key
-                  ? "border-red-400 bg-red-100 text-red-700"
+                  ? "border-[var(--color-attention-400)] bg-[var(--color-attention-100)] text-[var(--color-attention-700)]"
                   : "border-[var(--color-divider)] text-[var(--color-text)]/60"
               }`}
             >

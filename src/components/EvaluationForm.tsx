@@ -320,7 +320,7 @@ export function EvaluationForm({
             <p className="text-sm text-[var(--color-text)]/70">
               Asimetría MVC calculada: <span className="font-medium">{asymmetry.toFixed(1)}%</span>{" "}
               {asymmetry > 15 && (
-                <span className="inline-flex items-center gap-1 text-red-600">
+                <span className="inline-flex items-center gap-1 text-[var(--color-attention-600)]">
                   <TriangleAlert size={13} strokeWidth={2.75} aria-hidden="true" /> supera 15%
                 </span>
               )}

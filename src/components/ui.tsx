@@ -1,8 +1,18 @@
 "use client";
 
 import { ReactNode } from "react";
-import { X, Info } from "lucide-react";
+import { X, Info, Activity, Zap, Dumbbell, Grip, Flame, Waves, Shapes, type LucideIcon } from "lucide-react";
 import { CATEGORY_COLORS, CATEGORY_LABELS } from "@/lib/types";
+
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  "Aerobic Base": Activity,
+  "Power Endurance": Zap,
+  "Strength and Power": Dumbbell,
+  Fingerboard: Grip,
+  Conditioning: Flame,
+  Flexibility: Waves,
+  Otro: Shapes,
+};
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
@@ -146,8 +156,10 @@ export function CategoryTag({ category }: { category: string | null }) {
   const key = category ?? "Otro";
   const colors = CATEGORY_COLORS[key] ?? CATEGORY_COLORS.Otro;
   const label = CATEGORY_LABELS[key] ?? key;
+  const Icon = CATEGORY_ICONS[key] ?? CATEGORY_ICONS.Otro;
   return (
-    <span className={`inline-flex items-center text-[10px] font-medium tracking-wide px-2 py-0.5 rounded-full shrink-0 ${colors.bg} ${colors.text}`}>
+    <span className={`inline-flex items-center gap-1 text-[10px] font-medium tracking-wide px-2 py-0.5 rounded-full shrink-0 ${colors.bg} ${colors.text}`}>
+      <Icon size={11} strokeWidth={2.5} aria-hidden="true" />
       {label}
     </span>
   );

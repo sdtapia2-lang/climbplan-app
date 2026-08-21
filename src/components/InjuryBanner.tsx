@@ -63,7 +63,7 @@ export function InjuryBanner({ athlete, athleteId, weekId, onAdjusted }: Props) 
   }
 
   return (
-    <div className="mb-4 flex items-start gap-2 rounded-[24px] border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+    <div className="mb-4 flex items-start gap-2 rounded-[24px] border border-[var(--color-attention-300)] bg-[var(--color-attention-100)] p-4 text-sm text-[var(--color-attention-800)]">
       <TriangleAlert size={16} strokeWidth={2.5} className="mt-0.5 shrink-0" aria-hidden="true" />
       <div>
         <p>
@@ -81,13 +81,13 @@ export function InjuryBanner({ athlete, athleteId, weekId, onAdjusted }: Props) 
             <button
               onClick={requestAdjustment}
               disabled={requesting}
-              className="text-sm font-medium text-red-800 underline hover:no-underline disabled:opacity-60"
+              className="text-sm font-medium text-[var(--color-attention-800)] underline hover:no-underline disabled:opacity-60"
             >
               {requesting ? "Solicitando ajuste..." : "Solicitar ajuste del plan por esta lesión"}
             </button>
-            {result === "adjusted" && <p className="mt-1 text-xs text-red-700">Plan ajustado para las próximas semanas.</p>}
-            {result === "no_changes" && <p className="mt-1 text-xs text-red-700">Revisado: no hizo falta ningún cambio.</p>}
-            {result === "error" && <p className="mt-1 text-xs text-red-700">No se pudo pedir el ajuste. Probá de nuevo.</p>}
+            {result === "adjusted" && <p className="mt-1 text-xs text-[var(--color-attention-700)]">Plan ajustado para las próximas semanas.</p>}
+            {result === "no_changes" && <p className="mt-1 text-xs text-[var(--color-attention-700)]">Revisado: no hizo falta ningún cambio.</p>}
+            {result === "error" && <p className="mt-1 text-xs text-[var(--color-attention-700)]">No se pudo pedir el ajuste. Probá de nuevo.</p>}
           </div>
         )}
       </div>

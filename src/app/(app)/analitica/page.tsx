@@ -202,17 +202,17 @@ function AnalyticsPanel() {
     <div>
       <h1 className="text-2xl font-semibold mb-6">Analítica &mdash; {athlete?.name}</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card className="text-center">
-          <p className="font-[family-name:var(--font-heading)] text-3xl text-[var(--color-accent-700)]">{stats.adherencePct}%</p>
-          <p className="text-sm text-[var(--color-text)]/55 mt-1">Adherencia promedio</p>
+        <Card className="text-center py-6">
+          <p className="font-[family-name:var(--font-heading)] text-5xl md:text-6xl tabular-nums text-[var(--color-accent-700)]">{stats.adherencePct}%</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-2">Adherencia promedio</p>
         </Card>
-        <Card className="text-center">
-          <p className="font-[family-name:var(--font-heading)] text-3xl text-[var(--color-accent-700)]">{stats.avgRpe ?? "—"}</p>
-          <p className="text-sm text-[var(--color-text)]/55 mt-1">RPE promedio general</p>
+        <Card className="text-center py-6">
+          <p className="font-[family-name:var(--font-heading)] text-5xl md:text-6xl tabular-nums text-[var(--color-accent-700)]">{stats.avgRpe ?? "—"}</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-2">RPE promedio general</p>
         </Card>
-        <Card className="text-center">
-          <p className="font-[family-name:var(--font-heading)] text-3xl text-[var(--color-accent-700)]">{stats.completedBlocks}</p>
-          <p className="text-sm text-[var(--color-text)]/55 mt-1">Bloques completados</p>
+        <Card className="text-center py-6">
+          <p className="font-[family-name:var(--font-heading)] text-5xl md:text-6xl tabular-nums text-[var(--color-accent-700)]">{stats.completedBlocks}</p>
+          <p className="text-sm text-[var(--color-text)]/55 mt-2">Bloques completados</p>
         </Card>
       </div>
 
@@ -234,7 +234,7 @@ function AnalyticsPanel() {
             title="Dolor promedio por check-in (0-10)"
             points={painBars}
             maxValue={10}
-            barClassName={(p) => (p.value >= 4 ? "bg-red-400" : "bg-[var(--color-neutral-400)]")}
+            barClassName={(p) => (p.value >= 4 ? "bg-[var(--color-attention-500)]" : "bg-[var(--color-neutral-400)]")}
           />
         </Card>
       )}
@@ -263,7 +263,7 @@ function AnalyticsPanel() {
           <p className="text-sm text-[var(--color-text)]/55 mb-4">
             Calculada automáticamente en cada evaluación a partir de la fuerza de dedos (MVC) y Critical Force por mano.
             {lastAsymmetry?.mvcPct != null && lastAsymmetry.mvcPct >= 15 && (
-              <span className="text-red-600"> Última medición ≥15% — vale la pena trabajarla puntualmente.</span>
+              <span className="text-[var(--color-attention-600)]"> Última medición ≥15% — vale la pena trabajarla puntualmente.</span>
             )}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">

@@ -36,6 +36,16 @@
   --color-accent-2-800: #443323;
   --color-accent-2-900: #2c2116;
 
+  --color-attention-100: #f8e9e3;
+  --color-attention-200: #f0d0c4;
+  --color-attention-300: #e2ac97;
+  --color-attention-400: #cf7e64;
+  --color-attention-500: #b8543a;
+  --color-attention-600: #9c4128;
+  --color-attention-700: #7a3220;
+  --color-attention-800: #582419;
+  --color-attention-900: #3a180f;
+
   --shadow-organic-sm: 0 1px 2px color-mix(in srgb, #2e2c27 14%, transparent);
   --shadow-organic-md: 0 3px 10px color-mix(in srgb, #2e2c27 16%, transparent);
   --shadow-organic-lg: 0 12px 32px color-mix(in srgb, #2e2c27 22%, transparent);
@@ -79,6 +89,16 @@
   --color-accent-2-700: var(--color-accent-2-700);
   --color-accent-2-800: var(--color-accent-2-800);
   --color-accent-2-900: var(--color-accent-2-900);
+
+  --color-attention-100: var(--color-attention-100);
+  --color-attention-200: var(--color-attention-200);
+  --color-attention-300: var(--color-attention-300);
+  --color-attention-400: var(--color-attention-400);
+  --color-attention-500: var(--color-attention-500);
+  --color-attention-600: var(--color-attention-600);
+  --color-attention-700: var(--color-attention-700);
+  --color-attention-800: var(--color-attention-800);
+  --color-attention-900: var(--color-attention-900);
 
   --font-heading: var(--font-archivo-black), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
