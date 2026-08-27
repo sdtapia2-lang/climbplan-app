@@ -137,6 +137,10 @@ declare
   v_max int;
   v_athlete_id uuid;
 begin
+  if p_coach_id <> auth.uid() and my_role() <> 'admin' then
+    raise exception 'No autorizado';
+  end if;
+
   perform pg_advisory_xact_lock(hashtext(p_coach_id::text));
 
   v_max := coach_max_athletes(p_coach_id);
