@@ -174,10 +174,42 @@ export function EmptyState({ text, action }: { text: string; action?: ReactNode 
   );
 }
 
+/** Puntos de la vía del isotipo (public/apex-logo.svg), reutilizados para que el
+    loader "escale" la misma ruta en vez de un spinner generico. */
+const SPINNER_DOTS = [
+  { cx: 28, cy: 72, r: 6, fill: "var(--color-accent-500)", delay: "0s" },
+  { cx: 52, cy: 58, r: 6, fill: "var(--color-accent-500)", delay: "0.15s" },
+  { cx: 30, cy: 40, r: 6, fill: "var(--color-accent-500)", delay: "0.3s" },
+  { cx: 58, cy: 24, r: 8, fill: "var(--color-accent-2-500)", delay: "0.45s" },
+];
+
 export function Spinner() {
   return (
     <div className="flex justify-center py-16">
-      <div className="w-8 h-8 border-2 border-[var(--color-neutral-300)] border-t-[var(--color-accent-500)] rounded-full animate-spin" />
+      <svg width="40" height="40" viewBox="0 0 96 96" role="status" aria-label="Cargando">
+        <polyline
+          points="28,72 52,58 30,40 58,24"
+          fill="none"
+          stroke="var(--color-neutral-300)"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {SPINNER_DOTS.map((d, i) => (
+          <circle
+            key={i}
+            cx={d.cx}
+            cy={d.cy}
+            r={d.r}
+            fill={d.fill}
+            className="climb-pulse-dot"
+            style={{
+              transformOrigin: `${d.cx}px ${d.cy}px`,
+              animation: `climb-pulse 1.2s ease-in-out ${d.delay} infinite`,
+            }}
+          />
+        ))}
+      </svg>
     </div>
   );
 }
