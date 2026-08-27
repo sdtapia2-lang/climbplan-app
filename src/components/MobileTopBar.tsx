@@ -26,7 +26,7 @@ export function MobileTopBar() {
           unoptimized
           className="rounded-[8px] object-cover shrink-0"
         />
-        <span className="font-[family-name:var(--font-heading)] text-[15px]">Ápex</span>
+        <span className="font-[family-name:var(--font-wordmark)] text-[15px]">Ápex</span>
       </div>
       <button
         onClick={handleLogout}

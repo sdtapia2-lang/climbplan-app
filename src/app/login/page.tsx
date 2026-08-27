@@ -67,7 +67,7 @@ export default function LoginPage() {
             className="rounded-[16px] object-cover shadow-[var(--shadow-organic-sm)]"
           />
           <div>
-            <h1 className="font-[family-name:var(--font-heading)] text-2xl m-0">Ápex</h1>
+            <h1 className="font-[family-name:var(--font-wordmark)]! text-2xl m-0">Ápex</h1>
           </div>
         </div>
         <p className="text-sm text-[var(--color-text)]/70 mb-6">Tu cordada de entrenamiento.</p>

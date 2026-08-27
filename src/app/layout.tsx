@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo_Black, Inter } from "next/font/google";
+import { Archivo_Black, Inter, Unbounded } from "next/font/google";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
@@ -11,6 +11,12 @@ const archivoBlack = Archivo_Black({
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  weight: "700",
   subsets: ["latin"],
 });
 
@@ -44,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${archivoBlack.variable} ${inter.variable} h-full antialiased`}
+      className={`${archivoBlack.variable} ${inter.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--color-bg)] text-[var(--color-text)] font-[family-name:var(--font-body)]">
         <ServiceWorkerRegister />

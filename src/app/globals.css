@@ -103,6 +103,9 @@
   --font-heading: var(--font-archivo-black), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  /* Solo para el wordmark "Ápex" (logo/header/login/onboarding) -- el resto
+     de los títulos siguen usando --font-heading (Archivo Black). */
+  --font-wordmark: var(--font-unbounded), system-ui, sans-serif;
 
   --shadow-organic-sm: var(--shadow-organic-sm);
   --shadow-organic-md: var(--shadow-organic-md);
