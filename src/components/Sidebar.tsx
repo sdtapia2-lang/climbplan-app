@@ -137,7 +137,7 @@ export function Sidebar() {
           unoptimized
           className="rounded-[10px] object-cover shadow-[var(--shadow-organic-sm)] shrink-0"
         />
-        {!collapsed && <span className="font-[family-name:var(--font-wordmark)] text-[18px]">Ápex</span>}
+        {!collapsed && <span className="font-[family-name:var(--font-wordmark)] text-[18px] uppercase">Ápex</span>}
       </div>
 
       <AthleteSwitcher collapsed={collapsed} />
