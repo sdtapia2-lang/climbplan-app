@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button, Input, Textarea, CategoryTag, Modal, Spinner } from "./ui";
 import { PAIN_ZONES, type Athlete, type Block, type Evaluation, type Exercise, type PainZoneKey, type SetLog } from "@/lib/types";
@@ -46,6 +46,41 @@ const DEFAULT_REST = 90; // si el bloque no declara descanso interpretable
 /** Reps por serie por defecto: el texto planificado del bloque (ej. "6 reps"). */
 function defaultReps(block: Block): string {
   return block.reps_or_time ?? block.time ?? "";
+}
+
+type SetTarget = { kind: "reps"; reps: number } | { kind: "time"; seconds: number };
+
+/**
+ * Qué pide la serie: repeticiones o tiempo de trabajo. Define qué muestra el
+ * círculo grande del reproductor -- un número de reps o un cronómetro.
+ *
+ * El texto viene del plan y mezcla trabajo y descanso en la misma celda
+ * ("4x10s/90s descanso", "5 reps/2min descanso"), así que el orden importa:
+ * si nombra reps es por repeticiones; si no, la primera duración que NO sea un
+ * descanso es la de trabajo (el "4x" de "4x10s" es un conteo, no una duración;
+ * en "3 rondas/2min descanso" la única duración es el descanso, así que no hay
+ * cronómetro que valga). Los rangos ("30-40s") toman el extremo bajo, igual
+ * que parseRestSeconds.
+ */
+function parseSetTarget(text: string | null | undefined): SetTarget | null {
+  if (!text) return null;
+  const t = text.toLowerCase();
+
+  if (t.includes("rep")) {
+    const n = t.match(/\d+/);
+    return n ? { kind: "reps", reps: Number(n[0]) } : null;
+  }
+
+  const timeRe = /(\d+)\s*(?:-\s*\d+\s*)?(segundos|seg|s|minutos|min|m)\b\s*(descanso|pausa|off|rest)?/g;
+  for (const m of t.matchAll(timeRe)) {
+    if (m[3]) continue;
+    const n = Number(m[1]);
+    return { kind: "time", seconds: m[2].startsWith("m") ? n * 60 : n };
+  }
+
+  // Un número suelto (el atleta escribió "4" a mano) son repeticiones.
+  const bare = t.match(/^\s*~?(\d+)\s*$/);
+  return bare ? { kind: "reps", reps: Number(bare[1]) } : null;
 }
 
 function initSetLogs(block: Block): SetLog[] {
@@ -97,6 +132,7 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
   const [paused, setPaused] = useState(false);
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState(false);
+  const [injuryOpen, setInjuryOpen] = useState(false);
 
   const current = exercises[index];
   const next = exercises[index + 1] ?? null;
@@ -128,10 +164,22 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
   }
 
   function updateSet(blockId: string, setIdx: number, patch: Partial<SetLog>) {
-    setLogs((all) => ({
-      ...all,
-      [blockId]: all[blockId].map((s, i) => (i === setIdx ? { ...s, ...patch } : s)),
-    }));
+    setLogs((all) => {
+      const cur = all[blockId];
+      const prevLoad = cur[setIdx]?.load ?? "";
+      const rows = cur.map((s, i) => (i === setIdx ? { ...s, ...patch } : s));
+      // La carga suele ser la misma en todas las series: al escribirla se
+      // replica hacia abajo en vez de obligar a retipearla 3-5 veces. Solo
+      // pisa series que todavía arrastran el valor anterior (o están vacías);
+      // una serie ya hecha, o con una carga propia distinta, no se toca.
+      if (patch.load !== undefined) {
+        for (let i = setIdx + 1; i < rows.length; i++) {
+          if (rows[i].done) continue;
+          if (rows[i].load === prevLoad || rows[i].load === "") rows[i] = { ...rows[i], load: patch.load };
+        }
+      }
+      return { ...all, [blockId]: rows };
+    });
   }
 
   function addSet(blockId: string) {
@@ -351,6 +399,10 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
   const completedExercises = exercises.filter((b) => (logs[b.id] ?? []).some((s) => s.done)).length;
   const progressPct = Math.round((completedExercises / exercises.length) * 100);
 
+  const hasInjury = !!(athlete?.has_active_injury && (athlete.injury_restrictions || athlete.injury_location));
+  const injuryTitle = `Lesión activa${athlete?.injury_location ? ` (${athlete.injury_location})` : ""}`;
+  const injuryText = athlete?.injury_restrictions ?? "Respetá el dolor durante el ejercicio.";
+
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg)]">
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-divider)]">
@@ -360,25 +412,38 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
             {completedExercises} / {exercises.length} ejercicios &middot; ~{estimateSessionMinutes(exercises)} min
           </p>
         </div>
-        <button
-          onClick={handleClose}
-          disabled={saving}
-          className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] p-1 disabled:opacity-40"
-          aria-label="Cerrar"
-        >
-          <X size={20} strokeWidth={2.5} />
-        </button>
+        <div className="flex items-center gap-1.5 shrink-0">
+          {hasInjury && !readinessOpen && (
+            <button
+              onClick={() => setInjuryOpen(true)}
+              className="flex items-center gap-1 text-[11px] font-medium px-2 py-1 rounded-full bg-[var(--color-attention-100)] text-[var(--color-attention-800)] border border-[var(--color-attention-300)]"
+              aria-label="Ver restricciones por lesión"
+            >
+              <TriangleAlert size={12} strokeWidth={2.75} aria-hidden="true" /> Lesión
+            </button>
+          )}
+          <button
+            onClick={handleClose}
+            disabled={saving}
+            className="text-[var(--color-text)]/50 hover:text-[var(--color-text)] p-1 disabled:opacity-40"
+            aria-label="Cerrar"
+          >
+            <X size={20} strokeWidth={2.5} />
+          </button>
+        </div>
       </div>
       <div className="h-1 bg-[var(--color-divider)]">
         <div className="h-full bg-[var(--color-accent-500)] transition-[width]" style={{ width: `${progressPct}%` }} />
       </div>
 
-      {athlete?.has_active_injury && (athlete.injury_restrictions || athlete.injury_location) && (
+      {/* Entrenando, el detalle de la lesión vive detrás del chip del header:
+          ocupaba media pantalla en el móvil justo donde van las series. Antes
+          de arrancar (check-in) sí se muestra entero -- ahí no compite con nada. */}
+      {hasInjury && readinessOpen && (
         <div className="flex items-start gap-2 px-4 py-2 bg-[var(--color-attention-100)] text-[var(--color-attention-800)] text-xs border-b border-[var(--color-attention-300)]">
           <TriangleAlert size={13} strokeWidth={2.5} className="mt-0.5 shrink-0" aria-hidden="true" />
           <span>
-            <span className="font-medium">Lesión activa{athlete.injury_location ? ` (${athlete.injury_location})` : ""}.</span>{" "}
-            {athlete.injury_restrictions ?? "Respetá el dolor durante el ejercicio."}
+            <span className="font-medium">{injuryTitle}.</span> {injuryText}
           </span>
         </div>
       )}
@@ -427,6 +492,10 @@ export function SessionPlayer({ dayLabel, blocks, athleteId, athlete, initialInd
           />
         ) : null}
       </div>
+
+      <Modal open={injuryOpen} onClose={() => setInjuryOpen(false)} title={injuryTitle}>
+        <p className="text-sm text-[var(--color-text)]/80 whitespace-pre-line">{injuryText}</p>
+      </Modal>
 
       <Modal open={!!demoExerciseId} onClose={() => setDemoExerciseId(null)} title="Videos del ejercicio">
         {demoExerciseId && <ExerciseMediaPanel exerciseId={demoExerciseId} />}
@@ -607,21 +676,17 @@ function ExerciseScreen({
         </div>
       )}
 
-      {/* Serie actual en grande, al centro: un toque la marca hecha. La tabla
-          de abajo queda siempre visible para agregar series o ajustar reps/carga. */}
+      {/* Serie actual en grande, al centro: muestra lo que la serie pide (reps
+          o cronómetro). La tabla de abajo queda siempre visible para agregar
+          series o ajustar reps/carga. */}
       {nextUndone !== -1 ? (
-        <div className="flex flex-col items-center py-6 mb-2">
-          <button
-            onClick={() => onCompleteSet(nextUndone)}
-            className="w-32 h-32 rounded-full bg-[var(--color-accent-500)] text-[var(--color-bg)] flex items-center justify-center text-6xl font-bold tabular-nums shadow-[var(--shadow-organic-md)] active:scale-95 transition-transform"
-            aria-label={`Marcar serie ${nextUndone + 1} hecha`}
-          >
-            {nextUndone + 1}
-          </button>
-          <p className="text-sm text-[var(--color-text)]/60 mt-3">
-            Serie {nextUndone + 1} de {sets.length} &middot; toca para marcarla
-          </p>
-        </div>
+        <SetHero
+          key={`${block.id}-${nextUndone}`}
+          target={parseSetTarget(sets[nextUndone]?.reps || defaultReps(block))}
+          setNumber={nextUndone + 1}
+          totalSets={sets.length}
+          onComplete={() => onCompleteSet(nextUndone)}
+        />
       ) : (
         <div className="flex flex-col items-center py-6 mb-2">
           <div className="w-32 h-32 rounded-full bg-[var(--color-accent-100)] text-[var(--color-accent-700)] flex items-center justify-center">
@@ -654,15 +719,21 @@ function ExerciseScreen({
               }`}
             >
               <span className="w-8 text-center text-sm font-medium">{i + 1}</span>
+              {/* Los campos vienen precargados con lo planificado ("Protocolo",
+                  "+16 kg"): seleccionar todo al enfocar hace que escribir lo
+                  reemplace de una, sin tener que borrar caracter por caracter
+                  en el móvil. */}
               <Input
                 value={s.reps}
                 onChange={(e) => onSetField(i, { reps: e.target.value })}
+                onFocus={(e) => e.currentTarget.select()}
                 placeholder="reps"
                 className="!min-h-[44px] !py-2"
               />
               <Input
                 value={s.load}
                 onChange={(e) => onSetField(i, { load: e.target.value })}
+                onFocus={(e) => e.currentTarget.select()}
                 placeholder="carga"
                 className="!min-h-[44px] !py-2"
               />
@@ -708,6 +779,91 @@ function ExerciseScreen({
           </button>
         )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Círculo central de la serie en curso. Muestra lo que la serie PIDE -- las
+ * repeticiones a hacer, o un cronómetro de trabajo si es por tiempo (hangs,
+ * ARC, planchas) -- en vez del número de serie, que ya se lee en la tabla de
+ * abajo y no aporta nada mirando el teléfono a mitad de un hang.
+ *
+ * Se remonta con key por serie, así que el estado del cronómetro arranca
+ * limpio en cada serie sin resincronizar nada en un efecto.
+ */
+function SetHero({
+  target,
+  setNumber,
+  totalSets,
+  onComplete,
+}: {
+  target: SetTarget | null;
+  setNumber: number;
+  totalSets: number;
+  onComplete: () => void;
+}) {
+  const seconds = target?.kind === "time" ? target.seconds : 0;
+  const [left, setLeft] = useState(seconds);
+  const [running, setRunning] = useState(false);
+  const firedRef = useRef(false);
+
+  useEffect(() => {
+    if (!running || left <= 0) return;
+    const id = setInterval(() => setLeft((v) => Math.max(0, v - 1)), 1000);
+    return () => clearInterval(id);
+  }, [running, left]);
+
+  // El cronómetro llegó a cero: la serie queda hecha y arranca el descanso.
+  // El ref evita que un doble render en dev la marque dos veces.
+  useEffect(() => {
+    if (seconds === 0 || left > 0 || firedRef.current) return;
+    firedRef.current = true;
+    onComplete();
+  }, [seconds, left, onComplete]);
+
+  let display: string;
+  let unit: string;
+  if (target?.kind === "reps") {
+    display = String(target.reps);
+    unit = target.reps === 1 ? "rep" : "reps";
+  } else if (target?.kind === "time") {
+    display = left < 60 ? String(left) : formatClock(left);
+    unit = left < 60 ? "seg" : "min";
+  } else {
+    display = String(setNumber);
+    unit = "serie";
+  }
+
+  const isTime = target?.kind === "time";
+  const hint = isTime
+    ? running
+      ? "toca para pausar"
+      : left === seconds
+        ? "toca para iniciar"
+        : "toca para seguir"
+    : "toca para marcarla";
+
+  return (
+    <div className="flex flex-col items-center py-6 mb-2">
+      <button
+        onClick={() => (isTime ? setRunning((r) => !r) : onComplete())}
+        className={`w-32 h-32 rounded-full bg-[var(--color-accent-500)] text-[var(--color-bg)] flex flex-col items-center justify-center shadow-[var(--shadow-organic-md)] active:scale-95 transition-transform ${
+          running ? "ring-4 ring-[var(--color-accent-300)]" : ""
+        }`}
+        aria-label={isTime ? `${running ? "Pausar" : "Iniciar"} serie ${setNumber}` : `Marcar serie ${setNumber} hecha`}
+      >
+        <span className="text-5xl font-bold tabular-nums leading-none">{display}</span>
+        <span className="text-[11px] uppercase tracking-wide opacity-80 mt-1">{unit}</span>
+      </button>
+      <p className="text-sm text-[var(--color-text)]/60 mt-3">
+        Serie {setNumber} de {totalSets} &middot; {hint}
+      </p>
+      {isTime && (
+        <button onClick={onComplete} className="mt-1 text-xs text-[var(--color-accent-700)] hover:underline">
+          Marcar hecha sin cronómetro
+        </button>
+      )}
     </div>
   );
 }
