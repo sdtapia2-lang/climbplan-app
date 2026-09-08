@@ -11,6 +11,8 @@ import { BarChart, type BarPoint } from "@/components/charts/BarChart";
 import type { CoachAlert, Mesocycle, Week, Day, Block } from "@/lib/types";
 import { DAYS_OF_WEEK } from "@/lib/types";
 import { computeAdherence } from "@/lib/adherence";
+import { computeCurrentWeek as sharedComputeCurrentWeek, weeksElapsed } from "@/lib/weeks";
+import { WeeklyCheckinBanner } from "@/components/WeeklyCheckinBanner";
 import { Calendar, TrendingUp, ClipboardList, Users, Layers, Gauge, TriangleAlert, X, Play, Heart } from "lucide-react";
 
 const iconClass = "inline-block align-[-3px] mr-1";
@@ -215,10 +217,7 @@ function computeCurrentWeekNumber(
 ): number | null {
   if (weeks.length === 0) return null;
   if (!startDate) return weeks[0].week_number;
-  const start = new Date(startDate);
-  const today = new Date();
-  const diffDays = Math.floor((today.getTime() - start.getTime()) / 86400000);
-  const idx = Math.min(Math.max(Math.floor(diffDays / 7), 0), weeks.length - 1);
+  const idx = Math.min(Math.max(weeksElapsed(startDate), 0), weeks.length - 1);
   return weeks[idx]?.week_number ?? weeks[0].week_number;
 }
 
@@ -351,6 +350,10 @@ function AthleteDashboard() {
         )}
       </div>
 
+      {/* Antes que la sesión de hoy: la semana avanzó sola con la fecha, así que
+          el check-in va primero — es lo que ajusta el plan a cómo llega. */}
+      {currentWeek && !checkinDoneThisWeek && <WeeklyCheckinBanner weekNumber={currentWeek.week_number} />}
+
       {todayDay &&
         (hasTodaySession ? (
           <Card className="mb-6 !p-0 overflow-hidden border-none shadow-[var(--shadow-organic-lg)]">
@@ -470,11 +473,5 @@ function AthleteDashboard() {
 }
 
 function computeCurrentWeek(mesocycle: Mesocycle | null, weeks: Week[]): Week | null {
-  if (!mesocycle || weeks.length === 0) return null;
-  if (!mesocycle.start_date) return weeks[0];
-  const start = new Date(mesocycle.start_date);
-  const today = new Date();
-  const diffDays = Math.floor((today.getTime() - start.getTime()) / 86400000);
-  const idx = Math.min(Math.max(Math.floor(diffDays / 7), 0), weeks.length - 1);
-  return weeks[idx] ?? weeks[0];
+  return mesocycle ? sharedComputeCurrentWeek(mesocycle, weeks) : null;
 }

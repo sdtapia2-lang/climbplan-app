@@ -8,6 +8,27 @@ import { Card, Field, Input, Select, Textarea, Button, Spinner } from "@/compone
 import { EQUIPMENT_OPTIONS, DISCIPLINE_OPTIONS, DAYS_OF_WEEK, type Athlete } from "@/lib/types";
 import { X } from "lucide-react";
 
+/**
+ * `equipment`, `training_days` e `injury_history` son columnas jsonb: la base
+ * acepta cualquier forma ahí (un objeto, un string, null) y la pantalla las
+ * recorre como arrays. Una fila cargada a mano o por API con otra forma
+ * reventaba el render entero -- `training_days.includes is not a function` --
+ * y tiraba al usuario a la pantalla de error. Normalizar al cargar es más
+ * barato que blindar cada uso.
+ */
+function asArray<T>(value: unknown): T[] {
+  return Array.isArray(value) ? (value as T[]) : [];
+}
+
+function normalizeAthlete(a: Athlete): Athlete {
+  return {
+    ...a,
+    equipment: asArray<string>(a.equipment),
+    training_days: asArray<string>(a.training_days),
+    injury_history: asArray<Athlete["injury_history"][number]>(a.injury_history),
+  };
+}
+
 export default function AthleteProfilePage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -21,7 +42,7 @@ export default function AthleteProfilePage() {
     (async () => {
       const supabase = createClient();
       const { data } = await supabase.from("athletes").select("*").eq("id", id).single();
-      setAthlete(data as Athlete);
+      setAthlete(data ? normalizeAthlete(data as Athlete) : null);
       setLoading(false);
     })();
   }, [id]);

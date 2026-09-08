@@ -805,7 +805,10 @@ function SetHero({
 }) {
   const seconds = target?.kind === "time" ? target.seconds : 0;
   const [left, setLeft] = useState(seconds);
-  const [running, setRunning] = useState(false);
+  // Arranca corriendo: en un hang de 7s no hay tiempo de tocar la pantalla,
+  // colgarse y volver. El componente se remonta por serie (key), así que cada
+  // serie nueva arranca su propia cuenta regresiva. Tocar pausa y reanuda.
+  const [running, setRunning] = useState(seconds > 0);
   const firedRef = useRef(false);
 
   useEffect(() => {

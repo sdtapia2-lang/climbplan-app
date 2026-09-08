@@ -9,8 +9,9 @@ import { Card, Input, Button, Modal, Badge, Spinner, EmptyState, CategoryTag } f
 import { SessionPlayer } from "@/components/SessionPlayer";
 import { InjuryBanner } from "@/components/InjuryBanner";
 import { ExerciseMediaPanel } from "@/components/ExerciseMediaPanel";
+import { WeeklyCheckinBanner } from "@/components/WeeklyCheckinBanner";
 import { DAYS_OF_WEEK, type Block, type Day, type Mesocycle, type Week } from "@/lib/types";
-import { computeCurrentWeek } from "@/lib/weeks";
+import { computeCurrentWeek, isMesocycleOver } from "@/lib/weeks";
 import { estimateSessionMinutes } from "@/lib/estimateTime";
 import { TriangleAlert, Check, Sparkles, X, Play, Video } from "lucide-react";
 
@@ -26,6 +27,8 @@ export default function TrainingPage() {
   const [days, setDays] = useState<DayWithBlocks[]>([]);
   const [adjustmentBanner, setAdjustmentBanner] = useState<PendingAdjustmentBanner | null>(null);
   const [sessionDay, setSessionDay] = useState<DayWithBlocks | null>(null);
+  const [checkinPending, setCheckinPending] = useState(false);
+  const [mesoOver, setMesoOver] = useState(false);
   // Play individual por ejercicio (fase de correcciones): undefined = arrancar
   // toda la sesión desde el principio (o resumir si ya hay progreso).
   const [sessionStartIndex, setSessionStartIndex] = useState<number | undefined>(undefined);
@@ -50,6 +53,7 @@ export default function TrainingPage() {
     if (!meso) {
       setWeek(null);
       setDays([]);
+      setCheckinPending(false);
       setLoading(false);
       return;
     }
@@ -62,12 +66,26 @@ export default function TrainingPage() {
     const weeksList = (weeksData as Week[]) ?? [];
     const currentWeek = computeCurrentWeek(meso, weeksList);
     setWeek(currentWeek);
+    // Pasada la última semana, computeCurrentWeek se queda en ella. Sin avisar,
+    // el atleta repite la misma semana indefinidamente creyendo que avanza.
+    setMesoOver(isMesocycleOver(meso, weeksList));
 
     if (!currentWeek) {
       setDays([]);
+      setCheckinPending(false);
       setLoading(false);
       return;
     }
+
+    // El check-in es por semana: al avanzar la fecha a una semana nueva vuelve
+    // a quedar pendiente, y ahí es donde el plan se ajusta a cómo llega el
+    // atleta antes de entrenar.
+    const { count: checkinCount } = await supabase
+      .from("checkins")
+      .select("id", { count: "exact", head: true })
+      .eq("athlete_id", athleteId)
+      .eq("week_id", currentWeek.id);
+    setCheckinPending((checkinCount ?? 0) === 0);
 
     const { data: dayRows } = await supabase
       .from("days")
@@ -200,6 +218,17 @@ export default function TrainingPage() {
       </Modal>
       <InjuryBanner athlete={athlete} athleteId={athleteId ?? undefined} weekId={week?.id ?? null} onAdjusted={load} />
       {banner}
+      {mesoOver && (
+        <div className="mb-4 flex items-start gap-2 rounded-[24px] border border-[var(--color-accent-2-300)] bg-[var(--color-accent-2-100)] p-4 text-sm">
+          <TriangleAlert size={16} strokeWidth={2.5} className="mt-0.5 shrink-0 text-[var(--color-accent-2-700)]" aria-hidden="true" />
+          <span>
+            <span className="font-medium">Este mesociclo ya terminó</span> según sus fechas
+            {mesocycle.end_date ? ` (${mesocycle.end_date})` : ""}. Abajo sigue viéndose la última
+            semana planificada: toca cargar el mesociclo siguiente para que el plan avance.
+          </span>
+        </div>
+      )}
+      {checkinPending && <WeeklyCheckinBanner weekNumber={week?.week_number} />}
       <div className="flex items-center gap-3 mb-6">
         <h1 className="text-2xl font-semibold">
           {mesocycle.name} &mdash; Semana {week?.week_number}
